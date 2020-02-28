@@ -3,11 +3,11 @@ import {message} from "antd";
 import {URL} from "../config";
 
 const picturesApi = axios.create({
-  baseURL: "http://localhost:8000/",
+  baseURL: URL,
+  timeout: 3000,
 });
 
 picturesApi.interceptors.request.use(config => {
-  console.log(config);
   config.data = Object.assign({}, config.data, {
     authToken: window.localStorage.getItem("authToken"),
   });
@@ -19,7 +19,7 @@ picturesApi.interceptors.request.use(config => {
 
 picturesApi.interceptors.response.use(response => {
   if (response.status === 200) {
-    return response.data;
+    return response.data.data;
   }
   else {
     message.error(response.data);
@@ -33,12 +33,12 @@ export const getGroupById = (id) => {
 
 export const getGroups = (params) => {
   return picturesApi.get('/api/group', {
-    ...params,
+    params,
   });
 };
 
 export const getPictures = (params) => {
   return picturesApi.get("/api/pictures", {
-    ...params,
+    params
   })
 };

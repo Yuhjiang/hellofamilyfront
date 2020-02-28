@@ -12,8 +12,14 @@ const NotFound = Loadable({
   loading: Loading,
 });
 
+const TimelinePictures = Loadable({
+  loader: () => import("./TimelinePictures"),
+  loading: Loading,
+});
+
 
 export {
   Pictures,
   NotFound,
+  TimelinePictures,
 }

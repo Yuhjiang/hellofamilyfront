@@ -18,8 +18,14 @@ const TimelinePictures = Loadable({
 });
 
 
+const Login = Loadable({
+  loader: () => import("./Login"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
   TimelinePictures,
+  Login,
 }

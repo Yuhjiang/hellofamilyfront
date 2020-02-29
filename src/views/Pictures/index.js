@@ -32,11 +32,13 @@ class Pictures extends Component {
       memberSecondList: [],
       groupFirst: "",
       memberFirst: "",
+      groupSecond: "",
+      memberSecond: "",
     };
   }
 
   componentDidMount() {
-    this.getPicturesList({limit: this.state.limit, page: 1});
+    this.getPicturesList({limit: 20, page: 1});
     this.getGroupList("groupFirst");
   }
 
@@ -48,8 +50,8 @@ class Pictures extends Component {
     getPictures(params).then(resp => {
       this.setState({
         pictures: resp.images,
-        total: resp.count,
-        page: resp.current,
+        total: parseInt(resp.count),
+        page: parseInt(resp.current),
       });
     }).catch(err => {
       message.error("获取数据失败");
@@ -65,11 +67,10 @@ class Pictures extends Component {
       selectLoading: true,
     });
     getGroups().then(resp => {
-      if (groupList === "groupFirst") {
-        this.setState({
-          groupFirstList: resp.groups
-        });
-      }
+      this.setState({
+        groupFirstList: resp.groups,
+        groupSecondList: resp.groups,
+      });
     }).catch(err => {
       console.log(err);
     }).finally(() => {
@@ -80,8 +81,11 @@ class Pictures extends Component {
   };
 
   handleOnPageChange = (pageNumber) => {
-    this.getPicturesList({limit: this.state.limit, page: pageNumber,
-    member_first: this.state.memberFirst});
+    this.getPicturesList({
+      limit: this.state.limit, page: pageNumber,
+      member_first: this.state.memberFirst, group_first: this.state.groupFirst,
+      member_second: this.state.memberSecond, group_second: this.state.groupSecond,
+    });
   };
 
   handleOnGroupChange = (groupList, value) => {
@@ -90,6 +94,10 @@ class Pictures extends Component {
       if (groupList === "groupFirst") {
         this.setState({
           memberFirstList: resp.members
+        })
+      } else {
+        this.setState({
+          memberSecondList: resp.members
         })
       }
     }).catch(err => {
@@ -109,13 +117,13 @@ class Pictures extends Component {
     });
     getPictures({
       limit: this.state.limit, page: 1,
-      member_first: e.memberFirst
+      member_first: e.memberFirst, group_first: e.groupFirst,
+      member_second: e.memberSecond, group_second: e.groupSecond,
     }).then(resp => {
-      console.log(resp);
       this.setState({
         pictures: resp.images,
-        total: resp.count,
-        page: resp.current,
+        total: parseInt(resp.count),
+        page: parseInt(resp.current),
       })
     }).catch(err => {
       console.log(err);
@@ -169,6 +177,34 @@ class Pictures extends Component {
                       </Select>
                     </Form.Item>
                   </Col>
+                  <Col span={6}>
+                    <Form.Item name="groupSecond">
+                      <Select
+                        style={{width: "90%"}}
+                        onChange={this.handleOnGroupChange.bind(this, "groupSecond")}
+                        placeholder="选择组合"
+                      >
+                        {this.state.groupSecondList.map(group => (
+                          <Option key={group.id}
+                                  value={group.id}>{group.name_jp}</Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={6}>
+                    <Form.Item name="memberSecond">
+                      <Select
+                        style={{width: "90%"}}
+                        onChange={this.handleOnMemberChange}
+                        placeholder="选择成员"
+                      >
+                        {this.state.memberSecondList.map(member => (
+                          <Option key={member.id}
+                                  value={member.id}>{member.name_jp}</Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
                 </Row>
               </Form.Item>
               <Form.Item>
@@ -203,6 +239,7 @@ class Pictures extends Component {
             </Card>
             <Pagination showQuickJumper
                         defaultCurrent={1}
+                        current={this.state.page}
                         total={this.state.total}
                         onChange={this.handleOnPageChange}
                         pageSize={this.state.limit}

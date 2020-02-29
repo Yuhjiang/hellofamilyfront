@@ -42,7 +42,7 @@ class Frame extends Component {
             >
               {this.props.menus.map(item => {
                 return (
-                  <Menu.Item key={item.pathname}>
+                  <Menu.Item key={item.pathname} style={{fontSize: 16}}>
                     {item.title}
                   </Menu.Item>
                 )

@@ -23,9 +23,16 @@ const Login = Loadable({
   loading: Loading,
 });
 
+
+const Manage = Loadable({
+  loader: () => import("./Manage"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
   TimelinePictures,
   Login,
+  Manage,
 }

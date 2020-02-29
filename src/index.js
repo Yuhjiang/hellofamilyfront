@@ -15,7 +15,6 @@ render(
       <Router>
         <Switch>
           {basicRouter.map((route, idx) => {
-            console.log(route);
             return (
               <Route
                 path={route.pathname}

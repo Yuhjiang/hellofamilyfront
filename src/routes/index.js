@@ -2,7 +2,8 @@ import {
   Pictures,
   NotFound,
   TimelinePictures,
-  Login
+  Login,
+  Manage,
 } from "../views";
 
 
@@ -32,4 +33,13 @@ export const basicRouter = [
     component: Login,
     title: "登录",
   },
+];
+
+
+export const adminRouter = [
+  {
+    pathname: "/admin/pictures",
+    component: Manage,
+    title: "控制台",
+  }
 ];

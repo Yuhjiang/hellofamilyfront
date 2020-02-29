@@ -15,6 +15,7 @@ const tailLayout = {
 };
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     isLogin: state.user.isLogin,
     isLoading: state.user.isLoading,

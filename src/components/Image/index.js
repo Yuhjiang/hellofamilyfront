@@ -8,11 +8,13 @@ class Image extends Component {
       isLoading: true,
     }
   }
+
   handleOnLoad = () => {
     this.setState({
       isLoading: false
     })
   };
+
   render() {
     const {
       style = {},

@@ -42,3 +42,9 @@ export const getPictures = (params) => {
     params
   })
 };
+
+export const getMembers = (params) => {
+  return picturesApi.get('/api/member', {
+    params,
+  })
+};

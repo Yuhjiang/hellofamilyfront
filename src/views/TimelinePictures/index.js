@@ -46,7 +46,7 @@ class TimelinePictures extends Component {
             return (
               <Timeline.Item key={idx}>
                 <div><b>{item.name_jp}</b></div>
-                <div>{moment(item.created_time).format('LL')}</div>
+                <div>{moment(item.created_time).locale("zh-cn").format("LL")}</div>
                 <Image style={{display: "block"}} src={item.favicon} alt={item.name_jp} />
               </Timeline.Item>
             )

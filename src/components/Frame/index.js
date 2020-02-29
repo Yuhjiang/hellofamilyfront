@@ -50,7 +50,7 @@ class Frame extends Component {
             </Menu>
           </Header>
           <Layout style={{marginTop: 80}}>
-            <Content style={{backgroundColor: "#fff"}}>
+            <Content style={{backgroundColor: "#f0f2f5"}}>
               {this.props.children}
             </Content>
             <Sider

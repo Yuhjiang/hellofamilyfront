@@ -1,11 +1,13 @@
 import {
   getGroupById,
   getGroups,
-  getPictures
+  getPictures,
+  getMembers
 } from "./pictures"
 
 export {
   getGroupById,
   getGroups,
-  getPictures
+  getPictures,
+  getMembers,
 }

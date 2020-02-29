@@ -7,7 +7,7 @@ class NotFound extends Component {
   render() {
     return (
       <Card title="你访问的页面不见惹">
-        <img src={notFound} alt="你访问的页面不见了" />
+        <img src={notFound} alt="你访问的页面不见了" style={{width: "100%"}}/>
       </Card>
     );
   }

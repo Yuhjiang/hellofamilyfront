@@ -8,21 +8,22 @@ const picturesApi = axios.create({
 });
 
 picturesApi.interceptors.request.use(config => {
-  config.data = Object.assign({}, config.data, {
-    authToken: window.localStorage.getItem("authToken"),
-  });
   config.params = Object.assign({}, config.params, {
     format: "json",
   });
+  if (config.method !== 'get') {
+    config.headers = {
+      'Authorization': window.localStorage.getItem("authToken") || window.sessionStorage.getItem("authToken"),
+    };
+  }
   return config;
 });
 
 picturesApi.interceptors.response.use(response => {
-  if (response.status === 200) {
+  if (response.status === 200 && response.data.status === 200) {
     return response.data.data;
-  }
-  else {
-    message.error(response.data);
+  } else {
+    message.error(response.data.errMsg);
   }
 });
 
@@ -46,5 +47,12 @@ export const getPictures = (params) => {
 export const getMembers = (params) => {
   return picturesApi.get('/api/member', {
     params,
+  })
+};
+
+
+export const updateCookie = (cookie) => {
+  return picturesApi.post('/api/cookie', {
+    cookie
   })
 };

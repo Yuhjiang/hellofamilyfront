@@ -140,7 +140,6 @@ class Pictures extends Component {
       textAlign: 'center',
       padding: 5,
       margin: "auto",
-      height: "220px",
     };
     return (
       <>
@@ -224,12 +223,14 @@ class Pictures extends Component {
                     <div
                       style={{
                         display: "block",
-                        height: 210,
+                        width: "100%",
+                        height: 0,
+                        paddingBottom: "80%",
                         overflow: "hidden"
                       }}
                       dangerouslySetInnerHTML={{
                         __html: `<img src=${item.url} alt=${item.name} 
-                     style="max-width:100%;display:block"/>`
+                     style="max-width:100%;display:block;"/>`
                       }}
                     >
                     </div>

@@ -18,12 +18,13 @@ class Image extends Component {
   render() {
     const {
       style = {},
+      alt,
       ...props
     } = this.props;
     return (
       <Spin spinning={this.state.isLoading}>
         <div style={style} className="picture">
-          <img {...props} onLoad={this.handleOnLoad}/>
+          <img {...props} onLoad={this.handleOnLoad} alt={alt}/>
         </div>
       </Spin>
     );

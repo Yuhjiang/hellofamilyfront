@@ -49,9 +49,9 @@ class Pictures extends Component {
 
     getPictures(params).then(resp => {
       this.setState({
-        pictures: resp.images,
-        total: parseInt(resp.count),
-        page: parseInt(resp.current),
+        pictures: resp.data.images,
+        total: parseInt(resp.data.count),
+        page: parseInt(resp.data.current),
       });
     }).catch(err => {
       message.error("获取数据失败");
@@ -68,8 +68,8 @@ class Pictures extends Component {
     });
     getGroups().then(resp => {
       this.setState({
-        groupFirstList: resp.groups,
-        groupSecondList: resp.groups,
+        groupFirstList: resp.data.groups,
+        groupSecondList: resp.data.groups,
       });
     }).catch(err => {
       console.log(err);
@@ -90,14 +90,13 @@ class Pictures extends Component {
 
   handleOnGroupChange = (groupList, value) => {
     getMembers({"group_id": value}).then(resp => {
-      console.log(resp);
       if (groupList === "groupFirst") {
         this.setState({
-          memberFirstList: resp.members
+          memberFirstList: resp.data.members
         })
       } else {
         this.setState({
-          memberSecondList: resp.members
+          memberSecondList: resp.data.members
         })
       }
     }).catch(err => {
@@ -121,9 +120,9 @@ class Pictures extends Component {
       member_second: e.memberSecond, group_second: e.groupSecond,
     }).then(resp => {
       this.setState({
-        pictures: resp.images,
-        total: parseInt(resp.count),
-        page: parseInt(resp.current),
+        pictures: resp.data.images,
+        total: parseInt(resp.data.count),
+        page: parseInt(resp.data.current),
       })
     }).catch(err => {
       console.log(err);

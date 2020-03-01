@@ -16,7 +16,7 @@ userApi.interceptors.request.use(config => {
 
 userApi.interceptors.response.use(response => {
   if (response.status === 200) {
-    return response.data.data;
+    return response.data;
   }
   else {
     message.error(response.data);

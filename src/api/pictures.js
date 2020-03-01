@@ -20,13 +20,33 @@ picturesApi.interceptors.request.use(config => {
 });
 
 picturesApi.interceptors.response.use(response => {
-  if (response.status === 200 && response.data.status === 200) {
-    return response.data.data;
+  if (response.status === 200) {
+    return response.data;
   } else {
     message.error(response.data.errMsg);
   }
+}, error => {
+  if (error.response.status === 401) {
+    // token过期，重新更新cookie
+    setAuthToken();
+  }
 });
 
+
+const setAuthToken = () => {
+  // 更新token
+  if (window.localStorage.getItem("refreshToken")) {
+    refreshToken(window.localStorage.getItem("refreshToken")).then(resp => {
+      window.localStorage.setItem("authToken", resp.access)
+      }
+    )
+  } else {
+    refreshToken(window.sessionStorage.getItem("refreshToken")).then(resp => {
+        window.sessionStorage.setItem("authToken", resp.access)
+      }
+    )
+  }
+};
 
 export const getGroupById = (id) => {
   return picturesApi.get(`/api/group/${id}`);
@@ -54,5 +74,11 @@ export const getMembers = (params) => {
 export const updateCookie = (cookie) => {
   return picturesApi.post('/api/cookie', {
     cookie
+  })
+};
+
+export const refreshToken = (refreshToken) => {
+  return picturesApi.post('/api/token/refresh', {
+    refresh: refreshToken,
   })
 };

@@ -19,7 +19,11 @@ class Manage extends Component {
       isLoading: true,
     });
     updateCookie(values.updateCookie).then(resp => {
-      message.success(resp.message);
+      if (resp.status === 200) {
+        message.success(resp.data.message);
+      } else {
+        message.error(resp.errMsg);
+      }
     }).catch(err => {
       console.log(err);
     }).finally(() => {

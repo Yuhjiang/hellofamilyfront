@@ -26,7 +26,7 @@ class TimelinePictures extends Component {
 
     getGroups().then(resp => {
       this.setState({
-        groups: resp.groups
+        groups: resp.data.groups
       })
     }).catch(err => {
       console.log(err);

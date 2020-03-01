@@ -20,7 +20,6 @@ const mapStateToProps = state => {
 class App extends Component {
   render() {
     // 管理员权限的用户增加管理页面
-    console.log(this.props.isAdmin);
     const newMenus = menus.concat(this.props.isAdmin ? adminRouter : []);
     return (
       <Frame menus={newMenus}>

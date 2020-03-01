@@ -49,9 +49,9 @@ class Pictures extends Component {
 
     getPictures(params).then(resp => {
       this.setState({
-        pictures: resp.images,
-        total: parseInt(resp.count),
-        page: parseInt(resp.current),
+        pictures: resp.data.images,
+        total: parseInt(resp.data.count),
+        page: parseInt(resp.data.current),
       });
     }).catch(err => {
       message.error("获取数据失败");
@@ -68,8 +68,8 @@ class Pictures extends Component {
     });
     getGroups().then(resp => {
       this.setState({
-        groupFirstList: resp.groups,
-        groupSecondList: resp.groups,
+        groupFirstList: resp.data.groups,
+        groupSecondList: resp.data.groups,
       });
     }).catch(err => {
       console.log(err);
@@ -90,14 +90,13 @@ class Pictures extends Component {
 
   handleOnGroupChange = (groupList, value) => {
     getMembers({"group_id": value}).then(resp => {
-      console.log(resp);
       if (groupList === "groupFirst") {
         this.setState({
-          memberFirstList: resp.members
+          memberFirstList: resp.data.members
         })
       } else {
         this.setState({
-          memberSecondList: resp.members
+          memberSecondList: resp.data.members
         })
       }
     }).catch(err => {
@@ -121,9 +120,9 @@ class Pictures extends Component {
       member_second: e.memberSecond, group_second: e.groupSecond,
     }).then(resp => {
       this.setState({
-        pictures: resp.images,
-        total: parseInt(resp.count),
-        page: parseInt(resp.current),
+        pictures: resp.data.images,
+        total: parseInt(resp.data.count),
+        page: parseInt(resp.data.current),
       })
     }).catch(err => {
       console.log(err);
@@ -140,7 +139,12 @@ class Pictures extends Component {
       textAlign: 'center',
       padding: 5,
       margin: "auto",
-      height: "220px",
+    };
+    const colStyle = {
+      lg: 6,
+      md: 6,
+      sm: 12,
+      xs: 12,
     };
     return (
       <>
@@ -149,7 +153,7 @@ class Pictures extends Component {
             <Form name="member_select" onFinish={this.handleOnSubmit}>
               <Form.Item name="select_first">
                 <Row>
-                  <Col span={6}>
+                  <Col {...colStyle}>
                     <Form.Item name="groupFirst">
                       <Select
                         style={{width: "90%"}}
@@ -163,7 +167,7 @@ class Pictures extends Component {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={6}>
+                  <Col {...colStyle}>
                     <Form.Item name="memberFirst">
                       <Select
                         style={{width: "90%"}}
@@ -177,7 +181,7 @@ class Pictures extends Component {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={6}>
+                  <Col {...colStyle}>
                     <Form.Item name="groupSecond">
                       <Select
                         style={{width: "90%"}}
@@ -191,7 +195,7 @@ class Pictures extends Component {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={6}>
+                  <Col {...colStyle}>
                     <Form.Item name="memberSecond">
                       <Select
                         style={{width: "90%"}}
@@ -224,12 +228,14 @@ class Pictures extends Component {
                     <div
                       style={{
                         display: "block",
-                        height: 210,
+                        width: "100%",
+                        height: 0,
+                        paddingBottom: "80%",
                         overflow: "hidden"
                       }}
                       dangerouslySetInnerHTML={{
                         __html: `<img src=${item.url} alt=${item.name} 
-                     style="max-width:100%;display:block"/>`
+                     style="max-width:100%;display:block;"/>`
                       }}
                     >
                     </div>

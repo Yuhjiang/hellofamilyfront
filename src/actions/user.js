@@ -3,6 +3,30 @@ import {message} from "antd";
 import actionTypes from "./actionTypes";
 import {loginUser} from "../api/user";
 
+const removeSessionStorage = (items) => {
+  items.forEach(item => {
+    window.sessionStorage.removeItem(item);
+  })
+};
+
+const setSessionStorage = (items) => {
+  Object.keys(items).forEach(key => {
+    window.sessionStorage.setItem(key, items[key]);
+  })
+};
+
+const removeLocalStorage = (items) => {
+  items.forEach(item => {
+    window.localStorage.removeItem(item);
+  })
+};
+
+const setLocalStorage = (items) => {
+  Object.keys(items).forEach(key => {
+    window.localStorage.setItem(key, items[key]);
+  })
+};
+
 const startLogin = () => {
   return {
     type: actionTypes.START_LOGIN,
@@ -19,10 +43,9 @@ const loginSuccess = (userInfo) => {
 };
 
 const loginFailed = () => {
-  window.localStorage.removeItem("authToken");
-  window.sessionStorage.removeItem("authToken");
-  window.localStorage.removeItem("userInfo");
-  window.sessionStorage.removeItem("userInfo");
+  const removeItems = ["authToken", "userInfo", "refreshToken"];
+  removeSessionStorage(removeItems);
+  removeLocalStorage(removeItems);
   return {
     type: actionTypes.LOGIN_FAILED,
     payload: {
@@ -39,16 +62,23 @@ export const login = (data) => {
     loginUser(data).then(resp => {
       const {
         authToken,
+        refreshToken,
         ...userInfo
-      } = resp;
+      } = resp.data;
       if (data.remember === true) {
         // 用户选中记住我时，持久化存储
-        window.localStorage.setItem("authToken", authToken);
-        window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setLocalStorage({
+          "authToken": "HelloFamily " + authToken,
+          "refreshToken": refreshToken,
+          "userInfo": JSON.stringify(userInfo),
+        });
       }
       else {
-        window.sessionStorage.setItem("authToken", authToken);
-        window.sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+        setSessionStorage({
+          "authToken": "HelloFamily " + authToken,
+          "refreshToken": refreshToken,
+          "userInfo": JSON.stringify(userInfo),
+        });
       }
       dispatch(loginSuccess(userInfo));
       message.success("成功登录");

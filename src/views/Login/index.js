@@ -15,7 +15,6 @@ const tailLayout = {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     isLogin: state.user.isLogin,
     isLoading: state.user.isLoading,
@@ -26,7 +25,6 @@ const mapStateToProps = state => {
 @connect(mapStateToProps, {login})
 class Login extends Component {
   onFinish = values => {
-    console.log('Success:', values);
     this.props.login(values);
   };
 

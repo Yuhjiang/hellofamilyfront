@@ -141,6 +141,12 @@ class Pictures extends Component {
       padding: 5,
       margin: "auto",
     };
+    const colStyle = {
+      lg: 6,
+      md: 6,
+      sm: 12,
+      xs: 12,
+    };
     return (
       <>
         <Row>
@@ -148,7 +154,7 @@ class Pictures extends Component {
             <Form name="member_select" onFinish={this.handleOnSubmit}>
               <Form.Item name="select_first">
                 <Row>
-                  <Col span={6}>
+                  <Col {...colStyle}>
                     <Form.Item name="groupFirst">
                       <Select
                         style={{width: "90%"}}
@@ -162,7 +168,7 @@ class Pictures extends Component {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={6}>
+                  <Col {...colStyle}>
                     <Form.Item name="memberFirst">
                       <Select
                         style={{width: "90%"}}
@@ -176,7 +182,7 @@ class Pictures extends Component {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={6}>
+                  <Col {...colStyle}>
                     <Form.Item name="groupSecond">
                       <Select
                         style={{width: "90%"}}
@@ -190,7 +196,7 @@ class Pictures extends Component {
                       </Select>
                     </Form.Item>
                   </Col>
-                  <Col span={6}>
+                  <Col {...colStyle}>
                     <Form.Item name="memberSecond">
                       <Select
                         style={{width: "90%"}}

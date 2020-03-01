@@ -1,6 +1,6 @@
 // 页面主要框架，导航栏，侧边栏，页脚等组件
 import React, {Component} from 'react';
-import {Layout, Menu} from "antd";
+import {Layout, Menu, Card} from "antd";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 
@@ -60,26 +60,16 @@ class Frame extends Component {
               style={{marginLeft: 20}}
               width={330}
             >
-              <div className="logo"/>
-              <Menu theme="light" mode="inline" defaultSelectedKeys={['4']}>
-                <Menu.Item key="1">
-                  <span className="nav-text">nav 1</span>
-                </Menu.Item>
-                <Menu.Item key="2">
-                  <span className="nav-text">nav 2</span>
-                </Menu.Item>
-                <Menu.Item key="3">
-                  <span className="nav-text">nav 3</span>
-                </Menu.Item>
-                {/*<Menu.Item key="4" style={{height: 400}}>*/}
-                {/*  <div dangerouslySetInnerHTML={{__html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'}}*/}
-                {/*       />*/}
-                {/*</Menu.Item>*/}
-              </Menu>
+              <Card title="网易云音乐">
+                <div dangerouslySetInnerHTML={{
+                  __html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'}}
+                />
+              </Card>
             </Sider>
           </Layout>
-          <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant
-            UED</Footer>
+          <Footer style={{textAlign: 'center'}}>
+            Hellofamily.club @ 裸夏  <a href="http://www.beian.miit.gov.cn">浙ICP备17021080号</a>
+          </Footer>
         </Layout>,
       </>
     );

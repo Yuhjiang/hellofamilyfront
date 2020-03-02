@@ -4,6 +4,9 @@ import {
   TimelinePictures,
   Login,
   Manage,
+  Articles,
+  AddArticle,
+  ArticleDetail
 } from "../views";
 
 
@@ -19,6 +22,23 @@ export const mainRouter = [
     component: TimelinePictures,
     title: "时间线",
     isNav: true,
+  },
+  {
+    pathname: '/article',
+    component: Articles,
+    title: "博客",
+    isNav: true,
+    exact: true,
+  },
+  {
+    pathname: "/article/add",
+    component: AddArticle,
+    title: "编写文章",
+  },
+  {
+    pathname: "/article/:id",
+    component: ArticleDetail,
+    title: "文章详情",
   },
   {
     pathname: "/404",

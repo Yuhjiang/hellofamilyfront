@@ -29,10 +29,29 @@ const Manage = Loadable({
   loading: Loading,
 });
 
+
+const Articles = Loadable({
+  loader: () => import("./Articles"),
+  loading: Loading,
+});
+
+const AddArticle = Loadable({
+  loader: () => import("./Articles/Add"),
+  loading: Loading,
+});
+
+const ArticleDetail = Loadable({
+  loader: () => import("./Articles/Detail"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
   TimelinePictures,
   Login,
   Manage,
+  Articles,
+  AddArticle,
+  ArticleDetail,
 }

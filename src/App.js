@@ -30,7 +30,7 @@ class App extends Component {
                 <Route
                   key={idx}
                   path={route.pathname}
-                  excat={route.exact}
+                  exact={route.exact}
                   render={routeProps => {
                     return (<route.component {...routeProps} />)
                    }

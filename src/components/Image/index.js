@@ -24,7 +24,7 @@ class Image extends Component {
     return (
       <Spin spinning={this.state.isLoading}>
         <div style={style} className="picture">
-          <img {...props} onLoad={this.handleOnLoad} alt={alt}/>
+          <img style={{maxWidth: "100%"}}{...props} onLoad={this.handleOnLoad} alt={alt}/>
         </div>
       </Spin>
     );

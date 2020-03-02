@@ -40,6 +40,11 @@ const AddArticle = Loadable({
   loading: Loading,
 });
 
+const ArticleDetail = Loadable({
+  loader: () => import("./Articles/Detail"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -48,4 +53,5 @@ export {
   Manage,
   Articles,
   AddArticle,
+  ArticleDetail,
 }

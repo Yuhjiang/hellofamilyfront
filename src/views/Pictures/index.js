@@ -10,6 +10,8 @@ import {
   Row,
   Button,
   Col,
+  List,
+  BackTop
 } from "antd";
 
 import {getPictures, getGroups, getMembers} from "../../api";
@@ -129,7 +131,7 @@ class Pictures extends Component {
     }).finally(() => {
       this.setState({
         isLoading: false,
-      })
+      });
     })
   };
 
@@ -221,10 +223,42 @@ class Pictures extends Component {
         </Row>
         <Row style={{marginTop: 10}}>
           <Spin spinning={this.state.isLoading}>
-            <Card>
-              {this.state.pictures.map((item, idx) => {
-                return (
-                  <Card.Grid style={gridStyle} key={idx}>
+            {/*<Card>*/}
+            {/*  {this.state.pictures.map((item, idx) => {*/}
+            {/*    return (*/}
+            {/*      <Card.Grid style={gridStyle} key={idx}>*/}
+            {/*        <div*/}
+            {/*          style={{*/}
+            {/*            display: "block",*/}
+            {/*            width: "100%",*/}
+            {/*            height: 0,*/}
+            {/*            paddingBottom: "80%",*/}
+            {/*            overflow: "hidden"*/}
+            {/*          }}*/}
+            {/*          dangerouslySetInnerHTML={{*/}
+            {/*            __html: `<img src=${item.url} alt=${item.name} */}
+            {/*         style="max-width:100%;display:block;"/>`*/}
+            {/*          }}*/}
+            {/*        >*/}
+            {/*        </div>*/}
+            {/*      </Card.Grid>*/}
+            {/*    )*/}
+            {/*  })}*/}
+            {/*</Card>*/}
+            <List
+              grid={{
+                gutter: 16,
+                xs: 1,
+                sm: 2,
+                md: 4,
+                lg: 4,
+                xl: 4,
+              }}
+              style={{backgroundColor: "#fff", padding: 10}}
+              dataSource={this.state.pictures}
+              renderItem={item => (
+                <List.Item>
+                  <Card bordered={false} hoverable bodyStyle={{padding: 0}}>
                     <div
                       style={{
                         display: "block",
@@ -239,10 +273,11 @@ class Pictures extends Component {
                       }}
                     >
                     </div>
-                  </Card.Grid>
-                )
-              })}
-            </Card>
+                  </Card>
+                </List.Item>
+              )}
+            />
+            <Card>
             <Pagination showQuickJumper
                         defaultCurrent={1}
                         current={this.state.page}
@@ -251,6 +286,8 @@ class Pictures extends Component {
                         pageSize={this.state.limit}
                         style={{margin: 20, float: "right"}}
             />
+            </Card>
+            <BackTop />
           </Spin>
         </Row>
       </>

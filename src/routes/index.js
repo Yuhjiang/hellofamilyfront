@@ -5,7 +5,8 @@ import {
   Login,
   Manage,
   Articles,
-  AddArticle
+  AddArticle,
+  ArticleDetail
 } from "../views";
 
 
@@ -23,15 +24,21 @@ export const mainRouter = [
     isNav: true,
   },
   {
-    pathname: '/articles',
+    pathname: '/article',
     component: Articles,
     title: "博客",
     isNav: true,
+    exact: true,
   },
   {
     pathname: "/article/add",
     component: AddArticle,
     title: "编写文章",
+  },
+  {
+    pathname: "/article/:id",
+    component: ArticleDetail,
+    title: "文章详情",
   },
   {
     pathname: "/404",

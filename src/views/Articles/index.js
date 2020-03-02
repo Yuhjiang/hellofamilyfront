@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Card, Table, Tooltip, Tag, Button} from "antd";
 import moment from "moment";
 
-import {getArticleList, getArticleById} from "../../api/articles";
+import {getArticleList} from "../../api/articles";
 
 const displayTitle = {
   "title": "标题",

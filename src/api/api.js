@@ -1,5 +1,6 @@
 import axios from "axios";
 import {message} from "antd";
+
 import {URL} from "../config";
 import {refreshToken} from "./pictures";
 
@@ -22,8 +23,13 @@ Api.interceptors.request.use(config => {
 
 Api.interceptors.response.use(response => {
   if (response.status === 200) {
+    if (response.data.status === 302) {
+      message.error(response.data.errMsg);
+      window.location = response.data.data.url;
+    }
     return response.data;
-  } else {
+  }
+  else {
     message.error(response.data.errMsg);
   }
 }, error => {

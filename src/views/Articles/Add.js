@@ -1,9 +1,20 @@
 import React, {Component} from 'react';
-import {Card, Spin, Form, DatePicker, Input, Row, Col, Select, Button} from "antd";
+import {
+  Card,
+  Spin,
+  Form,
+  Input,
+  Row,
+  Col,
+  Select,
+  Button,
+  Divider,
+  message
+} from "antd";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
 
-import {getCategoryList, getTagList, updatePicture} from "../../api/articles";
+import {getCategoryList, getTagList, updatePicture, postArticle} from "../../api/articles";
 
 const {Option} = Select;
 
@@ -29,12 +40,23 @@ class AddArticle extends Component {
   }
 
   onFinished = values => {
+    this.setState({
+      isLoading: true,
+    });
     console.log(values);
     const newValues = {
       ...values,
       content: values.content.toHTML(),
     };
-    console.log(newValues);
+    postArticle(newValues).then(resp => {
+      message.success("成功创建一篇文章");
+      this.setState({
+        isLoading: false,
+      });
+      this.props.history.push("/article");
+    }).catch(err => {
+      console.log(err)
+    });
   };
 
   onFinishFailed = errorInfo => {
@@ -82,9 +104,9 @@ class AddArticle extends Component {
 
   validateFn = file => {
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            file.size < 1024 * 100 ? resolve() : reject()
-        }, 2000)
+      setTimeout(() => {
+        file.size < 1024 * 100 ? resolve() : reject()
+      }, 2000)
     })
   };
 
@@ -130,15 +152,33 @@ class AddArticle extends Component {
                   {...layout}
                   label="标签"
                   name="tag"
+                  rules={[
+                    {required: true, message: "请选择标签"},
+                  ]}
                 >
                   <Select
                     mode="tags"
                     placeholder="选择标签"
                   >
-                  {this.state.tags.map(tag => {
-                    return (<Option key={tag.id} value={tag.id}>{tag.name}</Option>)
-                  })}
+                    {this.state.tags.map(tag => {
+                      return (<Option key={tag.id} value={tag.id}>{tag.name}</Option>)
+                    })}
                   </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Divider>内容</Divider>
+            <Row>
+              <Col span={24}>
+                <Form.Item
+                  label="摘要"
+                  name="desc"
+                  labelCol={4}
+                  rules={[
+                    {required: true, message: "请输入摘要"}
+                  ]}
+                >
+                  <Input.TextArea allowClear cols={1000}/>
                 </Form.Item>
               </Col>
             </Row>
@@ -151,8 +191,7 @@ class AddArticle extends Component {
                   validator: (rule, value) => {
                     if (value.isEmpty()) {
                       return Promise.reject("请输入正文");
-                    }
-                    else {
+                    } else {
                       return Promise.resolve();
                     }
                   }

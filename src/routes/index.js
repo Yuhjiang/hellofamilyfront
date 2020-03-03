@@ -6,7 +6,9 @@ import {
   Manage,
   Articles,
   AddArticle,
-  ArticleDetail
+  ArticleDetail,
+  AdminPictures,
+  AdminCategories,
 } from "../views";
 
 
@@ -58,8 +60,19 @@ export const basicRouter = [
 
 export const adminRouter = [
   {
-    pathname: "/admin/pictures",
+    pathname: "/admin",
     component: Manage,
     title: "控制台",
-  }
+    root: true,
+  },
+  {
+    pathname: "/admin/pictures",
+    component: AdminPictures,
+    title: "图片管理",
+  },
+  {
+    pathname: "/admin/categories",
+    component: AdminCategories,
+    title: "分类管理"
+  },
 ];

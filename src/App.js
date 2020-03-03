@@ -7,6 +7,7 @@ import {mainRouter, adminRouter} from "./routes";
 
 // 在顶部导航栏的路由
 const menus = mainRouter.filter(item => item.isNav);
+const adminMenus = adminRouter.filter(item => item.root);
 
 // redux状态
 const mapStateToProps = state => {
@@ -20,7 +21,7 @@ const mapStateToProps = state => {
 class App extends Component {
   render() {
     // 管理员权限的用户增加管理页面
-    const newMenus = menus.concat(this.props.isAdmin ? adminRouter : []);
+    const newMenus = menus.concat(this.props.isAdmin ? adminMenus : []);
     return (
       <Frame menus={newMenus}>
         <Switch>

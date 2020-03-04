@@ -14,19 +14,19 @@ import {
 import {ChromePicker} from "react-color";
 
 import {
-  postCategory,
-  getCategoryList,
-  editCategory,
-  deleteCategory
+  postTag,
+  getTagList,
+  editTag,
+  deleteTag
 } from "../../api/articles";
 
 const displayTitle = {
-  "name": "分类名",
+  "name": "标签名",
   "color": "颜色",
   "post_count": "文章数",
 };
 
-class AdminCategories extends Component {
+class AdminTags extends Component {
   formRef = React.createRef();
 
   constructor(props) {
@@ -62,7 +62,8 @@ class AdminCategories extends Component {
       isLoading: true,
     });
 
-    getCategoryList(offset, limited).then(resp => {
+    getTagList({offset, limited}).then(resp => {
+      console.log(resp);
       this.setState({
         total: resp.count,
         offset: offset,
@@ -141,8 +142,8 @@ class AdminCategories extends Component {
       addLoading: true,
     });
 
-    postCategory(values).then(resp => {
-      message.success("成功添加分类");
+    postTag(values).then(resp => {
+      message.success("成功添加标签");
     }).catch(err => {
       console.log(err);
     }).finally(() => {
@@ -198,7 +199,7 @@ class AdminCategories extends Component {
     this.setState({
       showEditModal: true,
       currentRecord: record,
-      editColor: record.color,
+      editColor: record.color || "#fff",
     })
   };
 
@@ -209,8 +210,8 @@ class AdminCategories extends Component {
   };
 
   onEdit = (id, data) => {
-    editCategory(id, data).then(resp => {
-      message.success("成功修改分类");
+    editTag(id, data).then(resp => {
+      message.success("成功修改标签");
     }).catch(err => {
       console.log(err);
     }).finally(() => {
@@ -223,8 +224,8 @@ class AdminCategories extends Component {
     this.setState({
       deleteLoading: true,
     });
-    deleteCategory(id).then(resp => {
-      message.success("成功删除分类");
+    deleteTag(id).then(resp => {
+      message.success("成功删除标签");
     }).catch(err => {
       console.log(err);
     }).finally(() => {
@@ -252,11 +253,11 @@ class AdminCategories extends Component {
     return (
       <>
         <Card
-          title="添加文章分类"
+          title="添加文章标签"
           style={{marginTop: 10}}
         >
           <Form
-            name="addCategory"
+            name="addTag"
             onFinish={this.addFinished}
             onFinishFailed={this.addFinishedFailed}
             ref={this.formRef}
@@ -264,11 +265,11 @@ class AdminCategories extends Component {
             <Row>
               <Col span={10}>
                 <Form.Item
-                  label="分类名"
+                  label="标签名"
                   name="name"
                   wrapperCol={{span: 16}}
                   rules={[
-                    {required: true, message: "请输入分类名"},
+                    {required: true, message: "请输入标签名"},
                   ]}
                 >
                   <Input/>
@@ -276,7 +277,7 @@ class AdminCategories extends Component {
               </Col>
               <Col span={10}>
                 <Form.Item
-                  label="分类颜色"
+                  label="标签颜色"
                   name="color"
                   wrapperCol={{span: 16}}
                 >
@@ -311,7 +312,7 @@ class AdminCategories extends Component {
           </Form>
         </Card>
         <Card
-          title="分类列表"
+          title="标签列表"
           style={{marginTop: 10}}
         >
           <Table
@@ -353,9 +354,9 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
   const [form] = Form.useForm();
 
   const handleColorChange = (c, event) => {
-    colorChange(c.hex);
+    colorChange(c ? c.hex : "#fff");
     form.setFieldsValue({
-      color: c.hex
+      color: c ? c.hex : "#fff",
     });
   };
 
@@ -368,7 +369,7 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
 
   return (
     <Modal
-      title="修改分类"
+      title="修改标签"
       visible={visible}
       forceRender={true}
       destroyOnClose={false}
@@ -386,14 +387,14 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
       onCancel={onCancel}
     >
       <Form
-        name="editCategory"
+        name="editTag"
         form={form}
       >
         <Form.Item
-          label="分类名"
+          label="标签名"
           name="name"
           rules={[
-            {required: true, message: "请输入分类名"}
+            {required: true, message: "请输入标签名"}
           ]}
         >
           <input value={record.name}/>
@@ -415,15 +416,15 @@ const DeleteModal = ({visible, loading, record, onOk, onCancel}) => {
 
   return (
     <Modal
-      title="确实是否要删除分类"
+      title="确实是否要删除标签"
       visible={visible}
       coonfirmLoading={loading}
       onCancel={onCancel}
       onOk={onOk}
     >
-      {"分类：" + record.name}
+      {"标签：" + record.name}
     </Modal>
   )
 };
 
-export default AdminCategories;
+export default AdminTags;

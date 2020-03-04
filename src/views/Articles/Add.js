@@ -76,7 +76,7 @@ class AddArticle extends Component {
   setTag = () => {
     getTagList().then(resp => {
       this.setState({
-        tags: resp,
+        tags: resp.results,
       })
     }).catch(err => {
       console.log(err);

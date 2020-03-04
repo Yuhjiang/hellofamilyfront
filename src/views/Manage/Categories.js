@@ -198,7 +198,7 @@ class AdminCategories extends Component {
     this.setState({
       showEditModal: true,
       currentRecord: record,
-      editColor: record.color,
+      editColor: record.color || "#fff",
     })
   };
 

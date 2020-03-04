@@ -19,10 +19,12 @@ Api.interceptors.request.use(config => {
     };
   }
   return config;
+}, error => {
+  message.error("操作失败");
 });
 
 Api.interceptors.response.use(response => {
-  if (response.status === 200) {
+  if (response.status === 200 || response.status === 201 || response.status === 204) {
     if (response.data.status === 302) {
       message.error(response.data.errMsg);
       window.location = response.data.data.url;

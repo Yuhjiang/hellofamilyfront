@@ -14,7 +14,7 @@ import {
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
 
-import {getCategoryList, getTagList, updatePicture, postArticle} from "../../api/articles";
+import {getCategoryList, getTagList, uploadPicture, postArticle} from "../../api/articles";
 
 const {Option} = Select;
 
@@ -66,7 +66,7 @@ class AddArticle extends Component {
   setCategory = () => {
     getCategoryList().then(resp => {
       this.setState({
-        categories: resp,
+        categories: resp.results,
       })
     }).catch(err => {
       console.log(err);
@@ -76,7 +76,7 @@ class AddArticle extends Component {
   setTag = () => {
     getTagList().then(resp => {
       this.setState({
-        tags: resp,
+        tags: resp.results,
       })
     }).catch(err => {
       console.log(err);
@@ -86,7 +86,7 @@ class AddArticle extends Component {
   uploadPictureFn = param => {
     let fd = new window.FormData();
     fd.append('content', param.file);
-    updatePicture(fd).then(resp => {
+    uploadPicture(fd).then(resp => {
       console.log(resp);
       param.success({
         url: resp.data.url,

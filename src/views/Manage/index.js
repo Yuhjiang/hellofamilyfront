@@ -2,66 +2,50 @@
 // 1. 增加人脸
 // 2. 更新Cookie
 import React, {Component} from 'react';
-import {Card, Form, Row, Col, Input, Button, Spin, message} from "antd";
+import {Route, Switch, Redirect} from "react-router-dom";
+import {Menu} from "antd";
 
-import {updateCookie} from "../../api/pictures";
+import {adminRouter} from "../../routes";
+
+const adminMenus = adminRouter.filter(item => !item.root);
+
 
 class Manage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
+      current: "/admin/pictures",
     }
   }
 
-  onFinish = values => {
+
+  handleOnMenuClick = e => {
     this.setState({
-      isLoading: true,
+      current: e.key,
     });
-    updateCookie(values.updateCookie).then(resp => {
-      if (resp.status === 200) {
-        message.success(resp.data.message);
-      } else {
-        message.error(resp.errMsg);
-      }
-    }).catch(err => {
-      console.log(err);
-    }).finally(() => {
-      this.setState({
-        isLoading: false,
-      })
-    })
+    this.props.history.push(e.key);
   };
 
+
   render() {
+    console.log(this.props);
     return (
       <>
-        <Card title="更新Cookie">
-          <Spin spinning={this.state.isLoading}>
-            <Form name="update_cookie" onFinish={this.onFinish}>
-              <Row>
-                <Col span={20}>
-                  <Form.Item
-                    label="更新Cookie"
-                    name="updateCookie"
-                    rules={[{required: true, message: "请输入Cookie"}]}
-                    wrapperCol={{span: 20}}
-                  >
-                    <Input/>
-                  </Form.Item>
-                </Col>
-                <Col span={4}>
-                  <Form.Item>
-                    <Button type="primary" htmlType="submit"
-                            style={{float: "right"}}>
-                      提交
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Spin>
-        </Card>
+        <Menu
+          onClick={this.handleOnMenuClick}
+          selectedKeys={this.props.location.pathname} mode="horizontal"
+        >
+          {adminMenus.map(route => {
+            return (<Menu.Item key={route.pathname}>{route.title}</Menu.Item>)
+          })}
+        </Menu>
+        <Switch>
+          {adminMenus.map((route, idx) => {
+            return (<Route key={idx} path={route.pathname} component={route.component} />)
+          })}
+          <Redirect to="/admin/pictures" from="/admin" exact={true}/>
+        </Switch>
       </>
     );
   }

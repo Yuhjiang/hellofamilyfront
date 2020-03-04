@@ -45,6 +45,21 @@ const ArticleDetail = Loadable({
   loading: Loading,
 });
 
+const AdminPictures = Loadable({
+  loader: () => import("./Manage/Pictures"),
+  loading: Loading,
+});
+
+const AdminCategories = Loadable({
+  loader: () => import("./Manage/Categories"),
+  loading: Loading,
+});
+
+const AdminTags = Loadable({
+  loader: () => import("./Manage/Tags"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -54,4 +69,7 @@ export {
   Articles,
   AddArticle,
   ArticleDetail,
+  AdminPictures,
+  AdminCategories,
+  AdminTags,
 }

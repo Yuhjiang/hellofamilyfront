@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Card, Descriptions, Tag} from "antd";
 import moment from "moment";
-import BraftEditor from "braft-editor";
 import "braft-editor/dist/output.css";
 
 import {getArticleById} from "../../api/articles";

@@ -60,15 +60,15 @@ class Frame extends Component {
               style={{marginLeft: 20}}
               width={330}
             >
-              <Card title="网易云音乐">
-                <div dangerouslySetInnerHTML={{
-                  __html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'}}
-                />
-              </Card>
+              {/*<Card title="网易云音乐">*/}
+              {/*  <div dangerouslySetInnerHTML={{*/}
+              {/*    __html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'}}*/}
+              {/*  />*/}
+              {/*</Card>*/}
             </Sider>
           </Layout>
           <Footer style={{textAlign: 'center'}}>
-            Hellofamily.club @ 裸夏  <a href="http://www.beian.miit.gov.cn">浙ICP备17021080号</a>
+            Hellofamily.club @ 裸夏  <a href="http://www.beian.miit.gov.cn">浙ICP备17021080号-2</a>
           </Footer>
         </Layout>,
       </>

@@ -29,7 +29,7 @@ export const mainRouter = [
   {
     pathname: '/article',
     component: Articles,
-    title: "博客",
+    title: "文章",
     isNav: true,
     exact: true,
   },

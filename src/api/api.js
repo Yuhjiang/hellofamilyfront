@@ -15,6 +15,7 @@ Api.interceptors.request.use(config => {
   });
   if (config.method !== 'get') {
     config.headers = {
+      ...config.headers,
       'Authorization': window.localStorage.getItem("authToken") || window.sessionStorage.getItem("authToken"),
     };
   }
@@ -38,6 +39,9 @@ Api.interceptors.response.use(response => {
   if (error.response.status === 401) {
     // token过期，重新更新cookie
     setAuthToken();
+  }
+  else {
+    return Promise.reject(error);
   }
 });
 

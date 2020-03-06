@@ -55,7 +55,11 @@ class AddArticle extends Component {
       });
       this.props.history.push("/article");
     }).catch(err => {
-      console.log(err)
+      message.error("你没有权限创建文章");
+    }).finally(() => {
+      this.setState({
+        isLoading: false
+      })
     });
   };
 

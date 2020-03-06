@@ -10,6 +10,7 @@ import {
   AdminPictures,
   AdminCategories,
   AdminTags,
+  AdminArticles,
 } from "../views";
 
 
@@ -80,5 +81,10 @@ export const adminRouter = [
     pathname: "/admin/tags",
     component: AdminTags,
     title: "标签管理"
+  },
+  {
+    pathname: "/admin/articles",
+    component: AdminArticles,
+    title: "文章管理",
   }
 ];

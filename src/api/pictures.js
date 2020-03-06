@@ -37,3 +37,11 @@ export const refreshToken = (refreshToken) => {
     refresh: refreshToken,
   })
 };
+
+export const registerMemberFace = (data) => {
+  return picturesApi.post('/api/face', data, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+};

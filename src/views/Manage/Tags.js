@@ -184,8 +184,12 @@ class AdminTags extends Component {
     })
   };
 
-  onPageChange = (pagination) => {
-    console.log(pagination);
+  onPageChange = page => {
+    this.setState({
+      offset: (page - 1) * this.state.limited,
+    }, () => {
+      this.getData(this.state.offset, this.state.limited);
+    });
   };
 
   onClickDeleteButton = (record, event) => {

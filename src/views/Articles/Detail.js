@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, Descriptions, Tag} from "antd";
+import {Card, Descriptions, Divider, Tag} from "antd";
 import moment from "moment";
 import "braft-editor/dist/output.css";
 
@@ -67,13 +67,16 @@ class ArticleDetail extends Component {
               {article.amount}
             </Tag>
           </Descriptions.Item>
-          <Descriptions.Item label="分类"><Tag color="green">{article.category}</Tag></Descriptions.Item>
+          <Descriptions.Item label="分类">
+            <Tag color={article.category.color}>{article.category.name}</Tag>
+          </Descriptions.Item>
           <Descriptions.Item label="标签">
             {article.tags.map((tag, idx) => {
-              return (<Tag color="blue" key={idx}>{tag}</Tag>)
+              return (<Tag color={tag.color} key={idx}>{tag.name}</Tag>)
             })}
           </Descriptions.Item>
         </Descriptions>
+        <Divider>正文</Divider>
         <div className="braft-output-content" dangerouslySetInnerHTML={{
           __html: article.content
         }} />

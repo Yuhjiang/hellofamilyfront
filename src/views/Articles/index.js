@@ -1,18 +1,9 @@
 import React, {Component} from 'react';
-import {Card, Table, Tooltip, Tag, Button} from "antd";
+import {Card, Table, Tooltip, Tag, Button, List} from "antd";
 import moment from "moment";
 
 import {getArticleList} from "../../api/articles";
 
-const displayTitle = {
-  "title": "标题",
-  "desc": "摘要",
-  "category": "分类",
-  "tag": "标签",
-  "owner": "作者",
-  "amount": "阅读量",
-  "created_time": "创建时间"
-};
 
 class Article extends Component {
   constructor(props) {
@@ -20,7 +11,6 @@ class Article extends Component {
     this.state = {
       isLoading: false,
       dataSource: [],
-      columns: [],
       total: 0,
       offset: 0,
       limited: 20,
@@ -31,52 +21,14 @@ class Article extends Component {
     this.getData();
   }
 
-  createColumns = (columnKeys) => {
-    const columns = columnKeys.map(item => {
-      if (item === "amount") {
-        return {
-          title: displayTitle[item],
-          key: item,
-          dataIndex: item,
-          render: (text, record) => {
-            const {amount} = record;
-            // 这里根据数字大小做条件渲染
-            // 同理可以做职位级别不同的颜色
-            return <Tooltip title={"大于200标红"}>
-              <Tag color={amount > 200 ? "red" : "green"}>{amount}</Tag>
-            </Tooltip>
-          }
-        }
-      } else if (item === "created_time") {
-        return {
-          title: displayTitle[item],
-          key: item,
-          dataIndex: item,
-          render: (text, record) => {
-            return moment(record.created_time).format('LL');
-          }
-        }
-      } else {
-        return {
-          title: displayTitle[item],
-          key: item,
-          dataIndex: item,
-        }
-      }
-    });
-    return columns;
-  };
 
   getData = () => {
     this.setState({
       isLoading: true
     });
-    const columns = this.createColumns(["title", "desc", "category", "owner", "tag",
-      "amount", "created_time"]);
     getArticleList({offset: this.state.offset, limited: this.state.limited}).then(resp => {
       this.setState({
         dataSource: resp.results,
-        columns,
         total: resp.count,
       })
     }).catch(err => {
@@ -101,19 +53,41 @@ class Article extends Component {
     return (
       <Card title="文章列表" bordered={false}
             extra={<Button onClick={this.toWriteArticle}>编写文章</Button>}>
-        <Table
-          rowKey={record => record.id}
-          dataSource={this.state.dataSource}
-          columns={this.state.columns}
-          loading={this.state.isLoading}
+        <List
+          itemLayout="vertical"
+          size="middle"
           pagination={{
-            current: this.state.offset / this.state.limited + 1,
-            total: this.state.total,
-            showQuickJumper: true,
-            hideOnSinglePage: true,
             onChange: this.onPageChange,
+            pageSize: this.state.limited,
+            showQuickJumper: true,
+            current: this.state.offset / this.state.limited + 1,
+            defaultCurrent: 1,
+            hideOnSinglePage: true,
           }}
-        />
+          dataSource={this.state.dataSource}
+          renderItem={item => {
+            return (
+              <List.Item
+                key={item.id}
+                actions={[
+                  <span>阅读量: <Tag color="blue">{item.amount}</Tag></span>,
+                  <span>分类: <Tag color={item.category.color}>{item.category.name}</Tag></span>,
+                  <span>标签: {item.tag.map(tag => {
+                    return (<Tag color={tag.color}>{tag.name}</Tag>)
+                  })}</span>
+                ]}
+              >
+                <List.Item.Meta
+                  title={<a href={`/article/${item.id}/`}>{item.title}</a>}
+                  description={<span>发布于: {moment(item.created_time).format("LL")}</span>}
+                />
+                {item.desc}
+              </List.Item>
+            )
+          }}
+        >
+
+        </List>
       </Card>
     );
   }

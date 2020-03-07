@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Card, Table, Button, Modal, Tag, Typography, message} from "antd";
 import moment from "moment";
 
-import {getArticleList} from "../../api/articles";
+import {getArticleList, deleteArticle} from "../../api/articles";
 
 const {Paragraph} = Typography;
 
@@ -26,6 +26,12 @@ class AdminArticles extends Component {
       dataSource: [],
       columns: columns,
       isLoading: false,
+      deleteModalVisible: false,
+      confirmLoading: false,
+      currentRecord: {
+        title: "",
+        owner: ""
+      }
     }
   }
 
@@ -52,6 +58,37 @@ class AdminArticles extends Component {
     })
   };
 
+  onClickDeleteButton = record => {
+    this.setState({
+      deleteModalVisible: true,
+      currentRecord: record,
+    })
+  };
+
+  onCancel = () => {
+    this.setState({
+      deleteModalVisible: false,
+    })
+  };
+
+  onOk = () => {
+    this.setState({
+      confirmLoading: true,
+    });
+
+    deleteArticle(this.state.currentRecord.id).then(resp => {
+      message.success("成功删除文章");
+      this.getData(0, this.state.limited);
+    }).catch(err => {
+      message.error(err);
+    }).finally(() => {
+      this.setState({
+        confirmLoading: false,
+        deleteModalVisible: false,
+      })
+    })
+  };
+
   createColumns = columnKeys => {
     const columns = columnKeys.map(item => {
       if (item === "amount") {
@@ -59,6 +96,7 @@ class AdminArticles extends Component {
           title: displayTitle[item],
           key: item,
           dataIndex: item,
+          align: "center",
           render: (text, record) => {
             return (
               <Tag color={record.amount >= 10 ? "red" : "green"}>{record.amount}</Tag>
@@ -70,6 +108,7 @@ class AdminArticles extends Component {
           title: displayTitle[item],
           key: item,
           dataIndex: "created_time",
+          align: "center",
           render: (text, record) => {
             return moment(record.created_time).format("LL");
           }
@@ -79,8 +118,19 @@ class AdminArticles extends Component {
           title: displayTitle[item],
           key: item,
           dataIndex: item,
+          align: "center",
           render: (text, record) => {
             return <Paragraph ellipsis={{rows: 1, expandable: true}}>{record.desc}</Paragraph>;
+          }
+        }
+      } else if (item === "title") {
+        return {
+          title: displayTitle[item],
+          key: item,
+          dataIndex: item,
+          align: "center",
+          render: (text, record) => {
+            return (<a href={`/article/${record.id}`} style={{color: "#000"}}>{record.title}</a>)
           }
         }
       } else {
@@ -88,10 +138,22 @@ class AdminArticles extends Component {
           title: displayTitle[item],
           key: item,
           dataIndex: item,
+          align: "center",
         }
       }
     });
-
+    columns.push({
+      title: "操作",
+      key: "operator",
+      render: (text, record) => {
+        return (
+          <Button
+            size="small" danger
+            onClick={this.onClickDeleteButton.bind(this, record)}>
+            删除
+          </Button>)
+      }
+    });
     return columns;
   };
 
@@ -123,6 +185,16 @@ class AdminArticles extends Component {
             onChange: this.onPageChange,
           }}
         />
+        <Modal
+          title="确认是否删除此篇文章"
+          visible={this.state.deleteModalVisible}
+          confirmLoading={this.state.confirmLoading}
+          onCancel={this.onCancel}
+          onOk={this.onOk}
+        >
+          <div>{"作者： " + this.state.currentRecord.owner}</div>
+          <div>{"文章标题: " + this.state.currentRecord.title}</div>
+        </Modal>
       </Card>
     );
   }

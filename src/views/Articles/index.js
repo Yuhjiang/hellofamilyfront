@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, Table, Tooltip, Tag, Button, List} from "antd";
+import {Card, Tag, Button, List} from "antd";
 import moment from "moment";
 
 import {getArticleList} from "../../api/articles";

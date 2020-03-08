@@ -23,6 +23,10 @@ userApi.interceptors.response.use(response => {
   }
 });
 
-export const loginUser = (userInfo) => {
+export const loginUser = userInfo => {
   return userApi.post('/api/login', userInfo);
+};
+
+export const registerUser = userInfo => {
+  return userApi.post('/api/register', userInfo);
 };

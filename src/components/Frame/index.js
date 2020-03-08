@@ -20,6 +20,7 @@ class Frame extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <>
         <Layout>
@@ -36,7 +37,7 @@ class Frame extends Component {
             <Menu
               theme="light"
               mode="horizontal"
-              defaultSelectedKeys={['2']}
+              selectedKeys={this.props.location.pathname.split("/").slice(0, 2).join("/")}
               style={{lineHeight: '64px'}}
               onClick={this.handleOnMenuClick}
             >

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Avatar, Card, Divider, Tag, Row, Col} from "antd";
+import {Avatar, Card, Divider, Tag, Row, Col, Button} from "antd";
 import moment from "moment";
 import "braft-editor/dist/output.css";
 
@@ -53,10 +53,18 @@ class ArticleDetail extends Component {
     })
   };
 
+  onClickEditArticle = () => {
+    this.props.history.push(`/article/edit/${this.props.match.params.id}`)
+  };
+
   render() {
     const article = this.state.article;
     return (
-      <Card loading={this.state.isLoading} title={article.title}>
+      <Card
+        loading={this.state.isLoading}
+        title={article.title}
+        extra={(<Button onClick={this.onClickEditArticle}>编辑</Button>)}
+      >
         <Row align="middle">
           <Col>
             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" size={64}/>

@@ -7,11 +7,22 @@ export const getArticleList = (params) => {
 
 
 export const getArticleById = id => {
-  return articlesApi.get(`/api/post/${id}`)
+  return articlesApi.get(`/api/post/${id}/`)
 };
 
 export const deleteArticle = id => {
-  return articlesApi.delete(`/api/post/${id}`)
+  return articlesApi.delete(`/api/post/${id}/`)
+};
+
+export const updateArticleAuto = (id, data) => {
+  // 自动保存的文章存为草稿
+  data.status = 2;
+  return articlesApi.put(`/api/post/${id}/`, data);
+};
+
+export const updateArticle = (id, data) => {
+  data.status = 1;
+  return articlesApi.put(`/api/post/${id}/`, data);
 };
 
 export const uploadPicture = data => {

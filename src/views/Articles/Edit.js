@@ -1,20 +1,15 @@
 import React, {Component} from 'react';
-import {
-  Card,
-  Spin,
-  Form,
-  Input,
-  Row,
-  Col,
-  Select,
-  Button,
-  Divider,
-  message
-} from "antd";
+import {Button, Card, Col, Divider, Form, Input, Row, Select, Spin, message} from "antd";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
 
-import {getCategoryList, getTagList, uploadPicture, postArticle} from "../../api/articles";
+import {
+  getCategoryList,
+  getTagList,
+  updateArticle,
+  updateArticleAuto,
+  getArticleById, uploadPicture, postArticle
+} from "../../api/articles";
 
 const {Option} = Select;
 
@@ -24,47 +19,76 @@ const layout = {
 };
 
 
-class AddArticle extends Component {
+class EditArticle extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
       categories: [],
       tags: [],
+      id: this.props.match.params.id,
+      content: undefined,
+      autoSaving: false,
     };
   }
+
+  formRef = React.createRef();
 
   componentDidMount() {
+    this.getData(this.state.id);
     this.setCategory();
     this.setTag();
+    this.updateAuto = setInterval(this.updateArticleAutomatically, 30000);
   }
 
-  onFinished = values => {
+  componentWillUnmount() {
+    clearInterval(this.updateAuto);
+  }
+
+  updateArticleAutomatically = () => {
     this.setState({
-      isLoading: true,
+      autoSaving: true,
     });
-    console.log(values);
-    const newValues = {
-      ...values,
-      content: values.content.toHTML(),
-    };
-    postArticle(newValues).then(resp => {
-      message.success("成功创建一篇文章");
-      this.setState({
-        isLoading: false,
+
+    this.formRef.current.validateFields().then(values => {
+      const newValues = {
+        ...values,
+        draft: values.content.toHTML(),
+        content: this.state.content,
+      };
+      updateArticleAuto(this.state.id, newValues).then(resp => {
+        this.setState({
+          isLoading: false,
+        });
+      }).catch(err => {
+        message.error("你没有权限创建文章");
+      }).finally(() => {
+        this.setState({
+          autoSaving: false
+        })
       });
-      this.props.history.push("/article");
-    }).catch(err => {
-      message.error("你没有权限创建文章");
-    }).finally(() => {
-      this.setState({
-        isLoading: false
-      })
     });
   };
 
-  onFinishFailed = errorInfo => {
-
+  getData = id => {
+    getArticleById(id).then(resp => {
+      this.formRef.current.setFieldsValue({
+        title: resp.title,
+        category: resp.category.id,
+        tag: resp.tag.map(tag => tag.id),
+        desc: resp.desc,
+        content: resp.status === 2
+          ?
+          BraftEditor.createEditorState(resp.draft)
+          :
+          BraftEditor.createEditorState(resp.content)
+      });
+      this.setState({
+        content: resp.content,
+      })
+    }).catch(err => {
+      message.error("获取文章失败")
+    })
   };
 
   setCategory = () => {
@@ -84,7 +108,7 @@ class AddArticle extends Component {
       })
     }).catch(err => {
       console.log(err);
-    })
+    });
   };
 
   uploadPictureFn = param => {
@@ -105,22 +129,39 @@ class AddArticle extends Component {
     })
   };
 
-  validateFn = file => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        file.size < 1024 * 100 ? resolve() : reject()
-      }, 2000)
-    })
+  onFinished = values => {
+    this.setState({
+      isLoading: true,
+    });
+    const newValues = {
+      ...values,
+      content: values.content.toHTML(),
+    };
+    updateArticle(this.state.id, newValues).then(resp => {
+      message.success("成功修改文章");
+      this.setState({
+        isLoading: false,
+      });
+      this.props.history.push("/article");
+    }).catch(err => {
+      message.error("你没有权限创建文章");
+    }).finally(() => {
+      this.setState({
+        isLoading: false
+      })
+    });
   };
 
   render() {
     return (
-      <Card title="编写文章" bordered={false}>
+      <Card title="编辑文章" bordered={false}
+            extra={this.state.autoSaving ? <span>自动保存中...</span> : ""}>
         <Spin spinning={this.state.isLoading}>
           <Form
             name="article"
             onFinish={this.onFinished}
             onFinishFailed={this.onFinishFailed}
+            ref={this.formRef}
           >
             <Row>
               <Col sm={24} xs={24} lg={8} md={8}>
@@ -189,6 +230,7 @@ class AddArticle extends Component {
               <Form.Item
                 label="文章正文"
                 name="content"
+                validateTrigger="onBlur"
                 rules={[{
                   required: true,
                   validator: (rule, value) => {
@@ -222,4 +264,4 @@ class AddArticle extends Component {
   }
 }
 
-export default AddArticle;
+export default EditArticle;

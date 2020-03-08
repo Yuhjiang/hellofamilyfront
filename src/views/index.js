@@ -65,6 +65,11 @@ const AdminArticles = Loadable({
   loading: Loading,
 });
 
+const EditArticle = Loadable({
+  loader: () => import("./Articles/Edit"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -73,6 +78,7 @@ export {
   Manage,
   Articles,
   AddArticle,
+  EditArticle,
   ArticleDetail,
   AdminPictures,
   AdminCategories,

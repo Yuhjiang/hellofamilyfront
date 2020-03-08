@@ -6,25 +6,40 @@ export const getArticleList = (params) => {
 };
 
 
-export const getArticleById = (id) => {
-  return articlesApi.get(`/api/post/${id}`)
+export const getArticleById = id => {
+  return articlesApi.get(`/api/post/${id}/`)
 };
 
-export const uploadPicture = (data) => {
+export const deleteArticle = id => {
+  return articlesApi.delete(`/api/post/${id}/`)
+};
+
+export const updateArticleAuto = (id, data) => {
+  // 自动保存的文章存为草稿
+  data.status = 2;
+  return articlesApi.put(`/api/post/${id}/`, data);
+};
+
+export const updateArticle = (id, data) => {
+  data.status = 1;
+  return articlesApi.put(`/api/post/${id}/`, data);
+};
+
+export const uploadPicture = data => {
   return articlesApi.post('/api/upload_picture', data, {
     headers: {"Content-Type": "multipart/form-data"}
   });
 };
 
-export const postArticle = (data) => {
+export const postArticle = data => {
   return articlesApi.post('/api/post/', data);
 };
 
-export const getCategoryList = (params) => {
+export const getCategoryList = params => {
   return articlesApi.get('/api/category/', params);
 };
 
-export const postCategory = (data) => {
+export const postCategory = data => {
   return articlesApi.post('/api/category/', data);
 };
 
@@ -36,11 +51,11 @@ export const deleteCategory = id => {
   return articlesApi.delete(`/api/category/${id}/`);
 };
 
-export const getTagList = (params) => {
+export const getTagList = params => {
   return articlesApi.get('/api/tag/', params);
 };
 
-export const postTag = (data) => {
+export const postTag = data => {
   return articlesApi.post('/api/tag/', data);
 };
 

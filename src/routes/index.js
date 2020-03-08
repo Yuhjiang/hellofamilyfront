@@ -6,6 +6,7 @@ import {
   Manage,
   Articles,
   AddArticle,
+  EditArticle,
   ArticleDetail,
   AdminPictures,
   AdminCategories,
@@ -38,6 +39,11 @@ export const mainRouter = [
     pathname: "/article/add",
     component: AddArticle,
     title: "编写文章",
+  },
+  {
+    pathname: "/article/edit/:id",
+    component: EditArticle,
+    title: "编辑文章",
   },
   {
     pathname: "/article/:id",

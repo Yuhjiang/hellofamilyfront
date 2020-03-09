@@ -1,6 +1,7 @@
 import axios from "axios";
 import {message} from "antd";
 import {URL} from "../config";
+import user from "../reducers/user";
 
 const userApi = axios.create({
   baseURL: URL,
@@ -30,3 +31,11 @@ export const loginUser = userInfo => {
 export const registerUser = userInfo => {
   return userApi.post('/api/register', userInfo);
 };
+
+export const getUserById = id => {
+  return userApi.get(`/api/user/${id}/`);
+};
+
+export const updateUserById = (id, data) => {
+  return userApi.put(`/api/user/${id}/`, data);
+}

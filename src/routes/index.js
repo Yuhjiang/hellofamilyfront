@@ -12,6 +12,8 @@ import {
   AdminCategories,
   AdminTags,
   AdminArticles,
+  UserProfile,
+  UserEdit,
 } from "../views";
 
 
@@ -49,6 +51,16 @@ export const mainRouter = [
     pathname: "/article/:id",
     component: ArticleDetail,
     title: "文章详情",
+  },
+  {
+    pathname: "/user/:id/profile/edit",
+    component: UserEdit,
+    title: "编辑个人信息",
+  },
+  {
+    pathname: "/user/:id/profile",
+    component: UserProfile,
+    title: "个人信息",
   },
   {
     pathname: "/404",

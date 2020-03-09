@@ -4,7 +4,7 @@ import {Layout, Menu, Card, Badge, Dropdown, Avatar, Row, Col} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
+import {withRouter, Link} from "react-router-dom";
 
 import {logout} from "../../actions/user"
 import logo from "./hellofamily.png";
@@ -34,6 +34,7 @@ class Frame extends Component {
   };
 
   onDropdownMenuClick = ({key}) => {
+    console.log(key);
     this.props.history.push(key);
   };
 
@@ -41,12 +42,12 @@ class Frame extends Component {
     // 右上角下拉框功能
     const menu = (
       <Menu onClick={this.onDropdownMenuClick}>
-        <Menu.Item key={`user/${this.props.userId}/notifications`} disabled={!this.props.isLogin}>
+        <Menu.Item key={`/user/${this.props.userId}/notifications`} disabled={!this.props.isLogin}>
           <Badge dot={Boolean(this.props.notificationsCount)}>
             <div>通知中心</div>
           </Badge>
         </Menu.Item>
-        <Menu.Item key={`user/${this.props.userId}/profile`} disabled={!this.props.isLogin}>
+        <Menu.Item key={`/user/${this.props.userId}/profile`} disabled={!this.props.isLogin}>
           <div>个人信息</div>
         </Menu.Item>
         {
@@ -66,7 +67,6 @@ class Frame extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <>
         <Layout>

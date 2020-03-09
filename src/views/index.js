@@ -70,6 +70,16 @@ const EditArticle = Loadable({
   loading: Loading,
 });
 
+const UserProfile = Loadable({
+  loader: () => import("./User"),
+  loading: Loading,
+});
+
+const UserEdit = Loadable({
+  loader: () => import("./User/Edit"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -84,4 +94,6 @@ export {
   AdminCategories,
   AdminTags,
   AdminArticles,
+  UserProfile,
+  UserEdit,
 }

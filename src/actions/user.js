@@ -55,6 +55,13 @@ const loginFailed = () => {
 };
 
 
+export const logout = () => {
+  return {
+    type: actionTypes.LOGOUT
+  }
+};
+
+
 
 export const login = (data) => {
   return dispatch => {

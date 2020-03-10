@@ -36,7 +36,7 @@ class AdminPictures extends Component {
   render() {
     return (
       <>
-        <Card title="更新Cookie">
+        <Card title="更新Cookie" style={{marginTop: 10}}>
           <Spin spinning={this.state.isLoading}>
             <Form name="update_cookie" onFinish={this.onFinish}>
               <Row>
@@ -171,6 +171,7 @@ class UploadPicture extends Component {
       <Card
         title="更新人脸"
         bordered={false}
+        style={{marginTop: 10}}
       >
         <Row>
           <Col span={16}>

@@ -15,7 +15,7 @@ class Manage extends Component {
     super(props);
     this.state = {
       isLoading: false,
-      current: "/admin/pictures",
+      current: "/manage/pictures",
     }
   }
 
@@ -44,7 +44,7 @@ class Manage extends Component {
           {adminMenus.map((route, idx) => {
             return (<Route key={idx} path={route.pathname} component={route.component} />)
           })}
-          <Redirect to="/admin/pictures" from="/admin" exact={true}/>
+          <Redirect to="/manage/pictures" from="/manage" exact={true}/>
         </Switch>
       </>
     );

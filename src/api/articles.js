@@ -1,8 +1,8 @@
 import articlesApi from "./api";
 
 
-export const getArticleList = (params) => {
-  return articlesApi.get('/api/post/', params)
+export const getArticleList = params => {
+  return articlesApi.get('/api/post/', {params})
 };
 
 
@@ -36,7 +36,7 @@ export const postArticle = data => {
 };
 
 export const getCategoryList = params => {
-  return articlesApi.get('/api/category/', params);
+  return articlesApi.get('/api/category/', {params});
 };
 
 export const postCategory = data => {
@@ -52,7 +52,7 @@ export const deleteCategory = id => {
 };
 
 export const getTagList = params => {
-  return articlesApi.get('/api/tag/', params);
+  return articlesApi.get('/api/tag/', {params});
 };
 
 export const postTag = data => {

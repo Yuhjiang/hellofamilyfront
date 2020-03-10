@@ -8,7 +8,7 @@ import {
   getTagList,
   updateArticle,
   updateArticleAuto,
-  getArticleById, uploadPicture, postArticle
+  getArticleById, uploadPicture
 } from "../../api/articles";
 
 const {Option} = Select;

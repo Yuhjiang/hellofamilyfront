@@ -101,13 +101,13 @@ class Frame extends Component {
             </Menu>
               </Col>
               <Col lg={{span: 2}} xs={{span: 8}}>
-            <Dropdown overlay={this.renderDropdown}>
+            <Dropdown overlay={this.renderDropdown} trigger={['click', "hover"]}>
               <div>
                 <span style={{marginRight: 24}}>
                   <Badge count={this.props.notificationsCount}>
                     <Avatar src={this.props.avatar} alt="头像"/>
                   </Badge>
-                  <span style={{paddingLeft: "1em"}}>{this.props.nickname || "游客"}</span><DownOutlined/>
+                  <span style={{paddingLeft: "1em"}}>{this.props.nickname || "游客"}</span><DownOutlined />
                 </span>
               </div>
             </Dropdown>

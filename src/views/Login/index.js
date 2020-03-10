@@ -68,23 +68,23 @@ class UserLoginOrRegister extends Component {
         :
         <>
           <Row style={{marginTop: 200}}>
-            <Col lg={{span: 16, offset: 2}} md={{span: 16, offset: 2}} xs={24} style={{maxWidth: 960}}>
+            <Col lg={{span: 16, offset: 1}} md={{span: 16, offset: 1}} xs={24}>
               <Carousel autoplay>
                 <div style={{width: "100%"}}>
                   <img
-                    style={{margin: "auto"}}
+                    style={{margin: "auto", width: "100%"}}
                     src="http://cdn.helloproject.com/img/rotation/6611cc430ab66053e0a5bffe896eba2a89374036.jpg"
                   />
                 </div>
                 <div>
                   <img
-                    style={{margin: "auto"}}
+                    style={{margin: "auto", width: "100%"}}
                     src="http://cdn.helloproject.com/img/rotation/81d37572be4c71a961219bf86eee662b5b33a4dd.jpg"
                   />
                 </div>
               </Carousel>
             </Col>
-            <Col lg={{span: 6, offset: 0}} md={{span: 6, offset: 0}} xs={{span: 24, offset: 10}} style={{backgroundColor: "#fff"}}>
+            <Col lg={{span: 6}} md={{span: 6}} xs={{span: 24}} style={{backgroundColor: "#fff"}}>
               <Tabs activeKey={this.state.selectedKey} onChange={this.onTabChange} type="card">
                 <TabPane tab="登录" key="1">
                   <Login/>

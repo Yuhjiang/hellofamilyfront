@@ -420,7 +420,7 @@ const DeleteModal = ({visible, loading, record, onOk, onCancel}) => {
 
   return (
     <Modal
-      title="确实是否要删除分类"
+      title="确认是否要删除该分类"
       visible={visible}
       coonfirmLoading={loading}
       onCancel={onCancel}

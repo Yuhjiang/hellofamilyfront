@@ -1,21 +1,22 @@
 import axios from "axios";
 import {message} from "antd";
 import {URL} from "../config";
-import user from "../reducers/user";
 
-const userApi = axios.create({
+import userApi from "./api";
+
+const userLoginOrRegister = axios.create({
   baseURL: URL,
   timeout: 3000,
 });
 
-userApi.interceptors.request.use(config => {
+userLoginOrRegister.interceptors.request.use(config => {
   config.params = Object.assign({}, config.params, {
     format: "json",
   });
   return config;
 });
 
-userApi.interceptors.response.use(response => {
+userLoginOrRegister.interceptors.response.use(response => {
   if (response.status === 200) {
     return response.data;
   }
@@ -25,11 +26,11 @@ userApi.interceptors.response.use(response => {
 });
 
 export const loginUser = userInfo => {
-  return userApi.post('/api/login', userInfo);
+  return userLoginOrRegister.post('/api/login', userInfo);
 };
 
 export const registerUser = userInfo => {
-  return userApi.post('/api/register', userInfo);
+  return userLoginOrRegister.post('/api/register', userInfo);
 };
 
 export const getUserById = id => {
@@ -42,4 +43,8 @@ export const updateUserById = (id, data) => {
 
 export const getUserList = params => {
   return userApi.get('/api/user/', {params})
+};
+
+export const deleteUserById = id => {
+  return userApi.delete(`/api/user/${id}`);
 };

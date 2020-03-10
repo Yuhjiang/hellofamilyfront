@@ -268,8 +268,8 @@ class Pictures extends Component {
                         overflow: "hidden"
                       }}
                       dangerouslySetInnerHTML={{
-                        __html: `<img src=${item.url} alt=${item.name} 
-                     style="max-width:100%;display:block;"/>`
+                        __html: `<a href=${item.url} target="_blank"><img src=${item.url} alt=${item.name} 
+                     style="max-width:100%;display:block;"/></a>`
                       }}
                     >
                     </div>

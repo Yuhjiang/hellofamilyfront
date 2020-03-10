@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Button, Card, Table, Tag, message} from "antd";
+import {Button, Card, Table, Tag, Modal, message} from "antd";
 import moment from "moment";
 
-import {getUserList} from "../../api/user";
+import {getUserList, deleteUserById} from "../../api/user";
 
 const displayTitle = {
   username: "用户名",
@@ -25,6 +25,11 @@ class AdminUser extends Component {
       isLoading: false,
       deleteModalVisible: false,
       confirmLoading: false,
+      currentRecord: {
+        "id": 0,
+        "username": "",
+        "nickname": "",
+      },
     }
   };
 
@@ -125,11 +130,41 @@ class AdminUser extends Component {
   };
 
   onClickEditButton = record => {
-
+    console.log(`/user/${record.id}/edit`);
+    this.props.history.push(`/user/${record.id}/profile/edit`);
   };
 
   onClickDeleteButton = record => {
+    this.setState({
+      showDeleteModal: true,
+      currentRecord: record,
+    });
 
+  };
+
+  onOk = () => {
+    this.setState({
+      confirmLoading: true,
+    });
+
+    deleteUserById(this.state.currentRecord.id).then(resp => {
+      message.success("删除成功");
+      this.getData(0, this.state.limited);
+    }).catch(err => {
+      message.error(err);
+    }).finally(() => {
+      this.setState({
+        confirmLoading: false,
+        showDeleteModal: false,
+      })
+    })
+  };
+
+  onCancel = () => {
+    this.setState({
+      showDeleteModal: false,
+      currentRecord: {},
+    })
   };
 
   render() {
@@ -152,12 +187,31 @@ class AdminUser extends Component {
             hideOnSinglePage: true,
             onChange: this.onPageChange,
           }}
-        >
-
-        </Table>
+        />
+        <DeleteModal
+          visible={this.state.showDeleteModal}
+          loading={this.state.confirmLoading}
+          record={this.state.currentRecord}
+          onOk={this.onOk}
+          onCancel={this.onCancel}
+        />
       </Card>
     );
   }
 }
+
+const DeleteModal = ({visible, loading, record, onOk, onCancel}) => {
+  return (
+    <Modal
+      title="确认是否要删除该用户"
+      visible={visible}
+      confirmLoading={loading}
+      onCancel={onCancel}
+      onOk={onOk}
+    >
+      {"用户名: " + record.username + " , 昵称: " + record.nickname}
+    </Modal>
+  )
+};
 
 export default AdminUser;

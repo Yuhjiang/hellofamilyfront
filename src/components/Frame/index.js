@@ -78,12 +78,12 @@ class Frame extends Component {
             padding: 0
           }}>
             <Row>
-              <Col span={3}>
+              <Col lg={{span: 4}} xs={{span: 10}}>
             <div className="logo">
               <img src={logo} alt="hellofamily.club logo"/>
             </div>
               </Col>
-              <Col span={17}>
+              <Col lg={{span: 18}} xs={{span: 8}}>
             <Menu
               theme="light"
               mode="horizontal"
@@ -100,17 +100,15 @@ class Frame extends Component {
               })}
             </Menu>
               </Col>
-              <Col span={4}>
+              <Col lg={{span: 2}} xs={{span: 6}}>
             <Dropdown overlay={this.renderDropdown}>
-              <div style={{display: "flex", float: "right", marginRight: 24}}>
+              {/*<div style={{display: "flex", float: "right", marginRight: 24}}>*/}
+              <div>
                 <span style={{marginRight: 24}}>
                   <Badge count={this.props.notificationsCount}>
                     <Avatar src={this.props.avatar} alt="头像"/>
                   </Badge>
-                  <span style={{paddingLeft: "1em"}}>{this.props.nickname || "游客"}</span>
-                </span>
-                <span>
-                  欢迎你 <DownOutlined/>
+                  <span style={{paddingLeft: "1em"}}>{this.props.nickname || "游客"}</span><DownOutlined/>
                 </span>
               </div>
             </Dropdown>

@@ -67,8 +67,8 @@ class UserLoginOrRegister extends Component {
         <Redirect to="/"/>
         :
         <>
-          <Row style={{marginTop: 200, marginLeft: "10%"}}>
-            <Col span={16} style={{maxWidth: 960}}>
+          <Row style={{marginTop: 200}}>
+            <Col lg={{span: 16, offset: 2}} md={{span: 16, offset: 2}} xs={24} style={{maxWidth: 960}}>
               <Carousel autoplay>
                 <div style={{width: "100%"}}>
                   <img
@@ -84,7 +84,7 @@ class UserLoginOrRegister extends Component {
                 </div>
               </Carousel>
             </Col>
-            <Col span={6} style={{backgroundColor: "#fff"}}>
+            <Col lg={{span: 6, offset: 0}} md={{span: 6, offset: 0}} xs={{span: 24, offset: 10}} style={{backgroundColor: "#fff"}}>
               <Tabs activeKey={this.state.selectedKey} onChange={this.onTabChange} type="card">
                 <TabPane tab="登录" key="1">
                   <Login/>

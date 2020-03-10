@@ -181,6 +181,7 @@ class AdminArticles extends Component {
           pagination={{
             current: this.state.offset / this.state.limited + 1,
             total: this.state.total,
+            pageSize: this.state.limited,
             showQuickJumper: true,
             hideOnSinglePage: true,
             onChange: this.onPageChange,

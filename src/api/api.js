@@ -27,7 +27,12 @@ Api.interceptors.response.use(response => {
       message.error(response.data.errMsg);
       window.location = response.data.data.url;
     }
-    return response.data;
+    else if (response.data.status === 500) {
+      return Promise.reject(response.data.errMsg);
+    }
+    else {
+      return response.data;
+    }
   }
   else {
     message.error(response.data.errMsg);

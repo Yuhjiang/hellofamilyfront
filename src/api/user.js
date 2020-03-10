@@ -46,5 +46,5 @@ export const getUserList = params => {
 };
 
 export const deleteUserById = id => {
-  return userApi.delete(`/api/user/${id}`);
+  return userApi.delete(`/api/user/${id}/`);
 };

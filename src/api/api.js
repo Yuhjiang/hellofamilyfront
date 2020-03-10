@@ -10,9 +10,6 @@ const Api = axios.create({
 });
 
 Api.interceptors.request.use(config => {
-  config.params = Object.assign({}, config.params, {
-    format: "json",
-  });
   if (config.method !== 'get') {
     config.headers = {
       ...config.headers,

@@ -169,7 +169,8 @@ class AdminArticles extends Component {
     return (
       <Card
         title="文章列表"
-        stlye={{marginTop: 10}}
+        bordered={false}
+        style={{marginTop: 10}}
       >
         <Table
           rowKey={record => record.id}

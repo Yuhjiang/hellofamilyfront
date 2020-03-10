@@ -12,6 +12,7 @@ import {
   AdminCategories,
   AdminTags,
   AdminArticles,
+  AdminUser,
   UserProfile,
   UserEdit,
 } from "../views";
@@ -80,29 +81,34 @@ export const basicRouter = [
 
 export const adminRouter = [
   {
-    pathname: "/admin",
+    pathname: "/manage",
     component: Manage,
     title: "控制台",
     root: true,
   },
   {
-    pathname: "/admin/pictures",
+    pathname: "/manage/pictures",
     component: AdminPictures,
     title: "图片管理",
   },
   {
-    pathname: "/admin/categories",
+    pathname: "/manage/categories",
     component: AdminCategories,
     title: "分类管理"
   },
   {
-    pathname: "/admin/tags",
+    pathname: "/manage/tags",
     component: AdminTags,
     title: "标签管理"
   },
   {
-    pathname: "/admin/articles",
+    pathname: "/manage/articles",
     component: AdminArticles,
     title: "文章管理",
+  },
+  {
+    pathname: "/manage/user",
+    component: AdminUser,
+    title: "用户管理",
   }
 ];

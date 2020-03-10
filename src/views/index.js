@@ -80,6 +80,11 @@ const UserEdit = Loadable({
   loading: Loading,
 });
 
+const AdminUser = Loadable({
+  loader: () => import("./Manage/User"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -94,6 +99,7 @@ export {
   AdminCategories,
   AdminTags,
   AdminArticles,
+  AdminUser,
   UserProfile,
   UserEdit,
 }

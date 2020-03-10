@@ -38,4 +38,8 @@ export const getUserById = id => {
 
 export const updateUserById = (id, data) => {
   return userApi.put(`/api/user/${id}/`, data);
-}
+};
+
+export const getUserList = params => {
+  return userApi.get('/api/user/', {params})
+};

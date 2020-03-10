@@ -40,7 +40,7 @@ class AdminCategories extends Component {
       dataSource: [],
       total: 0,
       offset: 0,
-      limited: 20,
+      limited: 10,
       showEditModal: false,
       currentRecord: {
         "name": "",
@@ -62,7 +62,7 @@ class AdminCategories extends Component {
       isLoading: true,
     });
 
-    getCategoryList(offset, limited).then(resp => {
+    getCategoryList({offset, limited}).then(resp => {
       this.setState({
         total: resp.count,
         offset: offset,
@@ -327,6 +327,7 @@ class AdminCategories extends Component {
             pagination={{
               current: this.state.offset / this.state.limited + 1,
               total: this.state.total,
+              pageSize: this.state.limited,
               showQuickJumper: true,
               hideOnSinglePage: true,
               onChange: this.onPageChange,

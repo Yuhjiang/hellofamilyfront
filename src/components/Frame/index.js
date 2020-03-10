@@ -53,7 +53,7 @@ class Frame extends Component {
         {
           this.props.isLogin
             ?
-            <Menu.Item key="/logout" onClick={this.props.logout}>
+            <Menu.Item key="/" onClick={this.props.logout}>
               <div>退出登录</div>
             </Menu.Item>
             :

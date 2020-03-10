@@ -78,12 +78,12 @@ class Frame extends Component {
             padding: 0
           }}>
             <Row>
-              <Col lg={{span: 4}} xs={{span: 10}}>
+              <Col lg={{span: 4}} xs={{span: 0}}>
             <div className="logo">
               <img src={logo} alt="hellofamily.club logo"/>
             </div>
               </Col>
-              <Col lg={{span: 18}} xs={{span: 8}}>
+              <Col lg={{span: 18}} xs={{span: 16}}>
             <Menu
               theme="light"
               mode="horizontal"
@@ -100,9 +100,8 @@ class Frame extends Component {
               })}
             </Menu>
               </Col>
-              <Col lg={{span: 2}} xs={{span: 6}}>
+              <Col lg={{span: 2}} xs={{span: 8}}>
             <Dropdown overlay={this.renderDropdown}>
-              {/*<div style={{display: "flex", float: "right", marginRight: 24}}>*/}
               <div>
                 <span style={{marginRight: 24}}>
                   <Badge count={this.props.notificationsCount}>

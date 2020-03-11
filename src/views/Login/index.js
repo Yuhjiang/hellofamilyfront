@@ -10,9 +10,10 @@ import {registerUser} from "../../api/user";
 const {TabPane} = Tabs;
 
 const layout = {
-  labelCol: {span: 6},
-  wrapperCol: {span: 14},
+  labelCol: {xs: 4, sm: 4, md: 5, lg: 5},
+  wrapperCol: {xs: 16, sm: 16, md: 16, lg: 16},
 };
+
 const tailLayout = {
   wrapperCol: {offset: 10, span: 8},
 };
@@ -67,7 +68,7 @@ class UserLoginOrRegister extends Component {
         <Redirect to="/"/>
         :
         <>
-          <Row style={{marginTop: 200}}>
+          <Row style={{marginTop: 100}}>
             <Col lg={{span: 16, offset: 1}} md={{span: 16, offset: 1}} xs={24}>
               <Carousel autoplay>
                 <div style={{width: "100%"}}>
@@ -164,7 +165,6 @@ class Login extends Component {
 
 class Register extends Component {
   onFinish = values => {
-    console.log(123);
     this.props.register(values);
   };
 

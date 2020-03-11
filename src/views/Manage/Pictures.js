@@ -5,6 +5,8 @@ import {UploadOutlined} from '@ant-design/icons';
 import {getGroups, getMembers, registerMemberFace, updateCookie} from "../../api/pictures";
 
 
+const wrapperCol = {xs: 24, sm: 24, md: 20, lg: 20};
+
 class AdminPictures extends Component {
   constructor(props) {
     super(props);
@@ -40,17 +42,17 @@ class AdminPictures extends Component {
           <Spin spinning={this.state.isLoading}>
             <Form name="update_cookie" onFinish={this.onFinish}>
               <Row>
-                <Col span={20}>
+                <Col {...wrapperCol}>
                   <Form.Item
                     label="更新Cookie"
                     name="updateCookie"
                     rules={[{required: true, message: "请输入Cookie"}]}
-                    wrapperCol={{span: 20}}
+                    wrapperCol={wrapperCol}
                   >
                     <Input/>
                   </Form.Item>
                 </Col>
-                <Col span={4}>
+                <Col xs={24} sm={24} lg={4} md={4}>
                   <Form.Item>
                     <Button type="primary" htmlType="submit"
                             style={{float: "right"}}>
@@ -86,7 +88,6 @@ class UploadPicture extends Component {
       const options = resp.data.groups.map(group => {
         return {value: group.id, label: group.name_jp, isLeaf: false}
       });
-      console.log(options);
       this.setState({
         topOptions: options,
       })
@@ -98,7 +99,6 @@ class UploadPicture extends Component {
 
   handleUpload = () => {
     const {fileList, member} = this.state;
-    console.log(fileList, member);
     const formData = new FormData();
     fileList.forEach(file => {
       formData.append("files[]", file);
@@ -174,13 +174,13 @@ class UploadPicture extends Component {
         style={{marginTop: 10}}
       >
         <Row>
-          <Col span={16}>
+          <Col span={12}>
             <Cascader
               options={this.state.topOptions}
               loadData={this.loadData}
               onChange={this.onChange}
               changeOnSelect
-              style={{width: "60%"}}
+              style={{width: "100%"}}
             />
           </Col>
           <Col span={4}>
@@ -196,7 +196,7 @@ class UploadPicture extends Component {
               </Button>
             </Upload>
           </Col>
-          <Col span={4}>
+          <Col span={4} offset={4}>
             <Button
               type="primary"
               onClick={this.handleUpload}

@@ -352,6 +352,7 @@ class AdminCategories extends Component {
           <DeleteModal
             visible={this.state.showDeleteModal}
             record={this.state.currentRecord}
+            loading={this.state.deleteLoading}
             onOk={this.onDelete.bind(this, this.state.currentRecord.id)}
             onCancel={this.onHideDeleteModal}
           />
@@ -430,7 +431,7 @@ const DeleteModal = ({visible, loading, record, onOk, onCancel}) => {
     <Modal
       title="确认是否要删除该分类"
       visible={visible}
-      coonfirmLoading={loading}
+      confirmLoading={loading}
       onCancel={onCancel}
       onOk={onOk}
     >

@@ -45,3 +45,19 @@ export const registerMemberFace = (data) => {
     }
   });
 };
+
+export const getCarouselList = params => {
+  return picturesApi.get('/api/carousel', {params});
+};
+
+export const editCarousel = (id, data) => {
+  return picturesApi.put(`/api/carousel/${id}/`, data);
+};
+
+export const deleteCarousel = id => {
+  return picturesApi.delete(`/api/carousel/${id}/`);
+};
+
+export const createCarousel = data => {
+  return picturesApi.post('/api/carousel/', data);
+};

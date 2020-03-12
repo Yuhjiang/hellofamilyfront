@@ -61,7 +61,7 @@ class EditArticle extends Component {
           isLoading: false,
         });
       }).catch(err => {
-        message.error("你没有权限创建文章");
+
       }).finally(() => {
         this.setState({
           autoSaving: false
@@ -144,7 +144,7 @@ class EditArticle extends Component {
       });
       this.props.history.push("/article");
     }).catch(err => {
-      message.error("你没有权限创建文章");
+      message.error(err);
     }).finally(() => {
       this.setState({
         isLoading: false

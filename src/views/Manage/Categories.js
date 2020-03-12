@@ -26,6 +26,14 @@ const displayTitle = {
   "post_count": "文章数",
 };
 
+const buttonLayout = {
+  xs: 24, sm: 24, md: 4, lg: 4
+};
+
+const inputLayout = {
+  xs: 24, sm: 24, md: 10, lg:10
+};
+
 class AdminCategories extends Component {
   formRef = React.createRef();
 
@@ -266,7 +274,7 @@ class AdminCategories extends Component {
             ref={this.formRef}
           >
             <Row>
-              <Col span={10}>
+              <Col {...inputLayout}>
                 <Form.Item
                   label="分类名"
                   name="name"
@@ -278,7 +286,7 @@ class AdminCategories extends Component {
                   <Input/>
                 </Form.Item>
               </Col>
-              <Col span={10}>
+              <Col {...inputLayout}>
                 <Form.Item
                   label="分类颜色"
                   name="color"
@@ -302,7 +310,7 @@ class AdminCategories extends Component {
                   </Modal>
                 </Form.Item>
               </Col>
-              <Col span={4}>
+              <Col {...buttonLayout}>
                 <Form.Item>
                   <Button type="primary" htmlType="submit"
                           style={{float: "right"}}

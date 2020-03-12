@@ -29,7 +29,7 @@ class AdminCarousel extends Component {
       dataSource: [],
       columns: columns,
       offset: 0,
-      limited: 10,
+      limited: 5,
       isLoading: false,
       total: 0,
       showDeleteModal: false,
@@ -57,7 +57,7 @@ class AdminCarousel extends Component {
     getCarouselList({offset, limited}).then(resp => {
       this.setState({
         dataSource: resp.results,
-        total: resp.total,
+        total: resp.count,
       })
     }).catch(err => {
       message.error("获取失败");
@@ -159,7 +159,11 @@ class AdminCarousel extends Component {
   };
 
   onPageChange = page => {
-
+    this.setState({
+      offset: (page - 1) * this.state.limited,
+    }, () => {
+      this.getData(this.state.offset, this.state.limited)
+    })
   };
 
   onDelete = id => {

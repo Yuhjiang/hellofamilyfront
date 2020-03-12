@@ -75,7 +75,7 @@ class EditUser extends Component {
       message.success("修改成功");
       this.props.history.push(`/user/${this.state.id}/profile`);
     }).catch(err => {
-
+      message.error(err);
     }).finally(() => {
       this.setState({
         isSaving: false,

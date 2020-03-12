@@ -6,7 +6,7 @@ import {refreshToken} from "./pictures";
 
 const Api = axios.create({
   baseURL: URL,
-  timeout: 3000,
+  timeout: 30000,
 });
 
 Api.interceptors.request.use(config => {

@@ -15,6 +15,7 @@ import {
   AdminUser,
   UserProfile,
   UserEdit,
+  AdminCarousel,
 } from "../views";
 
 
@@ -105,6 +106,11 @@ export const adminRouter = [
     pathname: "/manage/articles",
     component: AdminArticles,
     title: "文章管理",
+  },
+  {
+    pathname: "/manage/carousel",
+    component: AdminCarousel,
+    title: "走马灯管理",
   },
   {
     pathname: "/manage/user",

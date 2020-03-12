@@ -85,6 +85,11 @@ const AdminUser = Loadable({
   loading: Loading,
 });
 
+const AdminCarousel = Loadable({
+  loader: () => import("./Manage/CarouselPictures"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -102,4 +107,5 @@ export {
   AdminUser,
   UserProfile,
   UserEdit,
+  AdminCarousel,
 }

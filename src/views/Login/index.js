@@ -6,6 +6,7 @@ import {Redirect} from "react-router-dom";
 import {login} from "../../actions/user";
 import "./login.less";
 import {registerUser} from "../../api/user";
+import {getCarouselList} from "../../api/pictures";
 
 const {TabPane} = Tabs;
 
@@ -33,7 +34,18 @@ class UserLoginOrRegister extends Component {
     this.state = {
       selectedKey: "1",
       isLoading: false,
+      carouselList: [],
     }
+  }
+
+  componentDidMount() {
+    getCarouselList({status: 1}).then(resp => {
+      this.setState({
+        carouselList: resp.results
+      });
+    }).catch(err => {
+      message.error("获取图片失败");
+    })
   }
 
   handleOnRegister = data => {
@@ -71,18 +83,17 @@ class UserLoginOrRegister extends Component {
           <Row style={{marginTop: 100}}>
             <Col lg={{span: 16, offset: 1}} md={{span: 16, offset: 1}} xs={24}>
               <Carousel autoplay>
-                <div style={{width: "100%"}}>
-                  <img
-                    style={{margin: "auto", width: "100%"}}
-                    src="http://cdn.helloproject.com/img/rotation/6611cc430ab66053e0a5bffe896eba2a89374036.jpg"
-                  />
-                </div>
-                <div>
-                  <img
-                    style={{margin: "auto", width: "100%"}}
-                    src="http://cdn.helloproject.com/img/rotation/81d37572be4c71a961219bf86eee662b5b33a4dd.jpg"
-                  />
-                </div>
+                {this.state.carouselList.map(item => {
+                  return (
+                    <div style={{width: "100%"}}>
+                      <img
+                        style={{margin: "auto", width: "100%"}}
+                        src={item.image}
+                        alt={item.name}
+                        />
+                    </div>
+                  )
+                })}
               </Carousel>
             </Col>
             <Col lg={{span: 6}} md={{span: 6}} xs={{span: 24}} style={{backgroundColor: "#fff"}}>

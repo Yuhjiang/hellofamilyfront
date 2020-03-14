@@ -1,3 +1,5 @@
+import {PictureOutlined, ReadOutlined, SettingOutlined, TeamOutlined} from "@ant-design/icons";
+
 import {
   Pictures,
   NotFound,
@@ -17,6 +19,7 @@ import {
   UserEdit,
   AdminCarousel,
 } from "../views";
+import user from "../reducers/user";
 
 
 export const mainRouter = [
@@ -79,19 +82,15 @@ export const basicRouter = [
   },
 ];
 
-
-export const adminRouter = [
-  {
-    pathname: "/manage",
-    component: Manage,
-    title: "控制台",
-    root: true,
-  },
+export const helloProjectManage = [
   {
     pathname: "/manage/pictures",
     component: AdminPictures,
     title: "图片管理",
   },
+];
+
+export const articleManage = [
   {
     pathname: "/manage/categories",
     component: AdminCategories,
@@ -107,14 +106,56 @@ export const adminRouter = [
     component: AdminArticles,
     title: "文章管理",
   },
+];
+
+export const userManage = [
+  {
+    pathname: "/manage/user",
+    component: AdminUser,
+    title: "用户管理",
+  }
+];
+
+export const commonManage = [
   {
     pathname: "/manage/carousel",
     component: AdminCarousel,
     title: "走马灯管理",
   },
+];
+
+export const adminRouter = [
   {
-    pathname: "/manage/user",
-    component: AdminUser,
+    pathname: "/manage",
+    component: Manage,
+    title: "控制台",
+    root: true,
+  },
+  ...helloProjectManage,
+  ...articleManage,
+  ...userManage,
+  ...commonManage,
+];
+
+export const adminSubMenus = [
+  {
+    title: "Hello!Project",
+    routers: helloProjectManage,
+    logo: PictureOutlined,
+  },
+  {
+    title: "文章管理",
+    routers: articleManage,
+    logo: ReadOutlined,
+  },
+  {
     title: "用户管理",
+    routers: userManage,
+    logo: TeamOutlined,
+  },
+  {
+    title: "常规管理",
+    routers: commonManage,
+    logo: SettingOutlined,
   }
 ];

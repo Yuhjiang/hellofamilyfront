@@ -73,7 +73,7 @@ class Article extends Component {
                   <span>阅读量: <Tag color="blue">{item.amount}</Tag></span>,
                   <span>分类: <Tag color={item.category.color}>{item.category.name}</Tag></span>,
                   <span>标签: {item.tag.map(tag => {
-                    return (<Tag color={tag.color}>{tag.name}</Tag>)
+                    return (<Tag color={tag.color} key={tag.id}>{tag.name}</Tag>)
                   })}</span>
                 ]}
               >

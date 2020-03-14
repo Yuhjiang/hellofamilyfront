@@ -1,5 +1,3 @@
-import {message} from "antd";
-
 import picturesApi from "./api";
 
 

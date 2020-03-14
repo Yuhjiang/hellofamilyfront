@@ -90,6 +90,16 @@ const AdminCarousel = Loadable({
   loading: Loading,
 });
 
+const AdminGroups = Loadable({
+  loader: () => import("./Manage/Groups"),
+  loading: Loading,
+});
+
+const AdminMembers = Loadable({
+  loader: () => import("./Manage/Members"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -108,4 +118,6 @@ export {
   UserProfile,
   UserEdit,
   AdminCarousel,
+  AdminGroups,
+  AdminMembers,
 }

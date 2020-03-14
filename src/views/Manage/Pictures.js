@@ -84,7 +84,7 @@ class UploadPicture extends Component {
   }
 
   componentDidMount() {
-    getGroups().then(resp => {
+    getGroups({offset: 0, limited: 100}).then(resp => {
       const options = resp.data.groups.map(group => {
         return {value: group.id, label: group.name_jp, isLeaf: false}
       });
@@ -147,9 +147,9 @@ class UploadPicture extends Component {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
 
-    getMembers({group_id: targetOption.value}).then(resp => {
+    getMembers({group_id: targetOption.value, offset: 0, limited: 100}).then(resp => {
       targetOption.loading = false;
-      targetOption.children = resp.data.members.map(member => {
+      targetOption.children = resp.results.map(member => {
         return {value: member.id, label: member.name_jp, isLeaf: true}
       });
       this.setState({

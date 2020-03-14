@@ -30,7 +30,6 @@ class Manage extends Component {
     }
   }
 
-
   handleOnMenuClick = e => {
     this.setState({
       current: e.key,
@@ -38,28 +37,9 @@ class Manage extends Component {
     this.props.history.push(e.key);
   };
 
-  helloProjectMenu = (<Menu
-    onClick={this.handleOnMenuClick}
-  >
-    {helloProjectManage.map(route => {
-      return (
-        <Menu.Item key={route.pathname}>{route.title}</Menu.Item>
-      )
-    })}
-  </Menu>);
-
-
   render() {
     return (
       <>
-        {/*<Menu*/}
-        {/*  onClick={this.handleOnMenuClick}*/}
-        {/*  selectedKeys={this.props.location.pathname} mode="horizontal"*/}
-        {/*>*/}
-        {/*  {adminMenus.map(route => {*/}
-        {/*    return (<Menu.Item key={route.pathname}>{route.title}</Menu.Item>)*/}
-        {/*  })}*/}
-        {/*</Menu>*/}
         <Row style={{
           backgroundColor: "#fff",
           height: 40,

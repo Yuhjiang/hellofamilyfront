@@ -6,7 +6,7 @@ export const getGroupById = (id) => {
 };
 
 export const getGroups = (params) => {
-  return picturesApi.get('/api/group', {
+  return picturesApi.get('/api/group/', {
     params,
   });
 };
@@ -18,7 +18,7 @@ export const getPictures = (params) => {
 };
 
 export const getMembers = (params) => {
-  return picturesApi.get('/api/member', {
+  return picturesApi.get('/api/member/', {
     params,
   })
 };

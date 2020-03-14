@@ -18,8 +18,9 @@ import {
   UserProfile,
   UserEdit,
   AdminCarousel,
+  AdminGroups,
+  AdminMembers,
 } from "../views";
-import user from "../reducers/user";
 
 
 export const mainRouter = [
@@ -87,6 +88,16 @@ export const helloProjectManage = [
     pathname: "/manage/pictures",
     component: AdminPictures,
     title: "图片管理",
+  },
+  {
+    pathname: "/manage/groups",
+    component: AdminGroups,
+    title: "组合管理",
+  },
+  {
+    pathname: "/manage/members",
+    component: AdminMembers,
+    title: "成员管理",
   },
 ];
 

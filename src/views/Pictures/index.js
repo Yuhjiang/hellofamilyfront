@@ -64,14 +64,14 @@ class Pictures extends Component {
     })
   };
 
-  getGroupList = (groupList) => {
+  getGroupList = () => {
     this.setState({
       selectLoading: true,
     });
-    getGroups().then(resp => {
+    getGroups({offset: 0, limited: 100}).then(resp => {
       this.setState({
-        groupFirstList: resp.data.groups,
-        groupSecondList: resp.data.groups,
+        groupFirstList: resp.results,
+        groupSecondList: resp.results,
       });
     }).catch(err => {
       console.log(err);
@@ -91,14 +91,14 @@ class Pictures extends Component {
   };
 
   handleOnGroupChange = (groupList, value) => {
-    getMembers({"group_id": value}).then(resp => {
+    getMembers({group_id: value, offset: 0, limited: 100}).then(resp => {
       if (groupList === "groupFirst") {
         this.setState({
-          memberFirstList: resp.data.members
+          memberFirstList: resp.results
         })
       } else {
         this.setState({
-          memberSecondList: resp.data.members
+          memberSecondList: resp.results
         })
       }
     }).catch(err => {
@@ -136,12 +136,6 @@ class Pictures extends Component {
   };
 
   render() {
-    const gridStyle = {
-      width: '25%',
-      textAlign: 'center',
-      padding: 5,
-      margin: "auto",
-    };
     const colStyle = {
       lg: 6,
       md: 6,
@@ -223,28 +217,6 @@ class Pictures extends Component {
         </Row>
         <Row style={{marginTop: 10}}>
           <Spin spinning={this.state.isLoading}>
-            {/*<Card>*/}
-            {/*  {this.state.pictures.map((item, idx) => {*/}
-            {/*    return (*/}
-            {/*      <Card.Grid style={gridStyle} key={idx}>*/}
-            {/*        <div*/}
-            {/*          style={{*/}
-            {/*            display: "block",*/}
-            {/*            width: "100%",*/}
-            {/*            height: 0,*/}
-            {/*            paddingBottom: "80%",*/}
-            {/*            overflow: "hidden"*/}
-            {/*          }}*/}
-            {/*          dangerouslySetInnerHTML={{*/}
-            {/*            __html: `<img src=${item.url} alt=${item.name} */}
-            {/*         style="max-width:100%;display:block;"/>`*/}
-            {/*          }}*/}
-            {/*        >*/}
-            {/*        </div>*/}
-            {/*      </Card.Grid>*/}
-            {/*    )*/}
-            {/*  })}*/}
-            {/*</Card>*/}
             <List
               grid={{
                 gutter: 16,

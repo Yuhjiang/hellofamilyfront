@@ -1,10 +1,10 @@
 // 页面主要框架，导航栏，侧边栏，页脚等组件
 import React, {Component} from 'react';
-import {Layout, Menu, Card, Badge, Dropdown, Avatar, Row, Col} from "antd";
+import {Card, Layout, Menu, Badge, Dropdown, Avatar, Row, Col} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {withRouter, Link} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 import {logout} from "../../actions/user"
 import logo from "./hellofamily.png";
@@ -125,11 +125,11 @@ class Frame extends Component {
               style={{marginLeft: 20}}
               width={330}
             >
-              {/*<Card title="网易云音乐">*/}
-              {/*  <div dangerouslySetInnerHTML={{*/}
-              {/*    __html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'}}*/}
-              {/*  />*/}
-              {/*</Card>*/}
+              <Card title="网易云音乐">
+                <div dangerouslySetInnerHTML={{
+                  __html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'}}
+                />
+              </Card>
             </Sider>
           </Layout>
           <Footer style={{textAlign: 'center'}}>

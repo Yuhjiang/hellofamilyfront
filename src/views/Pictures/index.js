@@ -136,12 +136,6 @@ class Pictures extends Component {
   };
 
   render() {
-    const gridStyle = {
-      width: '25%',
-      textAlign: 'center',
-      padding: 5,
-      margin: "auto",
-    };
     const colStyle = {
       lg: 6,
       md: 6,

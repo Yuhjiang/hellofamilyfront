@@ -85,7 +85,7 @@ class UploadPicture extends Component {
 
   componentDidMount() {
     getGroups({offset: 0, limited: 100}).then(resp => {
-      const options = resp.data.groups.map(group => {
+      const options = resp.results.map(group => {
         return {value: group.id, label: group.name_jp, isLeaf: false}
       });
       this.setState({

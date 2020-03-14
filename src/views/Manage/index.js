@@ -4,21 +4,17 @@
 import React, {Component} from 'react';
 import {Route, Switch, Redirect} from "react-router-dom";
 import {Menu, Dropdown, Row, Col} from "antd";
-import {PictureOutlined, DownOutlined} from "@ant-design/icons";
+import {DownOutlined} from "@ant-design/icons";
 
 import {
   adminRouter,
-  helloProjectManage,
   adminSubMenus,
-  articleManage,
-  userManage,
-  commonManage
 } from "../../routes";
 
 const adminMenus = adminRouter.filter(item => !item.root);
 
 const layout = {
-  xs: 6, sm: 6, md: 6, lg: 6
+  // xs: 6, sm: 6, md: 6, lg: 6
 };
 
 class Manage extends Component {
@@ -47,6 +43,9 @@ class Manage extends Component {
           fontSize: "1.2em"
         }}
              align="middle"
+             gutter={{
+               xs: 8, sm: 16, md: 24, lg: 32
+             }}
         >
           {adminSubMenus.map(subMenu => {
             const menus = (<Menu

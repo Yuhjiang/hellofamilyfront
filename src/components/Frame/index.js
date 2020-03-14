@@ -1,10 +1,10 @@
 // 页面主要框架，导航栏，侧边栏，页脚等组件
 import React, {Component} from 'react';
-import {Layout, Menu, Card, Badge, Dropdown, Avatar, Row, Col} from "antd";
+import {Layout, Menu, Badge, Dropdown, Avatar, Row, Col} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {withRouter, Link} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 import {logout} from "../../actions/user"
 import logo from "./hellofamily.png";

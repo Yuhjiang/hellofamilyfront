@@ -24,7 +24,7 @@ class TimelinePictures extends Component {
       isLoading: true,
     });
 
-    getGroups().then(resp => {
+    getGroups({offset: 0, limited: 100}).then(resp => {
       this.setState({
         groups: resp.results
       })

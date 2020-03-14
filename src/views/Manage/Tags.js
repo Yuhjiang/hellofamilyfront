@@ -225,7 +225,7 @@ class AdminTags extends Component {
     editTag(id, data).then(resp => {
       message.success("成功修改标签");
     }).catch(err => {
-      console.log(err);
+      message.error(err);
     }).finally(() => {
       this.onHideEditModal();
       this.getData(0, this.state.limited);
@@ -239,7 +239,7 @@ class AdminTags extends Component {
     deleteTag(id).then(resp => {
       message.success("成功删除标签");
     }).catch(err => {
-      console.log(err);
+      message.error(err);
     }).finally(() => {
       this.setState({
         deleteLoading: false,
@@ -353,6 +353,7 @@ class AdminTags extends Component {
           <DeleteModal
             visible={this.state.showDeleteModal}
             record={this.state.currentRecord}
+            confirmLoading={this.state.deleteLoading}
             onOk={this.onDelete.bind(this, this.state.currentRecord.id)}
             onCancel={this.onHideDeleteModal}
           />

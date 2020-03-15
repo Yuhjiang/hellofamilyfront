@@ -16,6 +16,10 @@ const mapStateToProps = state => {
   }
 };
 
+const layoutShort = {
+  xs: 12, sm: 12, md: 4, lg: 4
+};
+
 @connect(mapStateToProps, {setArticle, getComments})
 class ArticleDetail extends Component {
   constructor(props) {
@@ -89,24 +93,24 @@ class ArticleDetail extends Component {
               <Avatar src={article.owner.avatar}
                       size={64}/>
             </Col>
-            <Col style={{marginLeft: 10}} span={20}>
+            <Col span={20}>
               <Row>
-                <Col span={4}>
+                <Col {...layoutShort}>
                   <span style={{fontSize: "1.2em"}}><b>{article.owner.nickname}</b></span>
                 </Col>
-                <Col span={4}>
-                  <span>阅读量: <Tag
-                    color={article.amount > 200 ? "red" : "green"}>{article.amount}</Tag></span>
+                <Col xs={24} sm={12} md={12} lg={12}>
+                  <span>{article.createdTime ? moment(article.createdTime).format("LLL") : ""}</span>
                 </Col>
               </Row>
               <Row>
-                <Col span={4}>
-                  <span>{article.createdTime ? moment(article.createdTime).format("LLL") : ""}</span>
+                <Col {...layoutShort}>
+                  <span>阅读量: <Tag
+                    color={article.amount > 200 ? "red" : "green"}>{article.amount}</Tag></span>
                 </Col>
-                <Col span={4}>
+                <Col {...layoutShort}>
                   <span>分类: <Tag color={article.category.color}>{article.category.name}</Tag></span>
                 </Col>
-                <Col span={6}>
+                <Col {...layoutShort}>
                 <span>标签: {article.tags.map((tag, idx) => {
                   return (<Tag color={tag.color} key={idx}>{tag.name}</Tag>)
                 })}</span>

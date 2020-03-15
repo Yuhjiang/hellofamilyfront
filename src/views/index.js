@@ -100,6 +100,11 @@ const AdminMembers = Loadable({
   loading: Loading,
 });
 
+const Chat = Loadable({
+  loader: () => import("./Chat"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -120,4 +125,5 @@ export {
   AdminCarousel,
   AdminGroups,
   AdminMembers,
+  Chat,
 }

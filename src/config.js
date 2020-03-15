@@ -5,7 +5,13 @@ const urls = {
   "production": "http://hellofamily.club/",
 };
 
+const wsUrls = {
+  "development": "ws://127.0.0.1:8002/ws/",
+  "production": "ws://hellofamily.club/ws/",
+};
+
 export const URL = urls[process.env.NODE_ENV];
+export const wsURL = wsUrls[process.env.NODE_ENV];
 
 export const momentZh = moment.locale("zh-cn",{
   months: '一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_'),

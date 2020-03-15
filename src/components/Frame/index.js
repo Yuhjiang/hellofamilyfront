@@ -1,6 +1,6 @@
 // 页面主要框架，导航栏，侧边栏，页脚等组件
 import React, {Component} from 'react';
-import {Card, Layout, Menu, Badge, Dropdown, Avatar, Row, Col} from "antd";
+import {Card, Layout, Menu, Badge, Dropdown, Avatar, Row, Col, notification} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -29,6 +29,17 @@ class Frame extends Component {
     menus: PropTypes.array,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      socket: new WebSocket(`ws://127.0.0.1:8000/ws/notification/${this.props.userId}`),
+    }
+  }
+
+  componentDidMount() {
+    this.ready();
+  }
+
   handleOnMenuClick = ({key}) => {
     this.props.history.push(key);
   };
@@ -36,6 +47,28 @@ class Frame extends Component {
   onDropdownMenuClick = ({key}) => {
     console.log(key);
     this.props.history.push(key);
+  };
+
+  openNotification = (message) => {
+    notification.open({
+      message: `来自 ${message.from} 的信息`,
+      description: message.message,
+      onClick: () => {
+        console.log('Notification Clicked!');
+      },
+    });
+  };
+
+  ready = () => {
+    const socket = this.state.socket;
+    socket.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      const message = data["message"];
+      this.openNotification(message);
+    };
+    socket.onclose = (e) => {
+      console.log("chat socket closed")
+    };
   };
 
   renderDropdown = () => {

@@ -20,6 +20,7 @@ import {
   AdminCarousel,
   AdminGroups,
   AdminMembers,
+  Chat,
 } from "../views";
 
 
@@ -81,6 +82,11 @@ export const basicRouter = [
     component: Login,
     title: "登录",
   },
+  {
+    pathname: "/chat",
+    component: Chat,
+    title: "聊天室",
+  }
 ];
 
 export const helloProjectManage = [

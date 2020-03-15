@@ -18,19 +18,6 @@ const mapStateToProps = state => {
 
 @connect(mapStateToProps, {getComments, commentPageChange})
 class CommentList extends Component {
-  constructor(props) {
-    super(props);
-  };
-
-  componentDidMount() {
-    this.props.getComments({
-      offset: this.props.offset,
-      limited: this.props.limited,
-      post_id: this.props.postId,
-      status: 1
-    })
-  }
-
   handleOnPageChange = page => {
     const offset = (page - 1) * this.props.limited;
     this.props.commentPageChange(offset);
@@ -38,7 +25,7 @@ class CommentList extends Component {
       offset,
       limited: this.props.limited,
       status: 1,
-      post: this.props.postId
+      post_id: this.props.postId
     };
     this.props.getComments(params);
   };

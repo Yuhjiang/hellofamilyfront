@@ -7,13 +7,16 @@ import "braft-editor/dist/output.css";
 import {getArticleById} from "../../api/articles";
 import CommentList from "./CommentList";
 import AddComment from "./AddComment";
-import {setArticle} from "../../actions/comment";
+import {setArticle, getComments} from "../../actions/comment";
 
 const mapStateToProps = state => {
-  return {}
+  return {
+    offset: state.comment.offset,
+    limited: state.comment.limited,
+  }
 };
 
-@connect(mapStateToProps, {setArticle})
+@connect(mapStateToProps, {setArticle, getComments})
 class ArticleDetail extends Component {
   constructor(props) {
     super(props);
@@ -56,6 +59,9 @@ class ArticleDetail extends Component {
         }
       });
       this.props.setArticle({postId: resp.id, ownerId: resp.owner.id});
+      this.props.getComments({
+        offset: this.props.offset, limited: this.props.limited, status: 1, post_id: resp.id
+      })
     }).catch(err => {
       console.log(err);
     }).finally(() => {

@@ -35,7 +35,7 @@ export const addComment = data => {
   }
 };
 
-const addCommentSuccess = params => {
+const addCommentSuccess = () => {
   return {
     type: actionTypes.ADD_COMMENT_SUCCESS,
   }

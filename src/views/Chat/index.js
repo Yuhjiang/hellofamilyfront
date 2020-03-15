@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Card, Input, notification} from "antd";
 import {connect} from "react-redux";
+import {wsURL} from "../../config";
 
 const mapStateToProps = state => {
   return {
@@ -18,7 +19,7 @@ class Chat extends Component {
     super(props);
     this.state = {
       messages: [],
-      socket: new WebSocket(`ws://127.0.0.1:8000/ws/notification/${this.props.userId}`),
+      socket: new WebSocket(wsURL + "notification/" + this.props.userId),
     }
   }
 

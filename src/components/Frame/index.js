@@ -9,6 +9,7 @@ import {withRouter} from "react-router-dom";
 import {logout} from "../../actions/user"
 import logo from "./hellofamily.png";
 import "./frame.less";
+import {wsURL} from "../../config";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -32,7 +33,7 @@ class Frame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: new WebSocket(`ws://127.0.0.1:8000/ws/notification/${this.props.userId}`),
+      socket: new WebSocket(wsURL + "notification/" + this.props.userId),
     }
   }
 

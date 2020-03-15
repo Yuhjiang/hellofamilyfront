@@ -66,3 +66,19 @@ export const editTag = (id, data) => {
 export const deleteTag = id => {
   return articlesApi.delete(`/api/tag/${id}/`);
 };
+
+export const postComment = data => {
+  return articlesApi.post('/api/comment/', data);
+};
+
+export const getCommentList = params => {
+  return articlesApi.get('/api/comment/', {params});
+};
+
+export const editComment = (id, data) => {
+  return articlesApi.put(`/api/comment/${id}/`, data);
+};
+
+export const deleteComment = id => {
+  return articlesApi.delete(`/api/comment/${id}/`);
+};

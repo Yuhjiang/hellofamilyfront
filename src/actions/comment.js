@@ -1,7 +1,8 @@
 import {message} from "antd";
 
 import actionTypes from "./actionTypes";
-import {postComment, getCommentList} from "../api/articles";
+import {postComment, getCommentList, deleteCommentById} from "../api/articles";
+
 
 const startAddComment = () => {
   return {
@@ -80,5 +81,16 @@ export const commentPageChange = offset => {
   return {
     type: actionTypes.COMMENT_PAGE_CHANGE,
     payload: {offset},
+  }
+};
+
+export const deleteComment = (comment) => {
+  return dispatch => {
+    deleteCommentById(comment.id).then(resp => {
+      message.info("删除了一条评论");
+      dispatch(getComments({offset: 0, limited: 10, status: 1, post_id: comment.post}))
+    }).catch(err => {
+      message.error(err);
+    });
   }
 };

@@ -79,6 +79,6 @@ export const editComment = (id, data) => {
   return articlesApi.put(`/api/comment/${id}/`, data);
 };
 
-export const deleteComment = id => {
+export const deleteCommentById = id => {
   return articlesApi.delete(`/api/comment/${id}/`);
 };

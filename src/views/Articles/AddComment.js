@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Card, Input, message} from "antd";
+import {Button, Card, Input} from "antd";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 

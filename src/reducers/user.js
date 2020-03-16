@@ -20,6 +20,7 @@ const anonymousState = {
   role: "",
   isLogin: false,
   isLoading: false,
+  isAdmin: false,
 };
 
 export default (state = initState, action) => {

@@ -6,7 +6,7 @@ const urls = {
 };
 
 const wsUrls = {
-  "development": "ws://127.0.0.1:8002/ws/",
+  "development": "ws://127.0.0.1:8000/ws/",
   "production": "ws://hellofamily.club/ws/",
 };
 

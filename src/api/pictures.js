@@ -83,3 +83,7 @@ export const deleteCarousel = id => {
 export const createCarousel = data => {
   return picturesApi.post('/api/carousel/', data);
 };
+
+export const recognizePicture = data => {
+  return picturesApi.post('/api/recognize_picture/', data);
+};

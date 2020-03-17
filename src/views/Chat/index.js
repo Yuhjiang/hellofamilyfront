@@ -19,7 +19,7 @@ class Chat extends Component {
     super(props);
     this.state = {
       messages: [],
-      socket: new WebSocket(wsURL + "notification/" + this.props.userId),
+      socket: new WebSocket(wsURL + "notification/" + this.props.userId || 0),
     }
   }
 

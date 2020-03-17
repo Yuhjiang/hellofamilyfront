@@ -33,7 +33,7 @@ class Frame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: new WebSocket(wsURL + "notification/" + this.props.userId),
+      socket: new WebSocket(wsURL + "notification/" + this.props.userId || 0),
     }
   }
 

@@ -11,10 +11,12 @@ import {
   Button,
   Col,
   List,
-  BackTop
+  BackTop,
+  Popconfirm,
 } from "antd";
 
 import {getPictures, getGroups, getMembers} from "../../api";
+import {recognizePicture} from "../../api/pictures";
 
 const {Option} = Select;
 
@@ -135,6 +137,14 @@ class Pictures extends Component {
     })
   };
 
+  handleOnRecognizePicture = picture => {
+    recognizePicture({pictureName: picture}).then(resp => {
+      message.info("请稍等片刻");
+    }).catch(err => {
+      message.error("出现不可知错误");
+    })
+  };
+
   render() {
     const colStyle = {
       lg: 6,
@@ -230,6 +240,12 @@ class Pictures extends Component {
               dataSource={this.state.pictures}
               renderItem={item => (
                 <List.Item>
+                  <Popconfirm
+                    title="确定要更新人脸信息吗"
+                    onConfirm={this.handleOnRecognizePicture.bind(this, item.name)}
+                    okText="确认"
+                    cancelText="取消"
+                  >
                   <Card bordered={false} hoverable bodyStyle={{padding: 0}}>
                     <div
                       style={{
@@ -246,6 +262,7 @@ class Pictures extends Component {
                     >
                     </div>
                   </Card>
+                  </Popconfirm>
                 </List.Item>
               )}
             />

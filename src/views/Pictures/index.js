@@ -10,13 +10,13 @@ import {
   Row,
   Button,
   Col,
-  List,
   BackTop,
-  Popconfirm,
 } from "antd";
 
 import {getPictures, getGroups, getMembers} from "../../api";
-import {recognizePicture} from "../../api/pictures";
+import {getPicturesTimeline} from "../../api/pictures";
+import CardGridPictures from "./CardGridPictures";
+import TimelinePicture from "./TimelinePictures";
 
 const {Option} = Select;
 
@@ -38,11 +38,12 @@ class Pictures extends Component {
       memberFirst: "",
       groupSecond: "",
       memberSecond: "",
+      timelineOrGrid: false,
     };
   }
 
   componentDidMount() {
-    this.getPicturesList({limit: 20, page: 1});
+    this.getData({limit: 20, page: 1});
     this.getGroupList("groupFirst");
   }
 
@@ -85,11 +86,14 @@ class Pictures extends Component {
   };
 
   handleOnPageChange = (pageNumber) => {
-    this.getPicturesList({
+    this.setState({
+      page: pageNumber
+    });
+    this.getData({
       limit: this.state.limit, page: pageNumber,
       member_first: this.state.memberFirst, group_first: this.state.groupFirst,
-      member_second: this.state.memberSecond, group_second: this.state.groupSecond,
-    });
+      member_second: this.state.memberSecond, group_second: this.state.groupSecond
+    })
   };
 
   handleOnGroupChange = (groupList, value) => {
@@ -118,30 +122,57 @@ class Pictures extends Component {
       memberFirst: e.memberFirst,
       isLoading: true,
     });
-    getPictures({
-      limit: this.state.limit, page: 1,
+    const params = {
+      limit: this.state.limit, page: this.state.page,
       member_first: e.memberFirst, group_first: e.groupFirst,
       member_second: e.memberSecond, group_second: e.groupSecond,
-    }).then(resp => {
-      this.setState({
-        pictures: resp.data.images,
-        total: parseInt(resp.data.count),
-        page: parseInt(resp.data.current),
-      })
-    }).catch(err => {
-      console.log(err);
-    }).finally(() => {
-      this.setState({
-        isLoading: false,
-      });
-    })
+    };
+    this.getData(params);
   };
 
-  handleOnRecognizePicture = picture => {
-    recognizePicture({pictureName: picture}).then(resp => {
-      message.info("请稍等片刻");
-    }).catch(err => {
-      message.error("出现不可知错误");
+  getData = params => {
+    if (this.state.timelineOrGrid) {
+      getPicturesTimeline(params).then(resp => {
+        this.setState({
+          pictures: resp.data.images,
+          total: parseInt(resp.data.count),
+        })
+      }).catch(err => {
+        console.log(err);
+      }).finally(() => {
+        this.setState({
+          isLoading: false,
+        });
+      })
+    } else {
+      getPictures(params).then(resp => {
+        this.setState({
+          pictures: resp.data.images,
+          total: parseInt(resp.data.count),
+          page: parseInt(resp.data.current),
+        })
+      }).catch(err => {
+        console.log(err);
+      }).finally(() => {
+        this.setState({
+          isLoading: false,
+        });
+      })
+    }
+  };
+
+  handleViewChange = () => {
+    this.setState(state => {
+      return {
+        timelineOrGrid: !state.timelineOrGrid,
+        pictures: [],
+      }
+    }, () => {
+      this.getData({
+        limit: this.state.limit, page: this.state.page,
+        member_first: this.state.memberFirst, group_first: this.state.groupFirst,
+        member_second: this.state.memberSecond, group_second: this.state.groupSecond
+      })
     })
   };
 
@@ -155,7 +186,9 @@ class Pictures extends Component {
     return (
       <>
         <Row>
-          <Card style={{width: "100%"}} title="选择你想找的组合或成员">
+          <Card style={{width: "100%"}} title="选择你想找的组合或成员"
+                extra={<Button
+                  onClick={this.handleViewChange}>{this.state.timelineOrGrid ? "切换成默认" : "切换成时间线"}</Button>}>
             <Form name="member_select" onFinish={this.handleOnSubmit}>
               <Form.Item name="select_first">
                 <Row>
@@ -225,48 +258,15 @@ class Pictures extends Component {
             </Form>
           </Card>
         </Row>
-        <Row style={{marginTop: 10}}>
+        <Row style={{marginTop: 10, backgroundColor: "#fff"}}>
           <Spin spinning={this.state.isLoading}>
-            <List
-              grid={{
-                gutter: 16,
-                xs: 1,
-                sm: 2,
-                md: 4,
-                lg: 4,
-                xl: 4,
-              }}
-              style={{backgroundColor: "#fff", padding: 10}}
-              dataSource={this.state.pictures}
-              renderItem={item => (
-                <List.Item>
-                  <Popconfirm
-                    title="确定要更新人脸信息吗"
-                    onConfirm={this.handleOnRecognizePicture.bind(this, item.name)}
-                    okText="确认"
-                    cancelText="取消"
-                  >
-                  <Card bordered={false} hoverable bodyStyle={{padding: 0}}>
-                    <div
-                      style={{
-                        display: "block",
-                        width: "100%",
-                        height: 0,
-                        paddingBottom: "80%",
-                        overflow: "hidden"
-                      }}
-                      dangerouslySetInnerHTML={{
-                        __html: `<a href=${item.url} target="_blank"><img src=${item.url} alt=${item.name} 
-                     style="max-width:100%;display:block;"/></a>`
-                      }}
-                    >
-                    </div>
-                  </Card>
-                  </Popconfirm>
-                </List.Item>
-              )}
-            />
-            <Card>
+            {this.state.timelineOrGrid ? <TimelinePicture pictures={this.state.pictures}/> :
+              <CardGridPictures pictures={this.state.pictures}/>}
+            <BackTop/>
+          </Spin>
+        </Row>
+        <Row>
+          <Card style={{width: "100%"}}>
             <Pagination showQuickJumper
                         defaultCurrent={1}
                         current={this.state.page}
@@ -275,9 +275,7 @@ class Pictures extends Component {
                         pageSize={this.state.limit}
                         style={{margin: 20, float: "right"}}
             />
-            </Card>
-            <BackTop />
-          </Spin>
+          </Card>
         </Row>
       </>
     );

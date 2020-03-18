@@ -3,7 +3,7 @@ import {PictureOutlined, ReadOutlined, SettingOutlined, TeamOutlined} from "@ant
 import {
   Pictures,
   NotFound,
-  TimelinePictures,
+  TimelineActivity,
   Login,
   Manage,
   Articles,
@@ -33,8 +33,8 @@ export const mainRouter = [
   },
   {
     pathname: "/timeline",
-    component: TimelinePictures,
-    title: "时间线",
+    component: TimelineActivity,
+    title: "动态",
     isNav: true,
   },
   {

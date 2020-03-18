@@ -12,8 +12,8 @@ const NotFound = Loadable({
   loading: Loading,
 });
 
-const TimelinePictures = Loadable({
-  loader: () => import("./TimelinePictures"),
+const TimelineActivity = Loadable({
+  loader: () => import("./TimelineActivity"),
   loading: Loading,
 });
 
@@ -105,10 +105,15 @@ const Chat = Loadable({
   loading: Loading,
 });
 
+const TimelinePictures = Loadable({
+  loader: () => import("./Pictures/TimelinePictures"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
-  TimelinePictures,
+  TimelineActivity,
   Login,
   Manage,
   Articles,
@@ -126,4 +131,5 @@ export {
   AdminGroups,
   AdminMembers,
   Chat,
+  TimelinePictures,
 }

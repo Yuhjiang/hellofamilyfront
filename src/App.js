@@ -13,7 +13,7 @@ const adminMenus = adminRouter.filter(item => item.root);
 const mapStateToProps = state => {
   return {
     isLogin: state.user.isLogin,
-    isAdmin: state.user.is_admin,
+    isAdmin: state.user.isAdmin,
   }
 };
 

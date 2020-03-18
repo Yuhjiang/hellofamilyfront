@@ -6,7 +6,7 @@ import {getGroups} from "../../api";
 import Image from "../../components/Image";
 
 
-class TimelinePictures extends Component {
+class TimelineActivity extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,4 +59,4 @@ class TimelinePictures extends Component {
   }
 }
 
-export default TimelinePictures;
+export default TimelineActivity;

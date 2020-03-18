@@ -23,7 +23,7 @@ class TimelinePicture extends Component {
           return (
             <Timeline.Item key={item._id}>
               <div>{moment(item._id).format("LL")}</div>
-              <Row>
+              <Row justify={idx % 2 ? "end" : "start"}>
                 {item.pictures.map((item, idx) => (
                   <Col {...colStyle}>
                     <Card bordered={false} hoverable bodyStyle={{padding: 5}}>

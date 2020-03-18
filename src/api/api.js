@@ -24,8 +24,9 @@ Api.interceptors.request.use(config => {
 Api.interceptors.response.use(response => {
   if (response.status === 200 || response.status === 201 || response.status === 204) {
     if (response.data.status === 302) {
-      message.error(response.data.errMsg);
-      window.location = response.data.data.url;
+      console.log(response.data);
+      setTimeout(() => {window.location=response.data.data.url}, 2000);
+      return Promise.reject(response.data.errMsg);
     }
     else if (response.data.status === 500) {
       return Promise.reject(response.data.errMsg);

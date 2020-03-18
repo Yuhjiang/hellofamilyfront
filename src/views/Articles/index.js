@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, Tag, Button, List} from "antd";
+import {Card, Tag, Button, List, Avatar} from "antd";
 import moment from "moment";
 
 import {getArticleList} from "../../api/articles";
@@ -79,7 +79,9 @@ class Article extends Component {
               >
                 <List.Item.Meta
                   title={<a href={`/article/${item.id}/`}>{item.title}</a>}
-                  description={<span>发布于: {moment(item.created_time).format("LL")}</span>}
+                  avatar=<Avatar src={item.owner.avatar} alt={item.owner.nickname} size={48}/>
+                description={<>
+                <span style={{marginRight: 10}}>作者: {item.owner.nickname}</span><span>发布于: {moment(item.created_time).format("LL")}</span></>}
                 />
                 {item.desc}
               </List.Item>

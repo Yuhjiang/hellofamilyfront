@@ -29,6 +29,12 @@ export const getPictures = (params) => {
   })
 };
 
+export const getPicturesTimeline = params => {
+  return picturesApi.get("api/pictures/timeline/", {
+    params,
+  })
+};
+
 export const getMembers = (params) => {
   return picturesApi.get('/api/member/', {
     params,

@@ -6,7 +6,7 @@ import {getGroups} from "../../api";
 import Image from "../../components/Image";
 
 
-class TimelinePictures extends Component {
+class TimelineActivity extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +24,7 @@ class TimelinePictures extends Component {
       isLoading: true,
     });
 
-    getGroups({offset: 0, limited: 100}).then(resp => {
+    getGroups({offset: 0, limited: 100, order: "created_time"}).then(resp => {
       this.setState({
         groups: resp.results
       })
@@ -59,4 +59,4 @@ class TimelinePictures extends Component {
   }
 }
 
-export default TimelinePictures;
+export default TimelineActivity;

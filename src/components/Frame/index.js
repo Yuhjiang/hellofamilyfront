@@ -1,10 +1,11 @@
 // 页面主要框架，导航栏，侧边栏，页脚等组件
 import React, {Component} from 'react';
-import {Card, Layout, Menu, Badge, Dropdown, Avatar, Row, Col, notification} from "antd";
+import {Card, Layout, Menu, Badge, Dropdown, Avatar, Row, Col, Tag, notification} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
+import {GithubOutlined, WeiboCircleOutlined} from "@ant-design/icons";
 
 import {logout} from "../../actions/user"
 import logo from "./hellofamily.png";
@@ -156,10 +157,28 @@ class Frame extends Component {
               breakpoint="lg"
               collapsedWidth="0"
               theme="light"
-              style={{marginLeft: 20}}
+              style={{marginLeft: 20, backgroundColor: "#f1f2f6"}}
               width={330}
             >
-              <Card title="网易云音乐">
+              <Card title="关于我" bordered={false}>
+                <div>
+                  <span style={{margin: "0 20px"}}>
+                  <WeiboCircleOutlined style={{margin: "0 10px 0 10px"}}/>
+                  {/* eslint-disable-next-line react/jsx-no-target-blank */}
+                  <a href="https://weibo.com/p/1005051737276257/" target="_blank" style={{color: "#000"}}>
+                    裸夏SN
+                  </a>
+                  </span>
+                  <span style={{margin: "0 20px"}}>
+                  <GithubOutlined style={{margin: "0 10px 0 10px"}}/>
+                  {/* eslint-disable-next-line react/jsx-no-target-blank */}
+                  <a href="https://github.com/Yuhjiang" target="_blank" style={{color: "#000"}}>
+                    YuhaoJ
+                  </a>
+                  </span>
+                </div>
+              </Card>
+              <Card title="网易云音乐" bordered={false} style={{marginTop: 10}}>
                 <div dangerouslySetInnerHTML={{
                   __html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'}}
                 />

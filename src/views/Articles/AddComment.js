@@ -18,10 +18,10 @@ const mapStateToProps = state => {
 @connect(mapStateToProps, {addComment})
 class AddComment extends Component {
   static propTypes = {
-    postId: PropTypes.number.isRequired,
-    ownerId: PropTypes.number.isRequired,
-    addLoading: PropTypes.bool.isRequired,
-    addComment: PropTypes.func.isRequired,
+    postId: PropTypes.number,
+    ownerId: PropTypes.number,
+    addLoading: PropTypes.bool,
+    addComment: PropTypes.func,
   };
 
   constructor(props) {

@@ -24,7 +24,7 @@ class TimelineActivity extends Component {
       isLoading: true,
     });
 
-    getGroups({offset: 0, limited: 100}).then(resp => {
+    getGroups({offset: 0, limited: 100, order: "created_time"}).then(resp => {
       this.setState({
         groups: resp.results
       })

@@ -34,13 +34,15 @@ class Pictures extends Component {
       memberFirstList: [],
       groupSecondList: [],
       memberSecondList: [],
-      groupFirst: "",
-      memberFirst: "",
-      groupSecond: "",
-      memberSecond: "",
+      groupFirst: undefined,
+      memberFirst: undefined,
+      groupSecond: undefined,
+      memberSecond: undefined,
       timelineOrGrid: false,
     };
   }
+
+  formRef = React.createRef();
 
   componentDidMount() {
     this.getData({limit: 20, page: 1});
@@ -97,14 +99,24 @@ class Pictures extends Component {
   };
 
   handleOnGroupChange = (groupList, value) => {
+    if (groupList === "groupFirst") {
+      this.formRef.current.setFieldsValue({
+        memberFirst: undefined
+      })
+    } else {
+      this.formRef.current.setFieldsValue({
+        memberSecond: undefined
+      })
+    }
+
     getMembers({group_id: value, offset: 0, limited: 100}).then(resp => {
       if (groupList === "groupFirst") {
         this.setState({
-          memberFirstList: resp.results
+          memberFirstList: resp.results,
         })
       } else {
         this.setState({
-          memberSecondList: resp.results
+          memberSecondList: resp.results,
         })
       }
     }).catch(err => {
@@ -120,10 +132,13 @@ class Pictures extends Component {
     this.setState({
       groupFirst: e.groupFirst,
       memberFirst: e.memberFirst,
+      groupSecond: e.groupSecond,
+      memberSecond: e.memberSecond,
+      page: 1,
       isLoading: true,
     });
     const params = {
-      limit: this.state.limit, page: this.state.page,
+      limit: this.state.limit, page: 1,
       member_first: e.memberFirst, group_first: e.groupFirst,
       member_second: e.memberSecond, group_second: e.groupSecond,
     };
@@ -189,7 +204,7 @@ class Pictures extends Component {
           <Card style={{width: "100%"}} title="选择你想找的组合或成员"
                 extra={<Button
                   onClick={this.handleViewChange}>{this.state.timelineOrGrid ? "切换成默认" : "切换成时间线"}</Button>}>
-            <Form name="member_select" onFinish={this.handleOnSubmit}>
+            <Form name="member_select" onFinish={this.handleOnSubmit} ref={this.formRef}>
               <Form.Item name="select_first">
                 <Row>
                   <Col {...colStyle}>
@@ -198,6 +213,7 @@ class Pictures extends Component {
                         style={{width: "90%"}}
                         onChange={this.handleOnGroupChange.bind(this, "groupFirst")}
                         placeholder="选择组合"
+                        allowClear={true}
                       >
                         {this.state.groupFirstList.map(group => (
                           <Option key={group.id}
@@ -212,6 +228,8 @@ class Pictures extends Component {
                         style={{width: "90%"}}
                         onChange={this.handleOnMemberChange}
                         placeholder="选择成员"
+                        allowClear={true}
+                        value={this.state.memberFirst}
                       >
                         {this.state.memberFirstList.map(member => (
                           <Option key={member.id}
@@ -226,6 +244,7 @@ class Pictures extends Component {
                         style={{width: "90%"}}
                         onChange={this.handleOnGroupChange.bind(this, "groupSecond")}
                         placeholder="选择组合"
+                        allowClear={true}
                       >
                         {this.state.groupSecondList.map(group => (
                           <Option key={group.id}
@@ -240,6 +259,8 @@ class Pictures extends Component {
                         style={{width: "90%"}}
                         onChange={this.handleOnMemberChange}
                         placeholder="选择成员"
+                        allowClear={true}
+                        value={this.state.memberSecond}
                       >
                         {this.state.memberSecondList.map(member => (
                           <Option key={member.id}

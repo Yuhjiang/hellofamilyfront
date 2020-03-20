@@ -105,8 +105,13 @@ const Chat = Loadable({
   loading: Loading,
 });
 
-const TimelinePictures = Loadable({
-  loader: () => import("./Pictures/TimelinePictures"),
+const NewsType = Loadable({
+  loader: () => import("./Manage/NewsType"),
+  loading: Loading,
+});
+
+const HelloNews = Loadable({
+  loader: () => import("./Manage/HelloNews"),
   loading: Loading,
 });
 
@@ -131,5 +136,6 @@ export {
   AdminGroups,
   AdminMembers,
   Chat,
-  TimelinePictures,
+  NewsType,
+  HelloNews,
 }

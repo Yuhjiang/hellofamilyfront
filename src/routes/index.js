@@ -1,4 +1,4 @@
-import {PictureOutlined, ReadOutlined, SettingOutlined, TeamOutlined} from "@ant-design/icons";
+import {PictureOutlined, ReadOutlined, SettingOutlined, TeamOutlined, FlagOutlined} from "@ant-design/icons";
 
 import {
   Pictures,
@@ -21,6 +21,8 @@ import {
   AdminGroups,
   AdminMembers,
   Chat,
+  NewsType,
+  HelloNews,
 } from "../views";
 
 
@@ -141,6 +143,19 @@ export const commonManage = [
   },
 ];
 
+export const activityManage = [
+  {
+    pathname: "/manage/news-type",
+    component: NewsType,
+    title: "资讯类型"
+  },
+  {
+    pathname: "/manage/activity",
+    component: HelloNews,
+    title: "资讯管理"
+  }
+];
+
 export const adminRouter = [
   {
     pathname: "/manage",
@@ -152,6 +167,7 @@ export const adminRouter = [
   ...articleManage,
   ...userManage,
   ...commonManage,
+  ...activityManage,
 ];
 
 export const adminSubMenus = [
@@ -174,5 +190,10 @@ export const adminSubMenus = [
     title: "常规管理",
     routers: commonManage,
     logo: SettingOutlined,
+  },
+  {
+    title: "动态管理",
+    routers: activityManage,
+    logo: FlagOutlined,
   }
 ];

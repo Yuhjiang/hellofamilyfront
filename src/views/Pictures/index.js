@@ -8,6 +8,7 @@ import {
   Select,
   Row,
   Button,
+  Spin,
   Col,
   BackTop,
 } from "antd";
@@ -278,10 +279,14 @@ class Pictures extends Component {
             </Form>
           </Card>
         </Row>
-        <Row style={{marginTop: 10, backgroundColor: "#fff"}}>
-          {this.state.timelineOrGrid ? <TimelinePicture pictures={this.state.pictures}/> :
-            <CardGridPictures pictures={this.state.pictures}/>}
-          <BackTop/>
+        <Row style={{marginTop: 10, backgroundColor: "#fff", width: "100%"}}>
+          <div style={{width: "100%"}}>
+          <Spin spinning={this.state.isLoading} size="large" tip="加载图片中...">
+            {this.state.timelineOrGrid ? <TimelinePicture pictures={this.state.pictures}/> :
+              <CardGridPictures pictures={this.state.pictures}/>}
+            <BackTop/>
+          </Spin>
+          </div>
         </Row>
         <Row>
           <Card style={{width: "100%"}}>

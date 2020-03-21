@@ -1,6 +1,6 @@
 // 页面主要框架，导航栏，侧边栏，页脚等组件
 import React, {Component} from 'react';
-import {Card, Layout, Menu, Badge, Dropdown, Avatar, Row, Col, Tag, notification} from "antd";
+import {Card, Layout, Menu, Badge, Dropdown, Avatar, Row, Col, notification} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";

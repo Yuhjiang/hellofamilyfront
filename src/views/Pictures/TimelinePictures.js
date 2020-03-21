@@ -18,7 +18,7 @@ class TimelinePicture extends Component {
       xs: 24,
     };
     return (
-      <Timeline mode="alternate" style={{marginTop: 20}}>
+      <Timeline mode="alternate" style={{marginTop: 20, width: "100%"}}>
         {this.props.pictures.map((item, idx) => {
           return (
             <Timeline.Item key={item._id}>

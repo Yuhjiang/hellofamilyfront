@@ -27,7 +27,7 @@ class CardGridPictures extends Component {
           lg: 4,
           xl: 4,
         }}
-        style={{backgroundColor: "#fff", padding: 10}}
+        style={{backgroundColor: "#fff", padding: 10, width: "100%"}}
         dataSource={this.props.pictures}
         renderItem={item => (
           <List.Item>

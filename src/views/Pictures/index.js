@@ -4,7 +4,6 @@ import {
   Card,
   message,
   Pagination,
-  Spin,
   Form,
   Select,
   Row,
@@ -280,11 +279,9 @@ class Pictures extends Component {
           </Card>
         </Row>
         <Row style={{marginTop: 10, backgroundColor: "#fff"}}>
-          <Spin spinning={this.state.isLoading}>
-            {this.state.timelineOrGrid ? <TimelinePicture pictures={this.state.pictures}/> :
-              <CardGridPictures pictures={this.state.pictures}/>}
-            <BackTop/>
-          </Spin>
+          {this.state.timelineOrGrid ? <TimelinePicture pictures={this.state.pictures}/> :
+            <CardGridPictures pictures={this.state.pictures}/>}
+          <BackTop/>
         </Row>
         <Row>
           <Card style={{width: "100%"}}>

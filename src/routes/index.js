@@ -21,8 +21,8 @@ import {
   AdminGroups,
   AdminMembers,
   Chat,
-  NewsType,
-  HelloNews,
+  AdminNewsType,
+  AdminHelloNews,
 } from "../views";
 
 
@@ -146,12 +146,12 @@ export const commonManage = [
 export const activityManage = [
   {
     pathname: "/manage/news-type",
-    component: NewsType,
+    component: AdminNewsType,
     title: "资讯类型"
   },
   {
     pathname: "/manage/activity",
-    component: HelloNews,
+    component: AdminHelloNews,
     title: "资讯管理"
   }
 ];

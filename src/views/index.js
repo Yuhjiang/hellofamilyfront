@@ -105,12 +105,12 @@ const Chat = Loadable({
   loading: Loading,
 });
 
-const NewsType = Loadable({
+const AdminNewsType = Loadable({
   loader: () => import("./Manage/NewsType"),
   loading: Loading,
 });
 
-const HelloNews = Loadable({
+const AdminHelloNews = Loadable({
   loader: () => import("./Manage/HelloNews"),
   loading: Loading,
 });
@@ -136,6 +136,6 @@ export {
   AdminGroups,
   AdminMembers,
   Chat,
-  NewsType,
-  HelloNews,
+  AdminNewsType,
+  AdminHelloNews,
 }

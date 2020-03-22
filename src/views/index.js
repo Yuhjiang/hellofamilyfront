@@ -115,6 +115,11 @@ const AdminHelloNews = Loadable({
   loading: Loading,
 });
 
+const HelloNewsDetail = Loadable({
+  loader: () => import("./TimelineActivity/HelloNewsDetail"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -138,4 +143,5 @@ export {
   Chat,
   AdminNewsType,
   AdminHelloNews,
+  HelloNewsDetail,
 }

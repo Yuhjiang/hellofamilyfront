@@ -23,6 +23,7 @@ import {
   Chat,
   AdminNewsType,
   AdminHelloNews,
+  HelloNewsDetail,
 } from "../views";
 
 
@@ -34,10 +35,11 @@ export const mainRouter = [
     isNav: true,
   },
   {
-    pathname: "/timeline",
+    pathname: "/activity",
     component: TimelineActivity,
     title: "动态",
     isNav: true,
+    exact: true,
   },
   {
     pathname: '/article',
@@ -60,6 +62,11 @@ export const mainRouter = [
     pathname: "/article/:id",
     component: ArticleDetail,
     title: "文章详情",
+  },
+  {
+    pathname: "/activity/:id",
+    component: HelloNewsDetail,
+    title: "资讯详情",
   },
   {
     pathname: "/user/:id/profile/edit",

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Card, Tag, Button, List, Avatar, Spin} from "antd";
+import {Tag, List, Spin} from "antd";
 import moment from "moment";
 
-import {getArticleList} from "../../api/articles";
+import {getHelloNewsList} from "../../api/news";
 
 
-class Article extends Component {
+class HelloNews extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,7 @@ class Article extends Component {
     this.setState({
       isLoading: true
     });
-    getArticleList({offset: this.state.offset, limited: this.state.limited}).then(resp => {
+    getHelloNewsList({offset: this.state.offset, limited: this.state.limited}).then(resp => {
       this.setState({
         dataSource: resp.results,
         total: resp.count,
@@ -50,14 +50,12 @@ class Article extends Component {
 
 
   toWriteArticle = () => {
-    this.props.history.push("/article/add");
+    this.props.history.push("/activity/add")
   };
 
   render() {
     return (
-      <Card title="文章列表" bordered={false}
-            extra={<Button onClick={this.toWriteArticle}>编写文章</Button>}>
-        <Spin spinning={this.state.isLoading} size="large" tip="加载文章中...">
+      <Spin spinning={this.state.isLoading} size="large" tip="加载资讯中...">
         <List
           itemLayout="vertical"
           size="middle"
@@ -76,28 +74,28 @@ class Article extends Component {
               <List.Item
                 key={item.id}
                 actions={[
-                  <span>阅读量: <Tag color="blue">{item.amount}</Tag></span>,
                   <span>分类: <Tag color={item.category.color}>{item.category.name}</Tag></span>,
-                  <span>标签: {item.tag.map(tag => {
-                    return (<Tag color={tag.color} key={tag.id}>{tag.name}</Tag>)
+                  <span>组合: {item.group.map(g => {
+                    return (<Tag color={g.color} key={g.id}>{g.name_jp}</Tag>)
+                  })}</span>,
+                  <span>成员: {item.member.map(m => {
+                    return (<Tag color={m.color} key={m.id}>{m.name_jp}></Tag>)
                   })}</span>
                 ]}
               >
                 <List.Item.Meta
-                  title={<a href={`/article/${item.id}`}>{item.title}</a>}
-                  avatar=<Avatar src={item.owner.avatar} alt={item.owner.nickname} size={48}/>
+                  title={<a href={`/activity/${item.id}`}>{item.title}</a>}
                 description={<>
-                <span style={{marginRight: 10}}>作者: {item.owner.nickname}</span><span>发布于: {moment(item.created_time).format("LL")}</span></>}
+                <span>发布于: {moment(item.created_date).format("LL")}</span></>}
                 />
                 {item.desc}
               </List.Item>
             )
           }}
         />
-        </Spin>
-      </Card>
+      </Spin>
     );
   }
 }
 
-export default Article;
+export default HelloNews;

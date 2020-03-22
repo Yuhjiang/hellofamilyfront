@@ -1,61 +1,41 @@
 import React, {Component} from 'react';
-import {Timeline, Spin, Card} from "antd";
-import moment from "moment";
+import {Card, Button} from "antd";
 
-import {getGroups} from "../../api";
-import Image from "../../components/Image";
+import HelloTimeline from "./HelloTimeline";
+import HelloNews from "./HelloNews";
 
 
 class TimelineActivity extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      groups: [],
-      isLoading: false,
+      newsOrTimeline: true,
     }
   }
 
-  componentDidMount() {
-    this.getData();
-  }
-
-  getData = () => {
-    this.setState({
-      isLoading: true,
-    });
-
-    getGroups({offset: 0, limited: 100, order: "created_time"}).then(resp => {
-      this.setState({
-        groups: resp.results
+  handleViewChange = () => {
+    this.setState(state => {
+        return {
+          newsOrTimeline: !state.newsOrTimeline,
+        }
       })
-    }).catch(err => {
-      console.log(err);
-    }).finally(() => {
-      this.setState({
-        isLoading: false,
-      })
-    })
   };
 
   render() {
     return (
-      <Spin spinning={this.state.isLoading}>
-        <Card>
-          <Timeline mode="alternate" style={{paddingTop: 20}}>
-            {this.state.groups.map((item, idx) => {
-              return (
-                <Timeline.Item key={idx}>
-                  <div><b>{item.name_jp}</b></div>
-                  <div>{moment(item.created_time).locale("zh-cn").format("LL")}</div>
-                  <Image style={{display: "block"}} src={item.favicon}
-                         alt={item.name_jp}/>
-                </Timeline.Item>
-              )
-            })}
-          </Timeline>
-        </Card>
-      </Spin>
-    );
+      <Card
+        title="资讯列表"
+        bordered={false}
+        extra={
+          <Button
+            onClick={this.handleViewChange}>
+            {this.state.newsOrTimeline ? "切换成时间线" : "切换成默认"}
+          </Button>
+        }
+      >
+        {this.state.newsOrTimeline ? <HelloNews /> : <HelloTimeline />}
+      </Card>
+    )
   }
 }
 

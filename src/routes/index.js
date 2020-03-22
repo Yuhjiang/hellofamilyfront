@@ -1,4 +1,4 @@
-import {PictureOutlined, ReadOutlined, SettingOutlined, TeamOutlined} from "@ant-design/icons";
+import {PictureOutlined, ReadOutlined, SettingOutlined, TeamOutlined, FlagOutlined} from "@ant-design/icons";
 
 import {
   Pictures,
@@ -21,6 +21,9 @@ import {
   AdminGroups,
   AdminMembers,
   Chat,
+  AdminNewsType,
+  AdminHelloNews,
+  HelloNewsDetail,
 } from "../views";
 
 
@@ -32,10 +35,11 @@ export const mainRouter = [
     isNav: true,
   },
   {
-    pathname: "/timeline",
+    pathname: "/activity",
     component: TimelineActivity,
     title: "动态",
     isNav: true,
+    exact: true,
   },
   {
     pathname: '/article',
@@ -58,6 +62,11 @@ export const mainRouter = [
     pathname: "/article/:id",
     component: ArticleDetail,
     title: "文章详情",
+  },
+  {
+    pathname: "/activity/:id",
+    component: HelloNewsDetail,
+    title: "资讯详情",
   },
   {
     pathname: "/user/:id/profile/edit",
@@ -141,6 +150,19 @@ export const commonManage = [
   },
 ];
 
+export const activityManage = [
+  {
+    pathname: "/manage/news-type",
+    component: AdminNewsType,
+    title: "资讯类型"
+  },
+  {
+    pathname: "/manage/activity",
+    component: AdminHelloNews,
+    title: "资讯管理"
+  }
+];
+
 export const adminRouter = [
   {
     pathname: "/manage",
@@ -152,6 +174,7 @@ export const adminRouter = [
   ...articleManage,
   ...userManage,
   ...commonManage,
+  ...activityManage,
 ];
 
 export const adminSubMenus = [
@@ -174,5 +197,10 @@ export const adminSubMenus = [
     title: "常规管理",
     routers: commonManage,
     logo: SettingOutlined,
+  },
+  {
+    title: "动态管理",
+    routers: activityManage,
+    logo: FlagOutlined,
   }
 ];

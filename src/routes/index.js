@@ -24,6 +24,7 @@ import {
   AdminNewsType,
   AdminHelloNews,
   HelloNewsDetail,
+  HelloHistory,
 } from "../views";
 
 
@@ -42,9 +43,16 @@ export const mainRouter = [
     exact: true,
   },
   {
-    pathname: '/article',
+    pathname: "/article",
     component: Articles,
     title: "文章",
+    isNav: true,
+    exact: true,
+  },
+  {
+    pathname: "/history",
+    component: HelloHistory,
+    title: "ハロー！ヒストリー",
     isNav: true,
     exact: true,
   },

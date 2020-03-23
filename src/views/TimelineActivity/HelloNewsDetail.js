@@ -80,7 +80,7 @@ class HelloNewsDetail extends Component {
           </Row>
           <Row>
             <Divider>内容</Divider>
-            <div className="braft-output-content" dangerouslySetInnerHTML={{
+            <div className="braft-output-content" style={{width: "100%"}} dangerouslySetInnerHTML={{
               __html: news.content
             }} />
           </Row>

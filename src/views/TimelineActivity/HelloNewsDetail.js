@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, message, PageHeader, Row, Col, Tag, Divider} from "antd";
+import {Card, message, PageHeader, Row, Col, Tag, Divider, Button} from "antd";
 import "braft-editor/dist/output.css";
 
 import {getHelloNewsById} from "../../api/news";
@@ -46,6 +46,10 @@ class HelloNewsDetail extends Component {
     })
   };
 
+  onClickEditNews = () => {
+    this.props.history.push(`/activity/edit/${this.state.news.id}`);
+  };
+
   render() {
     const {news} = this.state;
     return (
@@ -61,10 +65,10 @@ class HelloNewsDetail extends Component {
         </PageHeader>
         <Card
           loading={this.state.isLoading}
-          title={this.state.news.title}
+          title={<span><Tag color={news.category.color}>{news.category.name}</Tag>{this.state.news.title}</span>}
           bordered={false}
           style={{marginTop: 10}}
-          extra={<span>分类: <Tag color={news.category.color}>{news.category.name}</Tag></span>}
+          extra={<Button onClick={this.onClickEditNews}>编辑</Button>}
         >
           <Row>
             <Col {...layoutShort}>
@@ -79,6 +83,15 @@ class HelloNewsDetail extends Component {
             </Col>
           </Row>
           <Row>
+            <Divider>相关资源</Divider>
+            {news.resource
+              ?
+              <Card style={{width: "100%", backgroundColor: "#ecf0f1"}}>
+                {news.resource}
+              </Card>
+              :
+              ""
+            }
             <Divider>内容</Divider>
             <div className="braft-output-content" style={{width: "100%"}} dangerouslySetInnerHTML={{
               __html: news.content

@@ -294,7 +294,6 @@ class TimelineActivity extends Component {
                   <List.Item
                     key={item.id}
                     actions={[
-                      <span>分类: <Tag color={item.category.color}>{item.category.name}</Tag></span>,
                       <span>组合: {item.group.map(g => {
                         return (<Tag color={g.color} key={g.id}>{g.name_jp}</Tag>)
                       })}</span>,
@@ -304,7 +303,10 @@ class TimelineActivity extends Component {
                     ]}
                   >
                     <List.Item.Meta
-                      title={<a href={`/activity/${item.id}`}>{item.title}</a>}
+                      title={<span>
+                        <Tag color={item.category.color}>{item.category.name}</Tag>
+                        <a href={`/activity/${item.id}`} style={{color: "#000"}}>{item.title}</a>
+                      </span>}
                       description={<>
                         <span>发布于: {moment(item.created_date).format("LL")}</span></>}
                     />

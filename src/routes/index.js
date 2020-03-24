@@ -25,6 +25,7 @@ import {
   AdminHelloNews,
   HelloNewsDetail,
   HelloHistory,
+  HelloNewsEdit,
 } from "../views";
 
 
@@ -70,6 +71,11 @@ export const mainRouter = [
     pathname: "/article/:id",
     component: ArticleDetail,
     title: "文章详情",
+  },
+  {
+    pathname: "/activity/edit/:id",
+    component: HelloNewsEdit,
+    title: "编辑资讯",
   },
   {
     pathname: "/activity/:id",

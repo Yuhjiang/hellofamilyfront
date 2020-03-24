@@ -14,7 +14,7 @@ const initState = {
 };
 
 const anonymousState = {
-  id: "",
+  id: 0,
   nickname: "",
   avatar: "",
   role: "",

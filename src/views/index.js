@@ -120,6 +120,16 @@ const HelloNewsDetail = Loadable({
   loading: Loading,
 });
 
+const HelloHistory = Loadable({
+  loader: () => import("./History"),
+  loading: Loading,
+});
+
+const HelloNewsEdit = Loadable({
+  loader: () => import("./TimelineActivity/NewsEdit"),
+  loading: Loading,
+});
+
 export {
   Pictures,
   NotFound,
@@ -144,4 +154,6 @@ export {
   AdminNewsType,
   AdminHelloNews,
   HelloNewsDetail,
+  HelloHistory,
+  HelloNewsEdit,
 }

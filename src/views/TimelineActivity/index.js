@@ -104,7 +104,7 @@ class TimelineActivity extends Component {
     this.setState({
       categoryLoading: true,
     });
-    getNewsTypeList().then(resp => {
+    getNewsTypeList({limited: 100}).then(resp => {
       this.setState({
         categoryList: resp.results,
       })
@@ -145,7 +145,7 @@ class TimelineActivity extends Component {
     const targetGroup = groupOptions[groupOptions.length - 1];
     targetGroup.loading = true;
 
-    getMembers({"group_id": targetGroup.value}).then(resp => {
+    getMembers({"group_id": targetGroup.value, "limited": 100}).then(resp => {
       targetGroup.loading = false;
       targetGroup.children = resp.results.map(item => {
         return {
@@ -255,6 +255,7 @@ class TimelineActivity extends Component {
                 allowClear={true}
                 style={{width: "80%"}}
                 onSelect={this.handleOnGroupSelect}
+                onChange={this.handleOnGroupChange}
               >
                 {this.state.groupList.map(item => (
                   <Option value={item.id} key={item.id}>{item.name_jp}</Option>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Avatar, Card, Divider, Tag, Row, Col, Button} from "antd";
+import {Avatar, Card, Divider, Tag, Row, Col, Button, PageHeader} from "antd";
 import moment from "moment";
 import {connect} from "react-redux";
 import "braft-editor/dist/output.css";
@@ -83,9 +83,19 @@ class ArticleDetail extends Component {
     const article = this.state.article;
     return (
       <>
+        <PageHeader
+          className="site-page-header"
+          onBack={() => {
+            this.props.history.push("/activity");
+          }}
+          title="返回资讯列表"
+          style={{backgroundColor: "#fff"}}
+        >
+        </PageHeader>
         <Card
           loading={this.state.isLoading}
           title={article.title}
+          style={{marginTop: 10}}
           extra={(<Button onClick={this.onClickEditArticle}>编辑</Button>)}
         >
           <Row align="middle">

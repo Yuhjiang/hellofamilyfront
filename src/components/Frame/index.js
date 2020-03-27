@@ -1,6 +1,16 @@
 // 页面主要框架，导航栏，侧边栏，页脚等组件
 import React, {Component} from 'react';
-import {Card, Layout, Menu, Badge, Dropdown, Avatar, Row, Col, notification} from "antd";
+import {
+  Card,
+  Layout,
+  Menu,
+  Badge,
+  Dropdown,
+  Avatar,
+  Row,
+  Col,
+  notification
+} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -13,6 +23,8 @@ import "./frame.less";
 import {wsURL} from "../../config";
 
 const {Header, Content, Footer, Sider} = Layout;
+const windowWidth = document.documentElement.clientWidth;
+const minWidth = 720;
 
 const mapStateToProps = state => {
   return {
@@ -34,13 +46,25 @@ class Frame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      socket: new WebSocket(wsURL + "notification/" + this.props.userId || 0),
+      socket: new WebSocket(wsURL + "notification/" +
+        (this.props.userId || 0)),
+      displayLogo: windowWidth > minWidth,
     }
   }
 
   componentDidMount() {
     this.ready();
+    window.onresize = () => {
+      this.displayLogoOrNot();
+    };
   }
+
+  displayLogoOrNot = () => {
+    const windowWidth = document.documentElement.clientWidth;
+    this.setState({
+      displayLogo: windowWidth > minWidth,
+    });
+  };
 
   handleOnMenuClick = ({key}) => {
     this.props.history.push(key);
@@ -77,12 +101,14 @@ class Frame extends Component {
     // 右上角下拉框功能
     const menu = (
       <Menu onClick={this.onDropdownMenuClick}>
-        <Menu.Item key={`/user/${this.props.userId}/notifications`} disabled={!this.props.isLogin}>
+        <Menu.Item key={`/user/${this.props.userId}/notifications`}
+                   disabled={!this.props.isLogin}>
           <Badge dot={Boolean(this.props.notificationsCount)}>
             <div>通知中心</div>
           </Badge>
         </Menu.Item>
-        <Menu.Item key={`/user/${this.props.userId}/profile`} disabled={!this.props.isLogin}>
+        <Menu.Item key={`/user/${this.props.userId}/profile`}
+                   disabled={!this.props.isLogin}>
           <div>个人信息</div>
         </Menu.Item>
         {
@@ -112,40 +138,54 @@ class Frame extends Component {
             backgroundColor: "#fff",
             padding: 0
           }}>
+            {
+              this.state.displayLogo
+                ?
+                <div className="logo">
+                  <img src={logo} alt="hellofamily.club logo"/>
+                </div>
+                :
+                ""
+            }
             <Row>
-              <Col lg={{span: 4}} xs={{span: 0}}>
-            <div className="logo">
-              <img src={logo} alt="hellofamily.club logo"/>
-            </div>
+              <Col flex="auto">
+                <Menu
+                  theme="light"
+                  mode="horizontal"
+                  selectedKeys={this.props.location.pathname.split("/").slice(0, 2).join("/")}
+                  style={{lineHeight: '64px'}}
+                  onClick={this.handleOnMenuClick}
+                >
+                  {this.props.menus.map(item => {
+                    return (
+                      <Menu.Item key={item.pathname} style={{fontSize: 16}}>
+                        {item.title}
+                      </Menu.Item>
+                    )
+                  })}
+                </Menu>
               </Col>
-              <Col lg={{span: 18}} xs={{span: 16}}>
-            <Menu
-              theme="light"
-              mode="horizontal"
-              selectedKeys={this.props.location.pathname.split("/").slice(0, 2).join("/")}
-              style={{lineHeight: '64px'}}
-              onClick={this.handleOnMenuClick}
-            >
-              {this.props.menus.map(item => {
-                return (
-                  <Menu.Item key={item.pathname} style={{fontSize: 16}}>
-                    {item.title}
-                  </Menu.Item>
-                )
-              })}
-            </Menu>
-              </Col>
-              <Col lg={{span: 2}} xs={{span: 8}}>
-            <Dropdown overlay={this.renderDropdown} trigger={['click', "hover"]}>
-              <div>
-                <span style={{marginRight: 24}}>
+              <Col flex="auto">
+                <Dropdown overlay={this.renderDropdown}
+                          trigger={['click', "hover"]}
+                >
+                  <div style={{float: "right", marginRight: 64}}>
+                <span>
                   <Badge count={this.props.notificationsCount}>
                     <Avatar src={this.props.avatar} alt="头像"/>
                   </Badge>
-                  <span style={{paddingLeft: "1em"}}>{this.props.nickname || "游客"}</span><DownOutlined />
+                  {this.state.displayLogo
+                  ?
+                    <span
+                    style={{paddingLeft: "1em"}}>{this.props.nickname || "游客"}
+                  </span>
+                    :
+                    ""
+                  }
+                  <DownOutlined/>
                 </span>
-              </div>
-            </Dropdown>
+                  </div>
+                </Dropdown>
               </Col>
             </Row>
           </Header>
@@ -164,15 +204,17 @@ class Frame extends Component {
                 <div>
                   <span style={{margin: "0 20px"}}>
                   <WeiboCircleOutlined style={{margin: "0 10px 0 10px"}}/>
-                  {/* eslint-disable-next-line react/jsx-no-target-blank */}
-                  <a href="https://weibo.com/p/1005051737276257/" target="_blank" style={{color: "#000"}}>
+                    {/* eslint-disable-next-line react/jsx-no-target-blank */}
+                    <a href="https://weibo.com/p/1005051737276257/"
+                       target="_blank" style={{color: "#000"}}>
                     裸夏SN
                   </a>
                   </span>
                   <span style={{margin: "0 20px"}}>
                   <GithubOutlined style={{margin: "0 10px 0 10px"}}/>
-                  {/* eslint-disable-next-line react/jsx-no-target-blank */}
-                  <a href="https://github.com/Yuhjiang" target="_blank" style={{color: "#000"}}>
+                    {/* eslint-disable-next-line react/jsx-no-target-blank */}
+                    <a href="https://github.com/Yuhjiang" target="_blank"
+                       style={{color: "#000"}}>
                     YuhaoJ
                   </a>
                   </span>
@@ -180,13 +222,15 @@ class Frame extends Component {
               </Card>
               <Card title="网易云音乐" bordered={false} style={{marginTop: 10}}>
                 <div dangerouslySetInnerHTML={{
-                  __html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'}}
+                  __html: '<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=400 src="//music.163.com/outchain/player?type=1&id=85470455&auto=0&height=430"></iframe>'
+                }}
                 />
               </Card>
             </Sider>
           </Layout>
           <Footer style={{textAlign: 'center'}}>
-            Hellofamily.club @ 裸夏 <a href="http://www.beian.miit.gov.cn">浙ICP备17021080号-2</a>
+            Hellofamily.club @ 裸夏 <a
+            href="http://www.beian.miit.gov.cn">浙ICP备17021080号-2</a>
           </Footer>
         </Layout>,
       </>

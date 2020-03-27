@@ -569,9 +569,10 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
     form.setFieldsValue({
       ...record,
       group: record.group.id,
-      joined_time: moment(record.joined_time),
+      joined_time: record.joined_time ? moment(record.joined_time) : undefined,
       graduated_time: record.graduated_time ? moment(record.graduated_time) : undefined,
       birthday: record.birthday ? moment(record.birthday) : undefined,
+      color: record.color || "#fff",
     });
   });
 

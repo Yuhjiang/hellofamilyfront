@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Button, Card, Col, Row, Divider, Form, Input, Select, Spin, DatePicker,
-  message} from "antd";
+import {
+  Button, Card, Col, Row, Divider, Form, Input, Select, Spin, DatePicker,
+  message, PageHeader
+} from "antd";
 import BraftEditor from "braft-editor";
 import "braft-editor/dist/index.css";
 import moment from "moment";
@@ -137,7 +139,17 @@ class NewsEdit extends Component {
 
   render() {
     return (
-      <Card title="编辑资讯" bordered={false}>
+      <div>
+      <PageHeader
+          className="site-page-header"
+          onBack={() => {
+            this.props.history.push("/activity");
+          }}
+          title="返回资讯列表"
+          style={{backgroundColor: "#fff"}}
+        >
+      </PageHeader>
+      <Card title="编辑资讯" bordered={false} style={{marginTop: 10}}>
         <Spin spinning={this.state.isLoading}>
           <Form
             name="helloNews"
@@ -274,6 +286,7 @@ class NewsEdit extends Component {
           </Form>
         </Spin>
       </Card>
+      </div>
     );
   }
 }

@@ -20,6 +20,10 @@ const layoutShort = {
   xs: 12, sm: 12, md: 4, lg: 4
 };
 
+const layoutLong = {
+  xs: 24, sm: 12, md: 10, lg: 10
+};
+
 @connect(mapStateToProps, {setArticle, getComments})
 class ArticleDetail extends Component {
   constructor(props) {
@@ -27,12 +31,13 @@ class ArticleDetail extends Component {
     this.state = {
       isLoading: false,
       article: {
-        title: '',
-        desc: '',
-        content: '',
-        createdTime: '',
+        title: "",
+        desc: "",
+        content: "",
+        createdTime: "",
+        updatedTime: "",
         owner: {id: 0},
-        category: '',
+        category: "",
         tags: [],
         id: 0,
       },
@@ -56,6 +61,7 @@ class ArticleDetail extends Component {
           desc: resp.desc,
           content: resp.content,
           createdTime: resp.created_time,
+          updatedTime: resp.updated_time,
           category: resp.category,
           tags: resp.tag,
           amount: resp.amount,
@@ -86,9 +92,9 @@ class ArticleDetail extends Component {
         <PageHeader
           className="site-page-header"
           onBack={() => {
-            this.props.history.push("/activity");
+            this.props.history.push("/article");
           }}
-          title="返回资讯列表"
+          title="返回文章列表"
           style={{backgroundColor: "#fff"}}
         >
         </PageHeader>
@@ -108,8 +114,11 @@ class ArticleDetail extends Component {
                 <Col {...layoutShort}>
                   <span style={{fontSize: "1.2em"}}><b>{article.owner.nickname}</b></span>
                 </Col>
-                <Col xs={24} sm={12} md={12} lg={12}>
-                  <span>{article.createdTime ? moment(article.createdTime).format("LLL") : ""}</span>
+                <Col {...layoutLong}>
+                  <span>创建时间: {article.createdTime ? moment(article.createdTime).format("LLL") : ""}</span>
+                </Col>
+                <Col {...layoutLong}>
+                  {article.updatedTime ? <span>更新时间: {moment(article.updatedTime).format("LLL")}</span> : ""}
                 </Col>
               </Row>
               <Row>
@@ -117,10 +126,10 @@ class ArticleDetail extends Component {
                   <span>阅读量: <Tag
                     color={article.amount > 200 ? "red" : "green"}>{article.amount}</Tag></span>
                 </Col>
-                <Col {...layoutShort}>
+                <Col {...layoutLong}>
                   <span>分类: <Tag color={article.category.color}>{article.category.name}</Tag></span>
                 </Col>
-                <Col {...layoutShort}>
+                <Col {...layoutLong}>
                 <span>标签: {article.tags.map((tag, idx) => {
                   return (<Tag color={tag.color} key={idx}>{tag.name}</Tag>)
                 })}</span>

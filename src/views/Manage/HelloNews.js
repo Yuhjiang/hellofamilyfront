@@ -147,7 +147,7 @@ class AdminArticles extends Component {
           key: item,
           dataIndex: item,
           render: (text, record) => {
-            return (<a href={`/article/${record.id}`} style={{color: "#000"}}>{record.title}</a>)
+            return (<a href={`/activity/${record.id}`} style={{color: "#000"}}>{record.title}</a>)
           }
         }
       } else {

@@ -213,10 +213,8 @@ class EditUser extends Component {
             label="昵称"
             name="nickname"
             rules={[
-              {
-                required: true,
-                message: "请输入你的昵称!"
-              }
+              {required: true, message: "请输入你的昵称!"},
+              {max: 20, min: 2, message: "昵称长度必须在2-20之内"}
             ]}
           >
             <Input/>

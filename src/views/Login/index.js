@@ -196,10 +196,10 @@ class Register extends Component {
           <Form.Item
             label="昵称"
             name="nickname"
-            rules={[{
-              required: true,
-              message: "请输入你的昵称!"
-            }]}
+            rules={[
+              {required: true, message: "请输入你的昵称!"},
+              {max: 20, min: 2, message: "昵称长度必须在2-20之内"}
+              ]}
           >
             <Input autoComplete="off"/>
           </Form.Item>
@@ -222,10 +222,10 @@ class Register extends Component {
           <Form.Item
             label="用户名"
             name="username"
-            rules={[{
-              required: true,
-              message: '请输入你的用户名!'
-            }]}
+            rules={[
+              {required: true, message: '请输入你的用户名!'},
+              {max: 50, min: 2, message: "用户名长度必须在2-50之内"}
+              ]}
           >
             <Input autoComplete="off"/>
           </Form.Item>

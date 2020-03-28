@@ -84,9 +84,9 @@ class HelloNews extends Component {
                 ]}
               >
                 <List.Item.Meta
-                  title={<a href={`/activity/${item.id}`}>{item.title}</a>}
+                  title={<a href={`/activity/${item.id}`} target="_blank" rel="noopener noreferrer">{item.title}</a>}
                 description={<>
-                <span>发布于: {moment(item.created_date).format("LL")}</span></>}
+                <span>{moment(item.created_date).format("LL")}</span></>}
                 />
                 {item.desc}
               </List.Item>

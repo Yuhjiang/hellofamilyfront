@@ -84,7 +84,7 @@ class Article extends Component {
                 ]}
               >
                 <List.Item.Meta
-                  title={<a href={`/article/${item.id}`}>{item.title}</a>}
+                  title={<a href={`/article/${item.id}`} target="_blank" rel="noopener noreferrer">{item.title}</a>}
                   avatar=<Avatar src={item.owner.avatar} alt={item.owner.nickname} size={48}/>
                 description={<>
                 <span style={{marginRight: 10}}>作者: {item.owner.nickname}</span><span>发布于: {moment(item.created_time).format("LL")}</span></>}

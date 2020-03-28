@@ -306,7 +306,7 @@ class TimelineActivity extends Component {
                     <List.Item.Meta
                       title={<span>
                         <Tag color={item.category.color}>{item.category.name}</Tag>
-                        <a href={`/activity/${item.id}`} style={{color: "#000"}}>{item.title}</a>
+                        <a href={`/activity/${item.id}`} style={{color: "#000"}} target="_blank" rel="noopener noreferrer">{item.title}</a>
                       </span>}
                       description={<>
                         <span>发布于: {moment(item.created_date).format("LL")}</span></>}

@@ -17,6 +17,7 @@ import {ChromePicker} from "react-color";
 import moment from "moment";
 
 import {getGroups, createGroup, deleteGroup, editGroup} from "../../api/pictures";
+import {getColumnSearchProps} from "../../utils";
 
 const {Option} = Select;
 const basicLayout = {
@@ -57,14 +58,46 @@ class AdminGroups extends Component {
       currentRecord: {},
       editorColor: [],
       deleteLoading: false,
+      searchText: "",
+      searchedColumn: "",
     }
   }
 
   formRef = React.createRef();
+  searchInput = React.createRef();
 
   componentDidMount() {
-    this.getData(0, this.state.limited);
+    this.getData();
   }
+
+  assembleParams = () => {
+    const params = {
+      limited: this.state.limited,
+      offset: this.state.offset,
+      order: "-id",
+    };
+    const {searchText, searchedColumn} = this.state;
+    if (searchText && searchedColumn) {
+      params[searchedColumn] = searchText;
+    }
+
+    return params;
+  };
+
+  handleSearch = (selectKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectKeys[0],
+      searchedColumn: dataIndex,
+    })
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      searchText: "",
+    })
+  };
 
   createColumns = columnKeys => {
     const columns = columnKeys.map(item => {
@@ -106,6 +139,14 @@ class AdminGroups extends Component {
             return (<Tag color={color}>{color}</Tag>)
           }
         }
+      } else if (item === "name_jp" || item === "name_en") {
+        return {
+          title: displayTitle[item],
+          key: item,
+          dataIndex: item,
+          align: "center",
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset)
+        }
       }
       else {
         return {
@@ -142,11 +183,13 @@ class AdminGroups extends Component {
     return columns;
   };
 
-  getData = (offset, limited) => {
+  getData = () => {
     this.setState({
       isLoading: true,
     });
-    getGroups({offset, limited, order: "-id"}).then(resp => {
+
+    const params = this.assembleParams();
+    getGroups(params).then(resp => {
       this.setState({
         dataSource: resp.results,
         total: resp.count,
@@ -171,7 +214,7 @@ class AdminGroups extends Component {
 
     createGroup(newValues).then(resp => {
       message.success("成功添加组合");
-      this.getData(0, this.state.limited);
+      this.getData();
     }).catch(err => {
       message.error(err);
     }).finally(() => {
@@ -210,7 +253,7 @@ class AdminGroups extends Component {
     this.setState({
       offset: (page - 1) * this.state.limited,
     }, () => {
-      this.getData(this.state.offset, this.state.limited);
+      this.getData();
     });
   };
 
@@ -242,7 +285,7 @@ class AdminGroups extends Component {
         deleteLoading: false,
         showDeleteModal: false,
       });
-      this.getData(0, this.state.limited);
+      this.getData();
     })
   };
 
@@ -276,7 +319,7 @@ class AdminGroups extends Component {
       message.error(err);
     }).finally(() => {
       this.onHideEditModal();
-      this.getData(0, this.state.limited);
+      this.getData();
     })
   };
 

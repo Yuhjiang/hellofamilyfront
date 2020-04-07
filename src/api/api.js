@@ -52,13 +52,14 @@ Api.interceptors.response.use(response => {
 const setAuthToken = () => {
   // 更新token
   if (window.localStorage.getItem("refreshToken")) {
+    // 补充token的前缀信息
     refreshToken(window.localStorage.getItem("refreshToken")).then(resp => {
-      window.localStorage.setItem("authToken", resp.access)
+      window.localStorage.setItem("authToken", "HelloFamily " + resp.access)
       }
     )
   } else {
     refreshToken(window.sessionStorage.getItem("refreshToken")).then(resp => {
-        window.sessionStorage.setItem("authToken", resp.access)
+        window.sessionStorage.setItem("authToken", "HelloFamily " + resp.access)
       }
     )
   }

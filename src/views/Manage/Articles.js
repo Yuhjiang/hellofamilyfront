@@ -7,13 +7,13 @@ import {
   Tag,
   Typography,
   message,
-  Input,
   DatePicker,
 } from "antd";
 import moment from "moment";
 
 import {getArticleList, deleteArticle} from "../../api/articles";
 import {SearchOutlined} from "@ant-design/icons";
+import {getColumnSearchProps} from "../../utils";
 
 const {Paragraph} = Typography;
 const {RangePicker} = DatePicker;
@@ -50,6 +50,7 @@ class AdminArticles extends Component {
       endDate: "",
     }
   }
+  searchInput = React.createRef();
 
   componentDidMount() {
     this.getData();
@@ -129,8 +130,6 @@ class AdminArticles extends Component {
     this.setState({
       searchText: selectKeys[0],
       searchedColumn: dataIndex,
-    }, () => {
-      this.getData();
     })
   };
 
@@ -208,7 +207,7 @@ class AdminArticles extends Component {
             return (<a href={`/article/${record.id}`}
                        style={{color: "#000"}}>{record.title}</a>)
           },
-          ...this.getColumnSearchProps(item),
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset),
         }
       } else if (item === "owner") {
         return {
@@ -219,7 +218,7 @@ class AdminArticles extends Component {
           render: text => {
             return (text.nickname)
           },
-          ...this.getColumnSearchProps(item),
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset),
         }
       } else {
         return {
@@ -245,44 +244,6 @@ class AdminArticles extends Component {
     });
     return columns;
   };
-
-  getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
-      <div style={{padding: 8}}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`搜索${displayTitle[dataIndex]}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{width: 188, marginBottom: 8, display: 'block'}}
-        />
-        <Button
-          type="primary"
-          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          icon={<SearchOutlined/>}
-          size="small"
-          style={{width: 90, marginRight: 8}}
-        >
-          搜索
-        </Button>
-        <Button onClick={() => this.handleReset(clearFilters)} size="small"
-                style={{width: 90}}>
-          取消
-        </Button>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined
-      style={{color: filtered ? '#1890ff' : undefined}}/>,
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select());
-
-      }
-    },
-  });
 
   getColumnDateSearchProps = dataIndex => ({
     filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (

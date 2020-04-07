@@ -18,6 +18,7 @@ import {ChromePicker} from "react-color";
 import moment from "moment";
 
 import {getMembers, createMember, editMember, deleteMember, getGroups} from "../../api/pictures";
+import {getColumnSearchProps} from "../../utils";
 
 const {Option} = Select;
 const {Panel} = Collapse;
@@ -43,13 +44,12 @@ const displayTitle = {
 class AdminMembers extends Component {
   constructor(props) {
     super(props);
-    const columns = this.createColumns(["name_jp", "name_en", "joined_time", "graduated_time", "status", "color", "group"]);
     this.state = {
       isLoading: false,
       color: "#fff",
       showAddColorModal: false,
       addLoading: false,
-      columns: columns,
+      columns: [],
       dataSource: [],
       offset: 0,
       limited: 10,
@@ -62,15 +62,32 @@ class AdminMembers extends Component {
       editorColor: [],
       deleteLoading: false,
       groups: []
-    }
+    };
   }
 
   formRef = React.createRef();
 
   componentDidMount() {
-    this.getData(0, this.state.limited);
+    const columns = this.createColumns(["name_jp", "name_en", "joined_time", "graduated_time", "status", "color", "group"]);
+    this.setState({
+      columns: columns
+    });
+    this.getData();
     this.getGroupList();
   }
+
+  assembleParams = () => {
+    const params = {
+      limited: this.state.limited,
+      offset: this.state.offset,
+    };
+    const {searchText, searchedColumn} = this.state;
+    if (searchText && searchedColumn) {
+      params[searchedColumn] = searchText;
+    }
+
+    return params;
+  };
 
   getGroupList = () => {
     getGroups({offset: 0, limited: 100}).then(resp => {
@@ -131,7 +148,16 @@ class AdminMembers extends Component {
           render: (text, record) => {
             const {group} = record;
             return (<Tag color={group.color}>{group.name_jp}</Tag>)
-          }
+          },
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset),
+        }
+      } else if (item === "name_jp" || item === "name_en") {
+        return {
+          title: displayTitle[item],
+          key: item,
+          dataIndex: item,
+          align: "center",
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset),
         }
       }
       else {
@@ -169,11 +195,13 @@ class AdminMembers extends Component {
     return columns;
   };
 
-  getData = (offset, limited) => {
+  getData = () => {
     this.setState({
       isLoading: true,
     });
-    getMembers({offset, limited, order: "-id"}).then(resp => {
+
+    const params = this.assembleParams();
+    getMembers(params).then(resp => {
       this.setState({
         dataSource: resp.results,
         total: resp.count,
@@ -200,7 +228,7 @@ class AdminMembers extends Component {
 
     createMember(newValues).then(resp => {
       message.success("成功添加成员");
-      this.getData(0, this.state.limited);
+      this.getData();
     }).catch(err => {
       message.error(err);
     }).finally(() => {
@@ -239,7 +267,7 @@ class AdminMembers extends Component {
     this.setState({
       offset: (page - 1) * this.state.limited,
     }, () => {
-      this.getData(this.state.offset, this.state.limited);
+      this.getData();
     });
   };
 
@@ -271,7 +299,7 @@ class AdminMembers extends Component {
         deleteLoading: false,
         showDeleteModal: false,
       });
-      this.getData(0, this.state.limited);
+      this.getData();
     })
   };
 
@@ -307,7 +335,22 @@ class AdminMembers extends Component {
       message.error(err);
     }).finally(() => {
       this.onHideEditModal();
-      this.getData(0, this.state.limited);
+      this.getData();
+    })
+  };
+
+  handleSearch = (selectKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectKeys[0],
+      searchedColumn: dataIndex,
+    })
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      searchText: "",
     })
   };
 
@@ -325,7 +368,7 @@ class AdminMembers extends Component {
           )}
         >
           <Form
-            name="addMember"
+            name="editMember"
             onFinish={this.onFinish}
             onFinishFailed={this.onFinishFailed}
             ref={this.formRef}

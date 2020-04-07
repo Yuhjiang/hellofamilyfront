@@ -19,6 +19,7 @@ import {
   editTag,
   deleteTag
 } from "../../api/articles";
+import {getColumnSearchProps} from "../../utils";
 
 const displayTitle = {
   "name": "标签名",
@@ -31,7 +32,7 @@ const buttonLayout = {
 };
 
 const inputLayout = {
-  xs: 24, sm: 24, md: 10, lg:10
+  xs: 24, sm: 24, md: 10, lg: 10
 };
 
 class AdminTags extends Component {
@@ -62,19 +63,32 @@ class AdminTags extends Component {
   }
 
   componentDidMount() {
-    this.getData(0, this.state.limited);
+    this.getData();
   }
 
-  getData = (offset, limited) => {
+  assembleParams = () => {
+    const params = {
+      limited: this.state.limited,
+      offset: this.state.offset,
+    };
+    const {searchText, searchedColumn} = this.state;
+    if (searchText && searchedColumn) {
+      params[searchedColumn] = searchText;
+    }
+
+    return params;
+  };
+
+  getData = () => {
     this.setState({
       isLoading: true,
     });
 
-    getTagList({offset, limited}).then(resp => {
+    const params = this.assembleParams();
+    getTagList(params).then(resp => {
       console.log(resp);
       this.setState({
         total: resp.count,
-        offset: offset,
         dataSource: resp.results,
       })
     }).catch(err => {
@@ -110,6 +124,14 @@ class AdminTags extends Component {
             return (<Tag
               color={post_count >= 10 ? "red" : "green"}>{post_count}</Tag>)
           }
+        }
+      } else if (item === "name") {
+        return {
+          title: displayTitle[item],
+          key: item,
+          dataIndex: item,
+          align: "center",
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset),
         }
       } else {
         return {
@@ -162,7 +184,7 @@ class AdminTags extends Component {
       this.formRef.current.setFieldsValue({
         name: "",
       });
-      this.getData(0, this.state.limited);
+      this.getData();
     })
 
   };
@@ -196,7 +218,7 @@ class AdminTags extends Component {
     this.setState({
       offset: (page - 1) * this.state.limited,
     }, () => {
-      this.getData(this.state.offset, this.state.limited);
+      this.getData();
     });
   };
 
@@ -228,7 +250,7 @@ class AdminTags extends Component {
       message.error(err);
     }).finally(() => {
       this.onHideEditModal();
-      this.getData(0, this.state.limited);
+      this.getData();
     })
   };
 
@@ -245,7 +267,7 @@ class AdminTags extends Component {
         deleteLoading: false,
         showDeleteModal: false,
       });
-      this.getData(0, this.state.limited);
+      this.getData();
     })
   };
 
@@ -258,6 +280,21 @@ class AdminTags extends Component {
   colorChange = (color) => {
     this.setState({
       editColor: color,
+    })
+  };
+
+  handleSearch = (selectKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectKeys[0],
+      searchedColumn: dataIndex,
+    })
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      searchText: "",
     })
   };
 

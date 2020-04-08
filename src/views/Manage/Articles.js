@@ -13,7 +13,7 @@ import moment from "moment";
 
 import {getArticleList, deleteArticle} from "../../api/articles";
 import {SearchOutlined} from "@ant-design/icons";
-import {getColumnSearchProps} from "../../utils";
+import {getColumnSearchProps, getColumnDateSearchProps} from "../../utils";
 
 const {Paragraph} = Typography;
 const {RangePicker} = DatePicker;
@@ -51,6 +51,7 @@ class AdminArticles extends Component {
     }
   }
   searchInput = React.createRef();
+  dateSearch = React.createRef();
 
   componentDidMount() {
     this.getData();
@@ -142,23 +143,26 @@ class AdminArticles extends Component {
 
   handleDateSearch = (selectKeys, confirm, dataIndex) => {
     confirm();
-    if (selectKeys[0].length === 2) {
+    if (selectKeys.length === 2) {
       this.setState({
-        startDate: selectKeys[0][0] + " 23:59:59",
-        endDate: selectKeys[0][1] + " 23:59:59",
-      }, () => {
-        this.getData();
+        startDate: selectKeys[0] + " 23:59:59",
+        endDate: selectKeys[1] + " 23:59:59",
       })
     } else {
       this.setState({
         startDate: "",
         endDate: "",
-      }, () => {
-        this.getData();
       })
     }
   };
 
+  handleDateReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      startDate: "",
+      endDate: "",
+    })
+  };
 
   createColumns = columnKeys => {
     const columns = columnKeys.map(item => {
@@ -184,7 +188,7 @@ class AdminArticles extends Component {
           render: (text, record) => {
             return moment(record.created_time).format("LL");
           },
-          ...this.getColumnDateSearchProps(item),
+          ...getColumnDateSearchProps(displayTitle, item, this.handleDateSearch, this.handleDateReset),
         }
       } else if (item === "desc") {
         return {
@@ -244,30 +248,6 @@ class AdminArticles extends Component {
     });
     return columns;
   };
-
-  getColumnDateSearchProps = dataIndex => ({
-    filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
-      <div style={{padding: 8}}>
-        <RangePicker
-          ref={node => {
-            this.searchInput = node;
-          }}
-          allowClear
-          onChange={(dates, dateStrings) => setSelectedKeys(dates ? [dateStrings] : [])}
-          style={{marginRight: 8}}
-        />
-        <Button
-          type="primary"
-          onClick={() => this.handleDateSearch(selectedKeys, confirm, dataIndex)}
-        >
-          搜索
-        </Button>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined
-      style={{color: filtered ? "#1890ff" : undefined}}
-    />,
-  });
 
   onPageChange = page => {
     this.setState({

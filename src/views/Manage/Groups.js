@@ -16,8 +16,13 @@ import {
 import {ChromePicker} from "react-color";
 import moment from "moment";
 
-import {getGroups, createGroup, deleteGroup, editGroup} from "../../api/pictures";
-import {getColumnSearchProps} from "../../utils";
+import {
+  getGroups,
+  createGroup,
+  deleteGroup,
+  editGroup
+} from "../../api/pictures";
+import {getColumnSearchProps, getColumnDateSearchProps} from "../../utils";
 
 const {Option} = Select;
 const basicLayout = {
@@ -60,6 +65,8 @@ class AdminGroups extends Component {
       deleteLoading: false,
       searchText: "",
       searchedColumn: "",
+      startDate: "",
+      endDate: "",
     }
   }
 
@@ -76,9 +83,13 @@ class AdminGroups extends Component {
       offset: this.state.offset,
       order: "-id",
     };
-    const {searchText, searchedColumn} = this.state;
+    const {searchText, searchedColumn, startDate, endDate} = this.state;
     if (searchText && searchedColumn) {
       params[searchedColumn] = searchText;
+    }
+    if (startDate && endDate) {
+      params['start_date'] = startDate;
+      params['end_date'] = endDate;
     }
 
     return params;
@@ -99,6 +110,29 @@ class AdminGroups extends Component {
     })
   };
 
+  handleDateSearch = (selectKeys, confirm, dataIndex) => {
+    confirm();
+    if (selectKeys.length === 2) {
+      this.setState({
+        startDate: selectKeys[0] + " 23:59:59",
+        endDate: selectKeys[1] + " 23:59:59",
+      })
+    } else {
+      this.setState({
+        startDate: "",
+        endDate: "",
+      })
+    }
+  };
+
+  handleDateReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      startDate: "",
+      endDate: "",
+    })
+  };
+
   createColumns = columnKeys => {
     const columns = columnKeys.map(item => {
       if (item === "created_time") {
@@ -109,7 +143,8 @@ class AdminGroups extends Component {
           align: "center",
           render: (text, record) => {
             return (<span>{moment(record.created_time).format("LL")}</span>)
-          }
+          },
+          ...getColumnDateSearchProps(displayTitle, item, this.handleDateSearch, this.handleDateReset)
         }
       } else if (item === "status") {
         return {
@@ -127,8 +162,7 @@ class AdminGroups extends Component {
             )
           }
         }
-      }
-      else if (item === "color") {
+      } else if (item === "color") {
         return {
           title: displayTitle[item],
           key: item,
@@ -147,8 +181,7 @@ class AdminGroups extends Component {
           align: "center",
           ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset)
         }
-      }
-      else {
+      } else {
         return {
           title: displayTitle[item],
           key: item,

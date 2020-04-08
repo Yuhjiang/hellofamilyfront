@@ -18,7 +18,7 @@ import {ChromePicker} from "react-color";
 import moment from "moment";
 
 import {getMembers, createMember, editMember, deleteMember, getGroups} from "../../api/pictures";
-import {getColumnSearchProps} from "../../utils";
+import {getColumnSearchProps, getColumnDateSearchProps} from "../../utils";
 
 const {Option} = Select;
 const {Panel} = Collapse;
@@ -81,9 +81,13 @@ class AdminMembers extends Component {
       limited: this.state.limited,
       offset: this.state.offset,
     };
-    const {searchText, searchedColumn} = this.state;
+    const {searchText, searchedColumn, startDate, endDate} = this.state;
     if (searchText && searchedColumn) {
       params[searchedColumn] = searchText;
+    }
+    if (startDate && endDate) {
+      params['start_date'] = startDate;
+      params['end_date'] = endDate;
     }
 
     return params;
@@ -109,7 +113,8 @@ class AdminMembers extends Component {
           align: "center",
           render: (text, record) => {
             return (<span>{record[item] ? moment(record[item]).format("LL") : "-"}</span>)
-          }
+          },
+          ...getColumnDateSearchProps(displayTitle, item, this.handleDateSearch, this.handleDateReset)
         }
       } else if (item === "status") {
         return {
@@ -351,6 +356,29 @@ class AdminMembers extends Component {
     clearFilters();
     this.setState({
       searchText: "",
+    })
+  };
+
+  handleDateSearch = (selectKeys, confirm, dataIndex) => {
+    confirm();
+    if (selectKeys.length === 2) {
+      this.setState({
+        startDate: selectKeys[0] + " 23:59:59",
+        endDate: selectKeys[1] + " 23:59:59",
+      })
+    } else {
+      this.setState({
+        startDate: "",
+        endDate: "",
+      })
+    }
+  };
+
+  handleDateReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      startDate: "",
+      endDate: "",
     })
   };
 

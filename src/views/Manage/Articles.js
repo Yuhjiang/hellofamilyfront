@@ -1,10 +1,22 @@
 import React, {Component} from 'react';
-import {Card, Table, Button, Modal, Tag, Typography, message} from "antd";
+import {
+  Card,
+  Table,
+  Button,
+  Modal,
+  Tag,
+  Typography,
+  message,
+  DatePicker,
+} from "antd";
 import moment from "moment";
 
 import {getArticleList, deleteArticle} from "../../api/articles";
+import {SearchOutlined} from "@ant-design/icons";
+import {getColumnSearchProps, getColumnDateSearchProps} from "../../utils";
 
 const {Paragraph} = Typography;
+const {RangePicker} = DatePicker;
 
 const displayTitle = {
   "title": "标题",
@@ -31,20 +43,45 @@ class AdminArticles extends Component {
       currentRecord: {
         title: "",
         owner: ""
-      }
+      },
+      searchText: "",
+      searchedColumn: "",
+      startDate: "",
+      endDate: "",
     }
   }
+  searchInput = React.createRef();
+  dateSearch = React.createRef();
 
   componentDidMount() {
-    this.getData(0, this.state.limited);
+    this.getData();
   }
 
-  getData = (offset, limited) => {
+  assembleParams = () => {
+    const params = {
+      limited: this.state.limited,
+      offset: this.state.offset,
+    };
+    const {searchText, searchedColumn, startDate, endDate} = this.state;
+    if (searchText && searchedColumn) {
+      params[searchedColumn] = searchText;
+    }
+    if (startDate && endDate) {
+      params['start_date'] = startDate;
+      params['end_date'] = endDate;
+    }
+
+    return params;
+  };
+
+  getData = () => {
     this.setState({
       isLoading: true,
     });
 
-    getArticleList({offset: offset, limited: limited}).then(resp => {
+    const params = this.assembleParams();
+
+    getArticleList(params).then(resp => {
       this.setState({
         dataSource: resp.results,
         total: resp.count,
@@ -78,7 +115,7 @@ class AdminArticles extends Component {
 
     deleteArticle(this.state.currentRecord.id).then(resp => {
       message.success("成功删除文章");
-      this.getData(0, this.state.limited);
+      this.getData();
     }).catch(err => {
       message.error(err);
     }).finally(() => {
@@ -86,6 +123,44 @@ class AdminArticles extends Component {
         confirmLoading: false,
         deleteModalVisible: false,
       })
+    })
+  };
+
+  handleSearch = (selectKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectKeys[0],
+      searchedColumn: dataIndex,
+    })
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      searchText: "",
+    })
+  };
+
+  handleDateSearch = (selectKeys, confirm, dataIndex) => {
+    confirm();
+    if (selectKeys.length === 2) {
+      this.setState({
+        startDate: selectKeys[0] + " 23:59:59",
+        endDate: selectKeys[1] + " 23:59:59",
+      })
+    } else {
+      this.setState({
+        startDate: "",
+        endDate: "",
+      })
+    }
+  };
+
+  handleDateReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      startDate: "",
+      endDate: "",
     })
   };
 
@@ -99,7 +174,8 @@ class AdminArticles extends Component {
           align: "center",
           render: (text, record) => {
             return (
-              <Tag color={record.amount >= 10 ? "red" : "green"}>{record.amount}</Tag>
+              <Tag
+                color={record.amount >= 10 ? "red" : "green"}>{record.amount}</Tag>
             )
           }
         }
@@ -111,7 +187,8 @@ class AdminArticles extends Component {
           align: "center",
           render: (text, record) => {
             return moment(record.created_time).format("LL");
-          }
+          },
+          ...getColumnDateSearchProps(displayTitle, item, this.handleDateSearch, this.handleDateReset),
         }
       } else if (item === "desc") {
         return {
@@ -120,7 +197,8 @@ class AdminArticles extends Component {
           dataIndex: item,
           align: "center",
           render: (text, record) => {
-            return <Paragraph ellipsis={{rows: 1, expandable: true}}>{record.desc}</Paragraph>;
+            return <Paragraph
+              ellipsis={{rows: 1, expandable: true}}>{record.desc}</Paragraph>;
           }
         }
       } else if (item === "title") {
@@ -130,8 +208,21 @@ class AdminArticles extends Component {
           dataIndex: item,
           align: "center",
           render: (text, record) => {
-            return (<a href={`/article/${record.id}`} style={{color: "#000"}}>{record.title}</a>)
-          }
+            return (<a href={`/article/${record.id}`}
+                       style={{color: "#000"}}>{record.title}</a>)
+          },
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset),
+        }
+      } else if (item === "owner") {
+        return {
+          title: displayTitle[item],
+          key: item,
+          dataIndex: item,
+          align: "center",
+          render: text => {
+            return (text.nickname)
+          },
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset),
         }
       } else {
         return {
@@ -145,6 +236,7 @@ class AdminArticles extends Component {
     columns.push({
       title: "操作",
       key: "operator",
+      align: "center",
       render: (text, record) => {
         return (
           <Button
@@ -161,7 +253,7 @@ class AdminArticles extends Component {
     this.setState({
       offset: (page - 1) * this.state.limited,
     }, () => {
-      this.getData(this.state.offset, this.state.limited);
+      this.getData();
     });
   };
 

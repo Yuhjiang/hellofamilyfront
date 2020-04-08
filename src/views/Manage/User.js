@@ -3,6 +3,7 @@ import {Button, Card, Table, Tag, Modal, message} from "antd";
 import moment from "moment";
 
 import {getUserList, deleteUserById} from "../../api/user";
+import {getColumnSearchProps} from "../../utils";
 
 const displayTitle = {
   username: "用户名",
@@ -30,23 +31,55 @@ class AdminUser extends Component {
         "username": "",
         "nickname": "",
       },
+      searchText: "",
+      searchedColumn: "",
     }
   };
 
+  searchInput = React.createRef();
+
   componentDidMount() {
-    this.getData(0, this.state.limited);
+    this.getData();
   }
 
-  getData = (offset, limited) => {
+  assembleParams = () => {
+    const params = {
+      limited: this.state.limited,
+      offset: this.state.offset,
+    };
+    const {searchText, searchedColumn} = this.state;
+    if (searchText && searchedColumn) {
+      params[searchedColumn] = searchText;
+    }
+
+    return params;
+  };
+
+  handleSearch = (selectKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectKeys[0],
+      searchedColumn: dataIndex,
+    })
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({
+      searchText: "",
+    })
+  };
+
+  getData = () => {
     this.setState({
       isLoading: true,
     });
 
-    getUserList({offset, limited}).then(resp =>{
+    const params = this.assembleParams();
+    getUserList(params).then(resp =>{
       this.setState({
         dataSource: resp.results,
-      offset: offset,
-      total: resp.count,
+        total: resp.count,
       });
     }).catch(err => {
       message.error(err);
@@ -85,6 +118,14 @@ class AdminUser extends Component {
                 <Tag color="green">普通用户</Tag>
             )
           }
+        }
+      } else if (item === "username" || item === "email" || item === "nickname") {
+        return {
+          title: displayTitle[item],
+          key: item,
+          dataIndex: item,
+          align: "center",
+          ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset)
         }
       }
       else {
@@ -125,7 +166,7 @@ class AdminUser extends Component {
     this.setState({
       offset: (page - 1) * this.state.limited,
     }, () => {
-      this.getData(this.state.offset, this.state.limited);
+      this.getData();
     });
   };
 
@@ -149,7 +190,7 @@ class AdminUser extends Component {
 
     deleteUserById(this.state.currentRecord.id).then(resp => {
       message.success("删除成功");
-      this.getData(0, this.state.limited);
+      this.getData();
     }).catch(err => {
       message.error(err);
     }).finally(() => {

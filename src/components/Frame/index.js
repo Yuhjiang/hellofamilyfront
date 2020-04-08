@@ -190,7 +190,7 @@ class Frame extends Component {
             </Row>
           </Header>
           <Layout style={{marginTop: 80}}>
-            <Content style={{backgroundColor: "#f0f2f5"}}>
+            <Content style={{backgroundColor: "#f0f2f5", padding: "0 0 24px 24px"}}>
               {this.props.children}
             </Content>
             <Sider

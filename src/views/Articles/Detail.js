@@ -8,6 +8,7 @@ import {getArticleById} from "../../api/articles";
 import CommentList from "./CommentList";
 import AddComment from "./AddComment";
 import {setArticle, getComments} from "../../actions/comment";
+import "./article.less";
 
 const mapStateToProps = state => {
   return {

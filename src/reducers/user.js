@@ -21,6 +21,7 @@ const anonymousState = {
   isLogin: false,
   isLoading: false,
   isAdmin: false,
+  login_time: undefined,
 };
 
 export default (state = initState, action) => {
@@ -40,7 +41,7 @@ export default (state = initState, action) => {
       };
     case actionTypes.LOGOUT:
       clearTokensAndUserInfo();
-      message.success("成功退出登录");
+      message.success(action.payload.message);
       return anonymousState;
     default:
       return state;

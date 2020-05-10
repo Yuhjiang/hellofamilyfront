@@ -76,8 +76,7 @@ class UserProfile extends Component {
           <Descriptions title="社交平台">
             <Descriptions.Item label="微博">
               {/* eslint-disable-next-line react/jsx-no-target-blank */}
-              <a href="https://weibo.com/1737276257/profile" rel="noopener noreferer"
-                 target="_blank">裸夏SN</a>
+              <a href="https://weibo.com/1737276257/profile" target="_blank" rel="noreferrer noopener">裸夏SN</a>
             </Descriptions.Item>
           </Descriptions>
         </Card>

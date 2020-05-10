@@ -16,6 +16,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {GithubOutlined, WeiboCircleOutlined} from "@ant-design/icons";
+import moment from "moment";
 
 import {logout} from "../../actions/user"
 import logo from "./hellofamily.png";
@@ -25,6 +26,7 @@ import {wsURL} from "../../config";
 const {Header, Content, Footer, Sider} = Layout;
 const windowWidth = document.documentElement.clientWidth;
 const minWidth = 720;
+const OVERTIME = 5 * 24 * 60 * 60;   // 登录有效时间为5天
 
 const mapStateToProps = state => {
   return {
@@ -32,7 +34,8 @@ const mapStateToProps = state => {
     isLogin: state.user.isLogin,
     avatar: state.user.avatar ||
       "http://cdn.hellofamily.club/logo%E7%9A%84%E5%89%AF%E6%9C%AC_Za0oX70.png",
-    nickname: state.user.nickname
+    nickname: state.user.nickname,
+    loginTime: state.user.login_time ? moment(state.user.login_time) : undefined,
   }
 };
 
@@ -41,6 +44,12 @@ const mapStateToProps = state => {
 class Frame extends Component {
   static propTypes = {
     menus: PropTypes.array,
+    userId: PropTypes.number,
+    isLogin: PropTypes.bool,
+    avatar: PropTypes.string,
+    nickname: PropTypes.string,
+    loginTime: PropTypes.object,
+    logout: PropTypes.func,
   };
 
   constructor(props) {
@@ -49,7 +58,9 @@ class Frame extends Component {
       socket: new WebSocket(wsURL + "notification/" +
         (this.props.userId || 0)),
       displayLogo: windowWidth > minWidth,
-    }
+    };
+    this.checkLoginStatus();
+    this.timeInterval = window.setInterval(this.checkLoginStatus, 5 * 1000);
   }
 
   componentDidMount() {
@@ -58,6 +69,18 @@ class Frame extends Component {
       this.displayLogoOrNot();
     };
   }
+
+  componentWillUnmount() {
+    window.clearInterval(this.timeInterval);
+  }
+
+  checkLoginStatus = () => {
+    const currentTime = moment();
+    const loginTime = this.props.loginTime;
+    if (loginTime && currentTime.diff(loginTime, 'seconds') > OVERTIME) {
+      this.props.logout("登录超时，请重新登录");
+    }
+  };
 
   displayLogoOrNot = () => {
     const windowWidth = document.documentElement.clientWidth;
@@ -114,7 +137,7 @@ class Frame extends Component {
         {
           this.props.isLogin
             ?
-            <Menu.Item key="/" onClick={this.props.logout}>
+            <Menu.Item key="/" onClick={this.props.logout("成功退出登录状态")}>
               <div>退出登录</div>
             </Menu.Item>
             :
@@ -206,7 +229,7 @@ class Frame extends Component {
                   <WeiboCircleOutlined style={{margin: "0 10px 0 10px"}}/>
                     {/* eslint-disable-next-line react/jsx-no-target-blank */}
                     <a href="https://weibo.com/p/1005051737276257/"
-                       target="_blank" style={{color: "#000"}}>
+                       target="_blank" rel="noreferrer noopener" style={{color: "#000"}}>
                     裸夏SN
                   </a>
                   </span>

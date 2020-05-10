@@ -12,11 +12,9 @@ import {
 import moment from "moment";
 
 import {getArticleList, deleteArticle} from "../../api/articles";
-import {SearchOutlined} from "@ant-design/icons";
 import {getColumnSearchProps, getColumnDateSearchProps} from "../../utils";
 
 const {Paragraph} = Typography;
-const {RangePicker} = DatePicker;
 
 const displayTitle = {
   "title": "标题",
@@ -50,6 +48,7 @@ class AdminArticles extends Component {
       endDate: "",
     }
   }
+
   searchInput = React.createRef();
   dateSearch = React.createRef();
 

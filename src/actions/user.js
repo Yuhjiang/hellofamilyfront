@@ -55,9 +55,12 @@ const loginFailed = () => {
 };
 
 
-export const logout = () => {
+export const logout = (message) => {
   return {
-    type: actionTypes.LOGOUT
+    type: actionTypes.LOGOUT,
+    payload: {
+      message,
+    }
   }
 };
 

@@ -68,7 +68,7 @@ class AddArticle extends Component {
   };
 
   setCategory = () => {
-    getCategoryList().then(resp => {
+    getCategoryList({limited: 100}).then(resp => {
       this.setState({
         categories: resp.results,
       })
@@ -78,7 +78,7 @@ class AddArticle extends Component {
   };
 
   setTag = () => {
-    getTagList().then(resp => {
+    getTagList({limited: 100}).then(resp => {
       this.setState({
         tags: resp.results,
       })

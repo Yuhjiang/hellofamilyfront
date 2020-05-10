@@ -3,6 +3,7 @@ import {message} from "antd";
 
 import {URL} from "../config";
 import {refreshToken} from "./pictures";
+import {clearTokensAndUserInfo} from "../utils";
 
 const Api = axios.create({
   baseURL: URL,
@@ -24,7 +25,6 @@ Api.interceptors.request.use(config => {
 Api.interceptors.response.use(response => {
   if (response.status === 200 || response.status === 201 || response.status === 204) {
     if (response.data.status === 302) {
-      console.log(response.data);
       setTimeout(() => {window.location=response.data.data.url}, 2000);
       return Promise.reject(response.data.errMsg);
     }
@@ -41,7 +41,16 @@ Api.interceptors.response.use(response => {
 }, error => {
   if (error.response.status === 401) {
     // token过期，重新更新cookie
-    setAuthToken();
+    if (!error.response.data.messages) {
+      clearTokensAndUserInfo();
+      setTimeout(() => {window.location='/login'}, 2000);
+      message.warn("登录状态已过期，请重新登录");
+    }
+    else {
+      setAuthToken();
+      window.location.reload();
+      message.info("请重新执行操作");
+    }
   }
   else {
     return Promise.reject(error);

@@ -29,6 +29,11 @@ export const getPictures = (params) => {
   })
 };
 
+export const downloadPictures = (data) => {
+  return picturesApi.post("/api/download_pictures/", data,
+    {responseType: "blob"})
+}
+
 export const getPicturesTimeline = params => {
   return picturesApi.get("api/pictures/timeline/", {
     params,

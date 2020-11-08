@@ -87,14 +87,21 @@ class Pictures extends Component {
     })
   };
 
+  handleOnDownloadPictures = () => {
+
+  }
+
   handleOnPageChange = (pageNumber) => {
     this.setState({
       page: pageNumber
     });
     this.getData({
-      limit: this.state.limit, page: pageNumber,
-      member_first: this.state.memberFirst, group_first: this.state.groupFirst,
-      member_second: this.state.memberSecond, group_second: this.state.groupSecond
+      limit: this.state.limit,
+      page: pageNumber,
+      member_first: this.state.memberFirst,
+      group_first: this.state.groupFirst,
+      member_second: this.state.memberSecond,
+      group_second: this.state.groupSecond
     })
   };
 
@@ -184,9 +191,12 @@ class Pictures extends Component {
       }
     }, () => {
       this.getData({
-        limit: this.state.limit, page: this.state.page,
-        member_first: this.state.memberFirst, group_first: this.state.groupFirst,
-        member_second: this.state.memberSecond, group_second: this.state.groupSecond
+        limit: this.state.limit,
+        page: this.state.page,
+        member_first: this.state.memberFirst,
+        group_first: this.state.groupFirst,
+        member_second: this.state.memberSecond,
+        group_second: this.state.groupSecond
       })
     })
   };
@@ -204,88 +214,99 @@ class Pictures extends Component {
           <Card style={{width: "100%"}} title="选择你想找的组合或成员"
                 extra={<Button
                   onClick={this.handleViewChange}>{this.state.timelineOrGrid ? "切换成默认" : "切换成时间线"}</Button>}>
-            <Form name="member_select" onFinish={this.handleOnSubmit} ref={this.formRef}>
-              <Form.Item name="select_first">
-                <Row>
-                  <Col {...colStyle}>
-                    <Form.Item name="groupFirst">
-                      <Select
-                        style={{width: "90%"}}
-                        onChange={this.handleOnGroupChange.bind(this, "groupFirst")}
-                        placeholder="选择组合"
-                        allowClear={true}
-                      >
-                        {this.state.groupFirstList.map(group => (
-                          <Option key={group.id}
-                                  value={group.id}>{group.name_jp}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col {...colStyle}>
-                    <Form.Item name="memberFirst">
-                      <Select
-                        style={{width: "90%"}}
-                        onChange={this.handleOnMemberChange}
-                        placeholder="选择成员"
-                        allowClear={true}
-                        value={this.state.memberFirst}
-                      >
-                        {this.state.memberFirstList.map(member => (
-                          <Option key={member.id}
-                                  value={member.id}>{member.name_jp}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col {...colStyle}>
-                    <Form.Item name="groupSecond">
-                      <Select
-                        style={{width: "90%"}}
-                        onChange={this.handleOnGroupChange.bind(this, "groupSecond")}
-                        placeholder="选择组合"
-                        allowClear={true}
-                      >
-                        {this.state.groupSecondList.map(group => (
-                          <Option key={group.id}
-                                  value={group.id}>{group.name_jp}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col {...colStyle}>
-                    <Form.Item name="memberSecond">
-                      <Select
-                        style={{width: "90%"}}
-                        onChange={this.handleOnMemberChange}
-                        placeholder="选择成员"
-                        allowClear={true}
-                        value={this.state.memberSecond}
-                      >
-                        {this.state.memberSecondList.map(member => (
-                          <Option key={member.id}
-                                  value={member.id}>{member.name_jp}</Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form.Item>
-              <Form.Item>
-                <Button htmlType="submit" type="primary">
-                  确认
-                </Button>
-              </Form.Item>
+            <Form name="member_select" onFinish={this.handleOnSubmit}
+                  ref={this.formRef}>
+              <Row>
+                <Col {...colStyle}>
+                  <Form.Item name="groupFirst">
+                    <Select
+                      style={{width: "90%"}}
+                      onChange={this.handleOnGroupChange.bind(this, "groupFirst")}
+                      placeholder="选择组合"
+                      allowClear={true}
+                    >
+                      {this.state.groupFirstList.map(group => (
+                        <Option key={group.id}
+                                value={group.id}>{group.name_jp}</Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col {...colStyle}>
+                  <Form.Item name="memberFirst">
+                    <Select
+                      style={{width: "90%"}}
+                      onChange={this.handleOnMemberChange}
+                      placeholder="选择成员"
+                      allowClear={true}
+                      value={this.state.memberFirst}
+                    >
+                      {this.state.memberFirstList.map(member => (
+                        <Option key={member.id}
+                                value={member.id}>{member.name_jp}</Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col {...colStyle}>
+                  <Form.Item name="groupSecond">
+                    <Select
+                      style={{width: "90%"}}
+                      onChange={this.handleOnGroupChange.bind(this, "groupSecond")}
+                      placeholder="选择组合"
+                      allowClear={true}
+                    >
+                      {this.state.groupSecondList.map(group => (
+                        <Option key={group.id}
+                                value={group.id}>{group.name_jp}</Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col {...colStyle}>
+                  <Form.Item name="memberSecond">
+                    <Select
+                      style={{width: "90%"}}
+                      onChange={this.handleOnMemberChange}
+                      placeholder="选择成员"
+                      allowClear={true}
+                      value={this.state.memberSecond}
+                    >
+                      {this.state.memberSecondList.map(member => (
+                        <Option key={member.id}
+                                value={member.id}>{member.name_jp}</Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={8}>
+                  <Form.Item>
+                    <Button htmlType="submit" type="primary">
+                      确认
+                    </Button>
+                  </Form.Item>
+                </Col>
+                <Col span={8} offset={8}>
+                  <Form.Item style={{float: "right"}}>
+                    <Button type="primary" onClick={this.handleOnDownloadPictures}>
+                      下载当前页面图片
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
             </Form>
           </Card>
         </Row>
         <Row style={{marginTop: 10, backgroundColor: "#fff", width: "100%"}}>
           <div style={{width: "100%"}}>
-          <Spin spinning={this.state.isLoading} size="large" tip="加载图片中...">
-            {this.state.timelineOrGrid ? <TimelinePicture pictures={this.state.pictures}/> :
-              <CardGridPictures pictures={this.state.pictures}/>}
-            <BackTop/>
-          </Spin>
+            <Spin spinning={this.state.isLoading} size="large" tip="加载图片中...">
+              {this.state.timelineOrGrid ?
+                <TimelinePicture pictures={this.state.pictures}/> :
+                <CardGridPictures pictures={this.state.pictures}/>}
+              <BackTop/>
+            </Spin>
           </div>
         </Row>
         <Row>

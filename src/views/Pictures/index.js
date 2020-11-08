@@ -1,20 +1,20 @@
 // 展示偶像照片的视图
 import React, {Component} from 'react';
 import {
+  BackTop,
+  Button,
   Card,
+  Col,
+  Form,
   message,
   Pagination,
-  Form,
-  Select,
   Row,
-  Button,
+  Select,
   Spin,
-  Col,
-  BackTop,
 } from "antd";
 
-import {getPictures, getGroups, getMembers} from "../../api";
-import {getPicturesTimeline} from "../../api/pictures";
+import {getGroups, getMembers, getPictures} from "../../api";
+import {downloadPictures, getPicturesTimeline} from "../../api/pictures";
 import CardGridPictures from "./CardGridPictures";
 import TimelinePicture from "./TimelinePictures";
 
@@ -88,7 +88,22 @@ class Pictures extends Component {
   };
 
   handleOnDownloadPictures = () => {
-
+    const pictures = this.state.pictures.map(pic => ({name: pic.name, url: pic.url}));
+    console.log(pictures);
+    downloadPictures({picture_list: pictures}).then(resp => {
+      console.log(resp);
+      const dom = document.createElement("a");
+      dom.href = window.URL.createObjectURL(resp);
+      dom.download = decodeURI("图片.zip");
+      dom.style.display = "none";
+      document.body.appendChild(dom);
+      dom.click();
+      dom.parentNode.removeChild(dom);
+      message.success("下载成功");
+    }).catch(err => {
+      console.log(err);
+      message.error("下载失败");
+    })
   }
 
   handleOnPageChange = (pageNumber) => {

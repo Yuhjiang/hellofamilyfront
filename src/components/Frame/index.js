@@ -120,6 +120,10 @@ class Frame extends Component {
     };
   };
 
+  onClickLogout = () => {
+    this.props.logout('成功退出登录状态');
+  }
+
   renderDropdown = () => {
     // 右上角下拉框功能
     const menu = (
@@ -137,7 +141,7 @@ class Frame extends Component {
         {
           this.props.isLogin
             ?
-            <Menu.Item key="/" onClick={this.props.logout("成功退出登录状态")}>
+            <Menu.Item key="/" onClick={this.onClickLogout}>
               <div>退出登录</div>
             </Menu.Item>
             :

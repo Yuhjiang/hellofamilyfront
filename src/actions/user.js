@@ -74,7 +74,7 @@ export const login = (data) => {
         authToken,
         refreshToken,
         ...userInfo
-      } = resp.data;
+      } = resp;
       if (data.remember === true) {
         // 用户选中记住我时，持久化存储
         setLocalStorage({
@@ -93,7 +93,7 @@ export const login = (data) => {
       dispatch(loginSuccess(userInfo));
       message.success("成功登录");
     }).catch(err => {
-      message.error("用户名或密码错误");
+      message.error(err.message);
       dispatch(loginFailed());
     });
   };

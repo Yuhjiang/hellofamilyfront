@@ -13,8 +13,7 @@ import {
   Spin,
 } from "antd";
 
-import {getGroups, getMembers, getPictures} from "../../api";
-import {downloadPictures, getPicturesTimeline} from "../../api/pictures";
+import {downloadPictures, getPicturesTimeline, getGroups, getMembers, getPictures} from "../../api/pictures";
 import CardGridPictures from "./CardGridPictures";
 import TimelinePicture from "./TimelinePictures";
 

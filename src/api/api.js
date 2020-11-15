@@ -2,15 +2,16 @@ import axios from "axios";
 import {message} from "antd";
 
 import {URL} from "../config";
-import {refreshToken} from "./pictures";
 import {clearTokensAndUserInfo} from "../utils";
 
-const Api = axios.create({
+const API_PREFIX = "/api/v1/";
+
+const API = axios.create({
   baseURL: URL,
-  timeout: 30000,
+  timeout: 300000,
 });
 
-Api.interceptors.request.use(config => {
+API.interceptors.request.use(config => {
   if (config.method !== 'get') {
     config.headers = {
       ...config.headers,
@@ -22,21 +23,21 @@ Api.interceptors.request.use(config => {
   message.error("操作失败");
 });
 
-Api.interceptors.response.use(response => {
+API.interceptors.response.use(response => {
   if (response.status === 200 || response.status === 201 || response.status === 204) {
     if (response.data.status === 302) {
       setTimeout(() => {window.location=response.data.data.url}, 2000);
-      return Promise.reject(response.data.errMsg);
+      return Promise.reject(response.data);
     }
     else if (response.data.status === 500) {
-      return Promise.reject(response.data.errMsg);
+      return Promise.reject(response.data);
     }
     else {
       return response.data;
     }
   }
   else {
-    message.error(response.data.errMsg);
+    message.error(response.data);
   }
 }, error => {
   if (error.response.status === 401) {
@@ -53,9 +54,16 @@ Api.interceptors.response.use(response => {
     }
   }
   else {
-    return Promise.reject(error);
+    return Promise.reject(error.response.data);
   }
 });
+
+
+export const refreshToken = (refreshToken) => {
+  return API.post('/api/token/refresh', {
+    refresh: refreshToken,
+  })
+};
 
 
 const setAuthToken = () => {
@@ -74,4 +82,4 @@ const setAuthToken = () => {
   }
 };
 
-export default Api;
+export {API, API_PREFIX};

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Timeline, Spin, Card} from "antd";
 import moment from "moment";
 
-import {getGroups} from "../../api";
+import {getGroups} from "../../api/pictures";
 import Image from "../../components/Image";
 
 

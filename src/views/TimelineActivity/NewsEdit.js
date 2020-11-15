@@ -8,7 +8,7 @@ import "braft-editor/dist/index.css";
 import moment from "moment";
 
 import {getHelloNewsById, editHelloNews, getNewsTypeList} from "../../api/news";
-import {getGroups, getMembers} from "../../api";
+import {getGroups, getMembers} from "../../api/pictures";
 import {uploadPicture} from "../../api/articles";
 
 const {Option} = Select;

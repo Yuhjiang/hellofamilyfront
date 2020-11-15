@@ -21,7 +21,7 @@ export const editGroup = (id, data) => {
 };
 
 export const deleteGroup = id => {
-  return API.delete(`/api/group/${id}/`);
+  return API.delete(`${PREFIX}group/${id}/`);
 };
 
 export const getPictures = (params) => {
@@ -31,43 +31,43 @@ export const getPictures = (params) => {
 };
 
 export const downloadPictures = (data) => {
-  return API.post("/api/download_pictures/", data,
+  return API.post(`${PREFIX}download`, data,
     {responseType: "blob"})
 }
 
 export const getPicturesTimeline = params => {
-  return API.get("api/pictures/timeline/", {
+  return API.get(`${PREFIX}timeline`, {
     params,
   })
 };
 
 export const getMembers = (params) => {
-  return API.get('/api/member/', {
+  return API.get(`${PREFIX}member/`, {
     params,
   })
 };
 
 export const createMember = data => {
-  return API.post('/api/member/', data)
+  return API.post(`${PREFIX}member/`, data)
 };
 
 export const editMember = (id, data) => {
-  return API.put(`/api/member/${id}/`, data);
+  return API.put(`${PREFIX}member/${id}/`, data);
 };
 
 export const deleteMember = id => {
-  return API.delete(`/api/member/${id}/`);
+  return API.delete(`${PREFIX}member/${id}/`);
 };
 
 
 export const updateCookie = (cookie) => {
-  return API.post('/api/cookie', {
+  return API.post(`${PREFIX}cookie/`, {
     cookie
   })
 };
 
 export const registerMemberFace = (data) => {
-  return API.post('/api/face', data, {
+  return API.post(`${PREFIX}face`, data, {
     headers: {
       "Content-Type": "multipart/form-data"
     }
@@ -75,21 +75,21 @@ export const registerMemberFace = (data) => {
 };
 
 export const getCarouselList = params => {
-  return API.get('/api/carousel', {params});
+  return API.get(`${PREFIX}carousel`, {params});
 };
 
 export const editCarousel = (id, data) => {
-  return API.put(`/api/carousel/${id}/`, data);
+  return API.put(`${PREFIX}carousel/${id}/`, data);
 };
 
 export const deleteCarousel = id => {
-  return API.delete(`/api/carousel/${id}/`);
+  return API.delete(`${PREFIX}carousel/${id}/`);
 };
 
 export const createCarousel = data => {
-  return API.post('/api/carousel/', data);
+  return API.post(`${PREFIX}carousel/`, data);
 };
 
 export const recognizePicture = data => {
-  return API.post('/api/recognize_picture/', data);
+  return API.post(`${PREFIX}recognize/`, data);
 };

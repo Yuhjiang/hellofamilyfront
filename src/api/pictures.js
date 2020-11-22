@@ -31,12 +31,12 @@ export const getPictures = (params) => {
 };
 
 export const downloadPictures = (data) => {
-  return API.post(`${PREFIX}download`, data,
+  return API.post(`${PREFIX}download/`, data,
     {responseType: "blob"})
 }
 
 export const getPicturesTimeline = params => {
-  return API.get(`${PREFIX}timeline`, {
+  return API.get(`${PREFIX}timeline/`, {
     params,
   })
 };
@@ -67,7 +67,7 @@ export const updateCookie = (cookie) => {
 };
 
 export const registerMemberFace = (data) => {
-  return API.post(`${PREFIX}face`, data, {
+  return API.post(`${PREFIX}face/`, data, {
     headers: {
       "Content-Type": "multipart/form-data"
     }
@@ -75,7 +75,7 @@ export const registerMemberFace = (data) => {
 };
 
 export const getCarouselList = params => {
-  return API.get(`${PREFIX}carousel`, {params});
+  return API.get(`${PREFIX}carousel/`, {params});
 };
 
 export const editCarousel = (id, data) => {

@@ -322,7 +322,7 @@ const EditModal = ({visible, record, onCreate, onCancel}) => {
       status: record.status === 1,
     });
   });
-  
+
   return (
     <Modal
       title="修改图片"

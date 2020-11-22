@@ -9,7 +9,7 @@ class CardGridPictures extends Component {
   };
 
   handleOnRecognizePicture = picture => {
-    recognizePicture({pictureName: picture}).then(resp => {
+    recognizePicture({picture_name: picture}).then(resp => {
       message.info("请稍等片刻");
     }).catch(err => {
       message.error("出现不可知错误");

@@ -44,8 +44,8 @@ class Pictures extends Component {
   formRef = React.createRef();
 
   componentDidMount() {
-    this.getData({limit: 20, page: 1});
-    this.getGroupList("groupFirst");
+    this.getData({page: 1});
+    this.getGroupList();
   }
 
   getPicturesList = (params) => {
@@ -55,9 +55,8 @@ class Pictures extends Component {
 
     getPictures(params).then(resp => {
       this.setState({
-        pictures: resp.data.images,
+        pictures: resp.data.result,
         total: parseInt(resp.data.count),
-        page: parseInt(resp.data.current),
       });
     }).catch(err => {
       message.error("获取数据失败");
@@ -88,9 +87,7 @@ class Pictures extends Component {
 
   handleOnDownloadPictures = () => {
     const pictures = this.state.pictures.map(pic => ({name: pic.name, url: pic.url}));
-    console.log(pictures);
     downloadPictures({picture_list: pictures}).then(resp => {
-      console.log(resp);
       const dom = document.createElement("a");
       dom.href = window.URL.createObjectURL(resp);
       dom.download = decodeURI("图片.zip");
@@ -159,7 +156,7 @@ class Pictures extends Component {
       isLoading: true,
     });
     const params = {
-      limit: this.state.limit, page: 1,
+      page: 1,
       member_first: e.memberFirst, group_first: e.groupFirst,
       member_second: e.memberSecond, group_second: e.groupSecond,
     };
@@ -170,8 +167,8 @@ class Pictures extends Component {
     if (this.state.timelineOrGrid) {
       getPicturesTimeline(params).then(resp => {
         this.setState({
-          pictures: resp.data.images,
-          total: parseInt(resp.data.count),
+          pictures: resp.results,
+          total: parseInt(resp.count),
         })
       }).catch(err => {
         console.log(err);
@@ -183,9 +180,8 @@ class Pictures extends Component {
     } else {
       getPictures(params).then(resp => {
         this.setState({
-          pictures: resp.data.images,
-          total: parseInt(resp.data.count),
-          page: parseInt(resp.data.current),
+          pictures: resp.results,
+          total: parseInt(resp.count),
         })
       }).catch(err => {
         console.log(err);
@@ -205,7 +201,6 @@ class Pictures extends Component {
       }
     }, () => {
       this.getData({
-        limit: this.state.limit,
         page: this.state.page,
         member_first: this.state.memberFirst,
         group_first: this.state.groupFirst,

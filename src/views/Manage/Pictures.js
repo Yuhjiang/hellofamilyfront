@@ -84,7 +84,7 @@ class UploadPicture extends Component {
   }
 
   componentDidMount() {
-    getGroups({offset: 0, limited: 100}).then(resp => {
+    getGroups({page: 1, page_size: 100}).then(resp => {
       const options = resp.results.map(group => {
         return {value: group.id, label: group.name_jp, isLeaf: false}
       });
@@ -101,7 +101,7 @@ class UploadPicture extends Component {
     const {fileList, member} = this.state;
     const formData = new FormData();
     fileList.forEach(file => {
-      formData.append("files[]", file);
+      formData.append("image", file);
     });
     formData.append("member", member);
 

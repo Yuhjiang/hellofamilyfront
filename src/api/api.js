@@ -45,7 +45,7 @@ API.interceptors.response.use(response => {
     if (!error.response.data.messages) {
       clearTokensAndUserInfo();
       setTimeout(() => {window.location='/login'}, 2000);
-      message.warn("登录状态已过期，请重新登录");
+      message.warn("未登录用户禁止操作，请重新登录");
     }
     else {
       setAuthToken();

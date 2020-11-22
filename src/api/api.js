@@ -12,12 +12,10 @@ const API = axios.create({
 });
 
 API.interceptors.request.use(config => {
-  if (config.method !== 'get') {
-    config.headers = {
-      ...config.headers,
-      'Authorization': window.localStorage.getItem("authToken") || window.sessionStorage.getItem("authToken"),
-    };
-  }
+  config.headers = {
+    ...config.headers,
+    'Authorization': window.localStorage.getItem("authToken") || window.sessionStorage.getItem("authToken"),
+  };
   return config;
 }, error => {
   message.error("操作失败");
@@ -26,17 +24,16 @@ API.interceptors.request.use(config => {
 API.interceptors.response.use(response => {
   if (response.status === 200 || response.status === 201 || response.status === 204) {
     if (response.data.status === 302) {
-      setTimeout(() => {window.location=response.data.data.url}, 2000);
+      setTimeout(() => {
+        window.location = response.data.data.url
+      }, 2000);
       return Promise.reject(response.data);
-    }
-    else if (response.data.status === 500) {
+    } else if (response.data.status === 500) {
       return Promise.reject(response.data);
-    }
-    else {
+    } else {
       return response.data;
     }
-  }
-  else {
+  } else {
     message.error(response.data);
   }
 }, error => {
@@ -44,16 +41,16 @@ API.interceptors.response.use(response => {
     // token过期，重新更新cookie
     if (!error.response.data.messages) {
       clearTokensAndUserInfo();
-      setTimeout(() => {window.location='/login'}, 2000);
+      setTimeout(() => {
+        window.location = '/login'
+      }, 2000);
       message.warn("未登录用户禁止操作，请重新登录");
-    }
-    else {
+    } else {
       setAuthToken();
       window.location.reload();
       message.info("请重新执行操作");
     }
-  }
-  else {
+  } else {
     return Promise.reject(error.response.data);
   }
 });
@@ -71,7 +68,7 @@ const setAuthToken = () => {
   if (window.localStorage.getItem("refreshToken")) {
     // 补充token的前缀信息
     refreshToken(window.localStorage.getItem("refreshToken")).then(resp => {
-      window.localStorage.setItem("authToken", "HelloFamily " + resp.access)
+        window.localStorage.setItem("authToken", "HelloFamily " + resp.access)
       }
     )
   } else {

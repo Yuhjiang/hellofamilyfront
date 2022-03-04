@@ -13,7 +13,14 @@ import {
   Spin,
 } from "antd";
 
-import {downloadPictures, getPicturesTimeline, getGroups, getMembers, getPictures} from "../../api/pictures";
+import {
+  downloadPictures,
+  getPicturesTimeline,
+  getGroups,
+  getMembers,
+  getPictures,
+  getAllGroups
+} from "../../api/pictures";
 import CardGridPictures from "./CardGridPictures";
 import TimelinePicture from "./TimelinePictures";
 
@@ -71,10 +78,10 @@ class Pictures extends Component {
     this.setState({
       selectLoading: true,
     });
-    getGroups({offset: 0, limited: 100}).then(resp => {
+    getAllGroups().then(resp => {
       this.setState({
-        groupFirstList: resp.results,
-        groupSecondList: resp.results,
+        groupFirstList: resp,
+        groupSecondList: resp,
       });
     }).catch(err => {
       console.log(err);
@@ -127,14 +134,14 @@ class Pictures extends Component {
       })
     }
 
-    getMembers({group_id: value, offset: 0, limited: 100}).then(resp => {
+    getMembers({group: value}).then(resp => {
       if (groupList === "groupFirst") {
         this.setState({
-          memberFirstList: resp.results,
+          memberFirstList: resp,
         })
       } else {
         this.setState({
-          memberSecondList: resp.results,
+          memberSecondList: resp,
         })
       }
     }).catch(err => {

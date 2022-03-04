@@ -56,6 +56,7 @@ class AdminGroups extends Component {
       columns: columns,
       dataSource: [],
       offset: 0,
+      page: 1,
       limited: 10,
       total: 0,
       showDeleteModal: false,
@@ -79,8 +80,8 @@ class AdminGroups extends Component {
 
   assembleParams = () => {
     const params = {
-      limited: this.state.limited,
-      offset: this.state.offset,
+      page_size: this.state.limited,
+      page: this.state.page,
       order: "-id",
     };
     const {searchText, searchedColumn, startDate, endDate} = this.state;
@@ -284,7 +285,7 @@ class AdminGroups extends Component {
 
   onPageChange = page => {
     this.setState({
-      offset: (page - 1) * this.state.limited,
+      page: page
     }, () => {
       this.getData();
     });
@@ -510,7 +511,7 @@ class AdminGroups extends Component {
             loading={this.state.isLoading}
             bordered
             pagination={{
-              current: this.state.offset / this.state.limited + 1,
+              current: this.state.page,
               total: this.state.total,
               pageSize: this.state.limited,
               showQuickJumper: true,

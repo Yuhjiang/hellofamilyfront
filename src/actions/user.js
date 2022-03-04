@@ -74,7 +74,7 @@ export const login = (data) => {
         authToken,
         refreshToken,
         ...userInfo
-      } = resp;
+      } = resp.data;
       if (data.remember === true) {
         // 用户选中记住我时，持久化存储
         setLocalStorage({

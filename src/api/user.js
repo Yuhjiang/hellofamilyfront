@@ -4,11 +4,11 @@ import {API, API_PREFIX} from "./api";
 const USER_PREFIX = API_PREFIX + "user";
 
 export const loginUser = userInfo => {
-  return API.post(USER_PREFIX + "/login/", userInfo);
+  return API.post(USER_PREFIX + "/login", userInfo);
 };
 
 export const registerUser = userInfo => {
-  return API.post(USER_PREFIX  + '/register/', userInfo);
+  return API.post(USER_PREFIX  + '/register', userInfo);
 };
 
 export const getUserById = id => {

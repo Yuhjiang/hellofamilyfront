@@ -2,7 +2,13 @@ import React, {Component} from 'react';
 import {Button, Card, Cascader, Col, Form, Input, message, Row, Spin, Upload} from "antd";
 import {UploadOutlined} from '@ant-design/icons';
 
-import {getGroups, getMembers, registerMemberFace, updateCookie} from "../../api/pictures";
+import {
+  getAllGroups,
+  getGroups,
+  getMembers,
+  registerMemberFace,
+  updateCookie
+} from "../../api/pictures";
 
 
 const wrapperCol = {xs: 24, sm: 24, md: 20, lg: 20};
@@ -22,7 +28,7 @@ class AdminPictures extends Component {
     });
     updateCookie(values.updateCookie).then(resp => {
       if (resp.status === 200) {
-        message.success(resp.data.message);
+        message.success(resp.errMsg);
       } else {
         message.error(resp.errMsg);
       }
@@ -84,7 +90,7 @@ class UploadPicture extends Component {
   }
 
   componentDidMount() {
-    getGroups({page: 1, page_size: 100}).then(resp => {
+    getAllGroups().then(resp => {
       const options = resp.results.map(group => {
         return {value: group.id, label: group.name_jp, isLeaf: false}
       });

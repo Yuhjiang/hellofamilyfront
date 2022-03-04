@@ -59,7 +59,7 @@ class Manage extends Component {
             </Menu>);
             return (
               <Col {...layout}>
-                <Dropdown overlay={menus}>
+                <Dropdown overlay={menus} keu={subMenu.title}>
                   <span><subMenu.logo /><span>{subMenu.title}</span><DownOutlined/></span>
                 </Dropdown>
               </Col>

@@ -93,7 +93,7 @@ export const login = (data) => {
       dispatch(loginSuccess(userInfo));
       message.success("成功登录");
     }).catch(err => {
-      message.error("用户名或密码错误");
+      message.error(err.message);
       dispatch(loginFailed());
     });
   };

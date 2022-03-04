@@ -17,7 +17,14 @@ import {
 import {ChromePicker} from "react-color";
 import moment from "moment";
 
-import {getMembers, createMember, editMember, deleteMember, getGroups} from "../../api/pictures";
+import {
+  getMembers,
+  createMember,
+  editMember,
+  deleteMember,
+  getGroups,
+  getAllGroups, getMemberById
+} from "../../api/pictures";
 import {getColumnSearchProps, getColumnDateSearchProps} from "../../utils";
 
 const {Option} = Select;
@@ -38,7 +45,7 @@ const displayTitle = {
   "graduated_time": "毕业时间",
   "status": "状态",
   "color": "代表色",
-  "group": "组合",
+  "group_names": "组合",
 };
 
 class AdminMembers extends Component {
@@ -51,7 +58,7 @@ class AdminMembers extends Component {
       addLoading: false,
       columns: [],
       dataSource: [],
-      offset: 0,
+      page: 1,
       limited: 10,
       total: 0,
       showDeleteModal: false,
@@ -68,7 +75,7 @@ class AdminMembers extends Component {
   formRef = React.createRef();
 
   componentDidMount() {
-    const columns = this.createColumns(["name_jp", "name_en", "joined_time", "graduated_time", "status", "color", "group"]);
+    const columns = this.createColumns(["name_jp", "name_en", "joined_time", "graduated_time", "status", "color", "group_names"]);
     this.setState({
       columns: columns
     });
@@ -78,8 +85,8 @@ class AdminMembers extends Component {
 
   assembleParams = () => {
     const params = {
-      limited: this.state.limited,
-      offset: this.state.offset,
+      page_size: this.state.limited,
+      page: this.state.page,
     };
     const {searchText, searchedColumn, startDate, endDate} = this.state;
     if (searchText && searchedColumn) {
@@ -94,9 +101,9 @@ class AdminMembers extends Component {
   };
 
   getGroupList = () => {
-    getGroups({offset: 0, limited: 100}).then(resp => {
+    getAllGroups().then(resp => {
       this.setState({
-        groups: resp.results,
+        groups: resp,
       })
     }).catch(err => {
       message.error(err);
@@ -144,15 +151,22 @@ class AdminMembers extends Component {
           }
         }
       }
-      else if (item === "group") {
+      else if (item === "group_names") {
         return {
           title: displayTitle[item],
           key: item,
           dataIndex: item,
           align: "center",
           render: (text, record) => {
-            const {group} = record;
-            return (<Tag color={group.color}>{group.name_jp}</Tag>)
+            const {group_names} = record;
+            let group = ""
+            for (let i = 0; i < group_names.length; i++) {
+              group += group_names[i]
+              if (i < group_names.length-1) {
+                group += ", "
+              }
+            }
+            return group
           },
           ...getColumnSearchProps(displayTitle, item, this.searchInput, this.handleSearch, this.handleReset),
         }
@@ -270,7 +284,7 @@ class AdminMembers extends Component {
 
   onPageChange = page => {
     this.setState({
-      offset: (page - 1) * this.state.limited,
+      page: page
     }, () => {
       this.getData();
     });
@@ -447,7 +461,10 @@ class AdminMembers extends Component {
                     {required: true, message: "请选择成员所属组合"}
                   ]}
                 >
-                  <Select>
+                  <Select
+                      mode="multiple"
+                      allowClear
+                  >
                     {this.state.groups.map(group => {
                       return (<Option value={group.id} key={group.id}>{group.name_jp}</Option>)
                     })}
@@ -581,7 +598,7 @@ class AdminMembers extends Component {
             loading={this.state.isLoading}
             bordered
             pagination={{
-              current: this.state.offset / this.state.limited + 1,
+              current: this.state.page,
               total: this.state.total,
               pageSize: this.state.limited,
               showQuickJumper: true,
@@ -637,13 +654,21 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
   };
 
   useEffect(() => {
-    form.setFieldsValue({
-      ...record,
-      group: record.group.id,
-      joined_time: record.joined_time ? moment(record.joined_time) : undefined,
-      graduated_time: record.graduated_time ? moment(record.graduated_time) : undefined,
-      birthday: record.birthday ? moment(record.birthday) : undefined,
-      color: record.color || "#fff",
+    if (record.id === undefined) {
+      return
+    }
+    getMemberById(record.id).then(resp => {
+      form.setFieldsValue(
+          {
+            ...resp,
+            joined_time: record.joined_time ? moment(record.joined_time) : undefined,
+            graduated_time: record.graduated_time ? moment(record.graduated_time) : undefined,
+            birthday: record.birthday ? moment(record.birthday) : undefined,
+            color: record.color || "#fff",
+          }
+      )
+    }).catch(err => {
+      message.error("成员不存在")
     });
   });
 
@@ -655,7 +680,7 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
       destroyOnClose={false}
       onOk={() => {
         form
-          .validateFields()
+            .validateFields()
           .then(values => {
             form.resetFields();
             onCreate(record.id, values);
@@ -716,7 +741,10 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
                 {required: true, message: "请选择成员所属组合"}
               ]}
             >
-              <Select>
+              <Select
+                  mode="multiple"
+                  allowClear
+              >
                 {groups.map(group => {
                   return (<Option value={group.id} key={group.id}>{group.name_jp}</Option>)
                 })}
@@ -784,52 +812,46 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
               />
             </Form.Item>
           </Col>
-        </Row>
-        <Collapse>
-          <Panel header="额外信息" key="1">
-            <Row>
-              <Col {...modalLayout}>
-                <Form.Item
-                  label="家乡"
-                  name="hometown"
-                  wrapperCol={{span: 16}}
-                >
-                  <Input/>
-                </Form.Item>
-              </Col>
-              <Col {...modalLayout}>
-                <Form.Item
-                  label="昵称"
-                  name="nickname"
-                  wrapperCol={{span: 16}}
-                >
-                  <Input/>
-                </Form.Item>
-              </Col>
-              <Col {...modalLayout}>
-                <Form.Item
-                  label="生日"
-                  name="birthday"
-                  wrapperCol={{span: 16}}
-                >
-                  <DatePicker/>
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  label="图片"
-                  name="favicon"
-                  wrapperCol={{span: 20}}
-                  rules={[
-                    {type: "url", message: "请输入合理的图片地址"}
-                  ]}
-                >
-                  <Input placeholder="此图片会自动用于注册人脸"/>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Panel>
-        </Collapse>
+            <Col {...modalLayout}>
+              <Form.Item
+                label="家乡"
+                name="hometown"
+                wrapperCol={{span: 16}}
+              >
+                <Input/>
+              </Form.Item>
+            </Col>
+            <Col {...modalLayout}>
+              <Form.Item
+                label="昵称"
+                name="nickname"
+                wrapperCol={{span: 16}}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col {...modalLayout}>
+              <Form.Item
+                label="生日"
+                name="birthday"
+                wrapperCol={{span: 16}}
+              >
+                <DatePicker/>
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label="图片"
+                name="favicon"
+                wrapperCol={{span: 20}}
+                rules={[
+                  {type: "url", message: "请输入合理的图片地址"}
+                ]}
+              >
+                <Input placeholder="此图片会自动用于注册人脸"/>
+              </Form.Item>
+            </Col>
+          </Row>
       </Form>
     </Modal>
   )

@@ -1,5 +1,6 @@
 import React, {Component, useEffect} from 'react';
-import {Button, Card, Form, Input, Row, Col, Table, Modal, message} from "antd";
+import {Button, Card, Form, Input, Row, Col, Table, Modal, message,
+  Switch} from "antd";
 import moment from "moment";
 
 import {createCarousel, editCarousel, deleteCarousel, getCarouselList} from "../../api/pictures";
@@ -197,6 +198,7 @@ class AdminCarousel extends Component {
   };
 
   onEdit = (id, values) => {
+    values.status = values.status ? 1 : 0;
     editCarousel(id, values).then(resp => {
       message.success("成功修改图片");
       this.onHideEditModal();
@@ -317,6 +319,7 @@ const EditModal = ({visible, record, onCreate, onCancel}) => {
     form.setFieldsValue({
       name: record.name,
       image: record.image,
+      status: record.status === 1,
     });
   });
 
@@ -339,6 +342,8 @@ const EditModal = ({visible, record, onCreate, onCancel}) => {
       <Form
         name="editCarousel"
         form={form}
+        labelCol={{span: 4}}
+        wrapperCol={{span: 14}}
       >
         <Form.Item
           label="图片描述"
@@ -360,6 +365,17 @@ const EditModal = ({visible, record, onCreate, onCancel}) => {
           ]}
         >
           <Input/>
+        </Form.Item>
+        <Form.Item
+          label="状态"
+          name="status"
+          valuePropName="checked"
+          wrapperCol={{span: 16}}
+          rules={[
+            {required: true, message: "请选择状态"},
+          ]}
+        >
+          <Switch checked={form.getFieldValue("status")}/>
         </Form.Item>
       </Form>
     </Modal>

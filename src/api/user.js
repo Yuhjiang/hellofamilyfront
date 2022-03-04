@@ -1,50 +1,28 @@
-import axios from "axios";
-import {message} from "antd";
-import {URL} from "../config";
+import {API, API_PREFIX} from "./api";
 
-import userApi from "./api";
 
-const userLoginOrRegister = axios.create({
-  baseURL: URL,
-  timeout: 3000,
-});
-
-userLoginOrRegister.interceptors.request.use(config => {
-  config.params = Object.assign({}, config.params, {
-    format: "json",
-  });
-  return config;
-});
-
-userLoginOrRegister.interceptors.response.use(response => {
-  if (response.status === 200) {
-    return response.data;
-  }
-  else {
-    message.error(response.data);
-  }
-});
+const USER_PREFIX = API_PREFIX + "user";
 
 export const loginUser = userInfo => {
-  return userLoginOrRegister.post('/api/login', userInfo);
+  return API.post(USER_PREFIX + "/login", userInfo);
 };
 
 export const registerUser = userInfo => {
-  return userLoginOrRegister.post('/api/register', userInfo);
+  return API.post(USER_PREFIX  + '/register', userInfo);
 };
 
 export const getUserById = id => {
-  return userApi.get(`/api/user/${id}/`);
+  return API.get(`${USER_PREFIX}/${id}/`);
 };
 
 export const updateUserById = (id, data) => {
-  return userApi.put(`/api/user/${id}/`, data);
+  return API.put(`${USER_PREFIX}/${id}/`, data);
 };
 
 export const getUserList = params => {
-  return userApi.get('/api/user/', {params})
+  return API.get(`${USER_PREFIX}/`, {params})
 };
 
 export const deleteUserById = id => {
-  return userApi.delete(`/api/user/${id}/`);
+  return API.delete(`${USER_PREFIX}/${id}/`);
 };

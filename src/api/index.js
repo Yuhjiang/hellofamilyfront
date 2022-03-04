@@ -1,13 +1,17 @@
 import {
-  getGroupById,
-  getGroups,
-  getPictures,
-  getMembers
-} from "./pictures"
+  loginUser,
+  registerUser,
+  getUserById,
+  updateUserById,
+  getUserList,
+  deleteUserById,
+} from "./user";
 
 export {
-  getGroupById,
-  getGroups,
-  getPictures,
-  getMembers,
+  loginUser,
+  registerUser,
+  getUserList,
+  getUserById,
+  deleteUserById,
+  updateUserById,
 }

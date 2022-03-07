@@ -19,7 +19,7 @@ import {
   getGroups,
   getMembers,
   getPictures,
-  getAllGroups
+  getAllGroups, getAllMembers
 } from "../../api/pictures";
 import CardGridPictures from "./CardGridPictures";
 import TimelinePicture from "./TimelinePictures";
@@ -134,7 +134,7 @@ class Pictures extends Component {
       })
     }
 
-    getMembers({group: value}).then(resp => {
+    getAllMembers({group: value}).then(resp => {
       if (groupList === "groupFirst") {
         this.setState({
           memberFirstList: resp,

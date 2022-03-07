@@ -22,7 +22,6 @@ import {
   createMember,
   editMember,
   deleteMember,
-  getGroups,
   getAllGroups, getMemberById
 } from "../../api/pictures";
 import {getColumnSearchProps, getColumnDateSearchProps} from "../../utils";
@@ -64,7 +63,7 @@ class AdminMembers extends Component {
       showDeleteModal: false,
       showEditModal: false,
       currentRecord: {
-        group: {},
+        group: [],
       },
       editorColor: [],
       deleteLoading: false,
@@ -298,10 +297,14 @@ class AdminMembers extends Component {
   };
 
   onClickEditButton = (record, event) => {
-    this.setState({
-      showEditModal: true,
-      currentRecord: record,
-      editColor: record.color || "#fff",
+    getMemberById(record.id).then(resp => {
+      this.setState({
+        showEditModal: true,
+        currentRecord: record,
+        editColor: record.color || "#fff",
+      })
+    }).catch(err => {
+      message.error("获取失败")
     })
   };
 
@@ -377,8 +380,8 @@ class AdminMembers extends Component {
     confirm();
     if (selectKeys.length === 2) {
       this.setState({
-        startDate: selectKeys[0] + " 23:59:59",
-        endDate: selectKeys[1] + " 23:59:59",
+        startDate: selectKeys[0],
+        endDate: selectKeys[1],
       })
     } else {
       this.setState({
@@ -654,21 +657,13 @@ const EditFormInModal = ({visible, record, editColor, onCreate, onCancel, colorC
   };
 
   useEffect(() => {
-    if (record.id === undefined) {
-      return
-    }
-    getMemberById(record.id).then(resp => {
-      form.setFieldsValue(
-          {
-            ...resp,
-            joined_time: record.joined_time ? moment(record.joined_time) : undefined,
-            graduated_time: record.graduated_time ? moment(record.graduated_time) : undefined,
-            birthday: record.birthday ? moment(record.birthday) : undefined,
-            color: record.color || "#fff",
-          }
-      )
-    }).catch(err => {
-      message.error("成员不存在")
+    form.setFieldsValue({
+      ...record,
+      group: record.group,
+      joined_time: record.joined_time ? moment(record.joined_time) : undefined,
+      graduated_time: record.graduated_time ? moment(record.graduated_time) : undefined,
+      birthday: record.birthday ? moment(record.birthday) : undefined,
+      color: record.color || "#fff",
     });
   });
 

@@ -69,6 +69,12 @@ export const getMembers = (params) => {
   })
 };
 
+export const getAllMembers = (params) => {
+  return API.get(`${PREFIX}/all-member`, {
+    params,
+  })
+};
+
 export const getMemberById = (id) => {
   return API.get(`${PREFIX}/member/${id}`);
 }
@@ -93,11 +99,7 @@ export const updateCookie = (cookie) => {
 };
 
 export const registerMemberFace = (data) => {
-  return API.post(`${PREFIX}/face/`, data, {
-    headers: {
-      "Content-Type": "multipart/form-data"
-    }
-  });
+  return API.post(`${PREFIX}/member-face`, data);
 };
 
 export const getCarouselList = params => {

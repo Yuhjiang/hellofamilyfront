@@ -20,7 +20,7 @@ import {
   getGroups,
   createGroup,
   deleteGroup,
-  editGroup
+  editGroup, getGroupById
 } from "../../api/pictures";
 import {getColumnSearchProps, getColumnDateSearchProps} from "../../utils";
 
@@ -299,10 +299,14 @@ class AdminGroups extends Component {
   };
 
   onClickEditButton = (record, event) => {
-    this.setState({
-      showEditModal: true,
-      currentRecord: record,
-      editColor: record.color || "#fff",
+    getGroupById(record.id).then(resp => {
+      this.setState({
+        showEditModal: true,
+        currentRecord: record,
+        editColor: record.color || "#fff",
+      })
+    }).catch(err => {
+      message.error("获取失败")
     })
   };
 

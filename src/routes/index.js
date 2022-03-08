@@ -25,6 +25,7 @@ import {
   AdminHelloNews,
   HelloNewsDetail,
   HelloHistory,
+  MemberHistory,
   HelloNewsEdit,
 } from "../views";
 
@@ -51,9 +52,16 @@ export const mainRouter = [
     exact: true,
   },
   {
-    pathname: "/history",
+    pathname: "/group-history",
     component: HelloHistory,
     title: "ハロー！ヒストリー",
+    isNav: true,
+    exact: true,
+  },
+  {
+    pathname: "/member-history",
+    component: MemberHistory,
+    title: "历代成员",
     isNav: true,
     exact: true,
   },

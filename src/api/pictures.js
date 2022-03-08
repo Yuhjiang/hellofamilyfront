@@ -125,3 +125,7 @@ export const recognizePicture = data => {
 export const getGroupHistory = () => {
   return API.get(`${PREFIX}/group-history`);
 }
+
+export const getMemberHistory = () => {
+  return API.get(`${PREFIX}/member-history`);
+}

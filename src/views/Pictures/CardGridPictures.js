@@ -8,9 +8,21 @@ class CardGridPictures extends Component {
     pictures: PropTypes.array.isRequired,
   };
 
-  handleOnRecognizePicture = picture => {
-    recognizePicture({picture_name: picture}).then(resp => {
-      message.info("请稍等片刻");
+  handleOnRecognizePicture = id => {
+    recognizePicture({id: id}).then(resp => {
+      if (resp.error === 200) {
+        let msg = ''
+        for (let i = 0; i < resp.members.length; i++) {
+          msg = msg + resp.members[i]
+          if (i < resp.members.length - 1) {
+            msg = msg + ', '
+          }
+        }
+        message.success('成功识别出: ' + msg)
+      }
+      else {
+        message.error("没有识别出成员");
+      }
     }).catch(err => {
       message.error("出现不可知错误");
     })
@@ -35,7 +47,7 @@ class CardGridPictures extends Component {
           <List.Item>
             <Popconfirm
               title="确定要更新人脸信息吗"
-              onConfirm={this.handleOnRecognizePicture.bind(this, item.name)}
+              onConfirm={this.handleOnRecognizePicture.bind(this, item.id)}
               okText="确认"
               cancelText="取消"
             >

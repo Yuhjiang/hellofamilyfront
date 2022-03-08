@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Timeline, Spin, Card} from "antd";
 import moment from "moment";
 
-import {getGroups} from "../../api/pictures";
+import {getGroupHistory} from "../../api/pictures";
 import Image from "../../components/Image";
 
 
@@ -24,9 +24,9 @@ class HelloHistory extends Component {
       isLoading: true,
     });
 
-    getGroups({offset: 0, limited: 100, order: "created_time"}).then(resp => {
+    getGroupHistory().then(resp => {
       this.setState({
-        groups: resp.results
+        groups: resp
       })
     }).catch(err => {
       console.log(err);

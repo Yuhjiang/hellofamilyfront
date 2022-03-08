@@ -119,5 +119,9 @@ export const createCarousel = data => {
 };
 
 export const recognizePicture = data => {
-  return API.post(`${PREFIX}/recognize/`, data);
+  return API.post(`${PREFIX}/recognize`, data);
 };
+
+export const getGroupHistory = () => {
+  return API.get(`${PREFIX}/group-history`);
+}
